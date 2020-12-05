@@ -1,0 +1,157 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+
+// -----------
+
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+apply from: 'project.gradle'
+
+def getVersionName = { String workTree ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', "--git-dir=\"${workTree}/.git\"", "--work-tree=\"${workTree}\"", 'describe', '--tags'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+version = getVersionName("${project.projectDir}")
+group = 'com.codetaylor.mc.' + project.ext.mod.id
+archivesBaseName = project.ext.mod.id
+
+println()
+println("-------------------------------------------------------------")
+println("- Mod Id: " + project.ext.mod.id)
+println("- Version: " + version)
+println("- Forge Version: " + project.ext.forge.version)
+println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappings.version)
+println("-------------------------------------------------------------")
+println()
+
+sourceCompatibility = targetCompatibility = "1.8"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+configurations {
+	apiCompile.extendsFrom(compile)
+}
+
+task replaceResources(type: Copy) {
+    outputs.upToDateWhen { false }
+    from(sourceSets.main.resources.srcDirs) {
+        include "META-INF/mods.toml"
+        expand 'version': version, 'minecraft_version': project.ext.minecraft.version_range, 'forge_version': project.ext.forge.version_range
+    }
+    into "$buildDir/resources/main/"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'META-INF/mods.toml'
+    }
+    finalizedBy replaceResources
+}
+
+minecraft {
+    mappings = project.ext.mappings.channel + "_" + project.ext.mappings.version
+    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                artisanworktables {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                artisanworktables {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'artisanworktables', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                artisanworktables {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+jar {
+    from sourceSets.main.output.classesDirs
+    from sourceSets.api.output.classesDirs
+    from sourceSets.main.output.resourcesDir
+    from sourceSets.api.output.resourcesDir
+}
+
+jar.finalizedBy('reobfJar')
+
+task sourcesJar(type: Jar) {
+    classifier = "sources"
+    from sourceSets.main.allJava
+    from sourceSets.api.allJava
+}
+
+task apiJar(type: Jar) {
+    classifier = "api"
+    from sourceSets.api.output
+
+    // TODO: when FG bug is fixed, remove allJava from the api jar.
+    // https://github.com/MinecraftForge/ForgeGradle/issues/369
+    // Gradle should be able to pull them from the -sources jar.
+    from sourceSets.api.allJava
+}
+
+artifacts {
+    archives sourcesJar
+    archives apiJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/maven"
+        }
+    }
+}

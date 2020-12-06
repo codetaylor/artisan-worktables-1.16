@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.event;
 
 import com.codetaylor.mc.artisanworktables.api.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.EnumType;
+import com.codetaylor.mc.artisanworktables.block.WorkshopBlock;
 import com.codetaylor.mc.artisanworktables.block.WorkstationBlock;
 import com.codetaylor.mc.artisanworktables.block.WorktableBlock;
 import net.minecraft.block.Block;
@@ -55,7 +56,12 @@ public class BlockRegistrationEventHandler {
     this.register(
         registry,
         EnumTier.WORKSTATION.getName() + "_" + registryName,
-        new WorkstationBlock(material, toolType, soundType, 3.0f, 4.0f)
+        new WorkstationBlock(material, toolType, soundType, 3.0f, 6.0f)
+    );
+    this.register(
+        registry,
+        EnumTier.WORKSHOP.getName() + "_" + registryName,
+        new WorkshopBlock(material, toolType, soundType, 4.0f, 12.0f)
     );
   }
 

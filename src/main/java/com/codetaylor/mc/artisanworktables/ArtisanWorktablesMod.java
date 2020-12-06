@@ -8,7 +8,8 @@ import com.codetaylor.mc.artisanworktables.event.TileEntityRegistrationEventHand
 import com.codetaylor.mc.artisanworktables.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.tile.WorktableTileEntity;
-import com.codetaylor.mc.athenaeum.internal.network.packet.PacketService;
+import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
+import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
@@ -44,7 +45,7 @@ public class ArtisanWorktablesMod {
 
   private static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
 
-  public static PacketService packetService;
+  public static IPacketService packetService;
 
   public ArtisanWorktablesMod() {
 
@@ -66,7 +67,7 @@ public class ArtisanWorktablesMod {
     modEventBus.register(new ItemRegistrationEventHandler(REGISTERED_WORKTABLES));
     modEventBus.register(new TileEntityRegistrationEventHandler(REGISTERED_WORKTABLES_BY_TIER));
 
-    ArtisanWorktablesMod.packetService = PacketService.create(MOD_ID, MOD_ID, PACKET_SERVICE_PROTOCOL_VERSION);
+    ArtisanWorktablesMod.packetService = NetworkAPI.createPacketService(MOD_ID, MOD_ID, PACKET_SERVICE_PROTOCOL_VERSION);
   }
 
   @ObjectHolder(MOD_ID)

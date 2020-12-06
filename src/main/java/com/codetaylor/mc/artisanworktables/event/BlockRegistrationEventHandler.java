@@ -13,15 +13,19 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BlockRegistrationEventHandler {
 
   private final List<Block> registeredWorktables;
+  private final Map<EnumTier, List<Block>> registeredWorktablesByTier;
 
-  public BlockRegistrationEventHandler(List<Block> registeredWorktables) {
+  public BlockRegistrationEventHandler(List<Block> registeredWorktables, Map<EnumTier, List<Block>> registeredWorktablesByTier) {
 
     this.registeredWorktables = registeredWorktables;
+    this.registeredWorktablesByTier = registeredWorktablesByTier;
   }
 
   @SubscribeEvent
@@ -48,27 +52,22 @@ public class BlockRegistrationEventHandler {
 
   private void register(IForgeRegistry<Block> registry, Material material, ToolType toolType, SoundType soundType, String registryName) {
 
-    this.register(
-        registry,
-        EnumTier.WORKTABLE.getName() + "_" + registryName,
+    this.register(registry, EnumTier.WORKTABLE, registryName,
         new WorktableBlock(material, toolType, soundType, 2.0f, 3.0f)
     );
-    this.register(
-        registry,
-        EnumTier.WORKSTATION.getName() + "_" + registryName,
+    this.register(registry, EnumTier.WORKSTATION, registryName,
         new WorkstationBlock(material, toolType, soundType, 3.0f, 6.0f)
     );
-    this.register(
-        registry,
-        EnumTier.WORKSHOP.getName() + "_" + registryName,
+    this.register(registry, EnumTier.WORKSHOP, registryName,
         new WorkshopBlock(material, toolType, soundType, 4.0f, 12.0f)
     );
   }
 
-  private void register(IForgeRegistry<Block> registry, String registryName, Block block) {
+  private void register(IForgeRegistry<Block> registry, EnumTier tier, String registryName, Block block) {
 
-    block.setRegistryName(registryName);
+    block.setRegistryName(tier.getName() + "_" + registryName);
     registry.register(block);
     this.registeredWorktables.add(block);
+    this.registeredWorktablesByTier.computeIfAbsent(tier, enumTier -> new ArrayList<>()).add(block);
   }
 }

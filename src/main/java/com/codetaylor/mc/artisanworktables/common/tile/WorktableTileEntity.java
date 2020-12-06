@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.api.EnumType;
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileDataItemStackHandler;
@@ -20,7 +21,10 @@ public class WorktableTileEntity
   private final CraftingStackHandler craftingStackHandler;
   private final TileDataItemStackHandler<CraftingStackHandler> craftingStackHandlerData;
 
+  private EnumType type;
+
   public WorktableTileEntity() {
+    // serialization
 
     super(
         ArtisanWorktablesMod.TileEntityTypes.WORKTABLE_TILE_ENTITY_TYPE,
@@ -35,6 +39,21 @@ public class WorktableTileEntity
     });
   }
 
+  public WorktableTileEntity(EnumType type) {
+
+    this();
+    this.type = type;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Accessors
+  // ---------------------------------------------------------------------------
+
+  public EnumType getTableType() {
+
+    return this.type;
+  }
+
   // ---------------------------------------------------------------------------
   // Serialization
   // ---------------------------------------------------------------------------
@@ -44,6 +63,7 @@ public class WorktableTileEntity
   public void read(BlockState state, CompoundNBT nbt) {
 
     super.read(state, nbt);
+    this.type = EnumType.fromName(nbt.getString("type"));
     this.craftingStackHandler.deserializeNBT(nbt.getCompound("craftingStackHandler"));
   }
 
@@ -53,6 +73,7 @@ public class WorktableTileEntity
   public CompoundNBT write(CompoundNBT compound) {
 
     super.write(compound);
+    compound.putString("type", this.type.getName());
     compound.put("craftingStackHandler", this.craftingStackHandler.serializeNBT());
     return compound;
   }

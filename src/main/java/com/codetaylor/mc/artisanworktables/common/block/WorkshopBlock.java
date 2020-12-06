@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
+import com.codetaylor.mc.artisanworktables.api.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,9 +27,9 @@ public class WorkshopBlock
       Block.makeCuboidShape(0, 0, 0, 16, 7, 16) // bottom
   );
 
-  public WorkshopBlock(Material material, ToolType toolType, SoundType soundType, float hardness, float resistance) {
+  public WorkshopBlock(EnumType type, Material material, ToolType toolType, SoundType soundType, float hardness, float resistance) {
 
-    super(material, toolType, soundType, hardness, resistance);
+    super(type, material, toolType, soundType, hardness, resistance);
   }
 
   @Nonnull
@@ -43,6 +44,6 @@ public class WorkshopBlock
   @Override
   public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 
-    return new WorkshopTileEntity();
+    return new WorkshopTileEntity(this.getType());
   }
 }

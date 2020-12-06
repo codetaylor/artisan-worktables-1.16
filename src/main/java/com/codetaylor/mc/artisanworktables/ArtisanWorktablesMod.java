@@ -3,9 +3,11 @@ package com.codetaylor.mc.artisanworktables;
 import com.codetaylor.mc.artisanworktables.api.Reference;
 import com.codetaylor.mc.artisanworktables.client.ClientProxy;
 import com.codetaylor.mc.artisanworktables.common.CommonProxy;
+import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
@@ -62,6 +64,17 @@ public class ArtisanWorktablesMod {
       WORKTABLE_TILE_ENTITY_TYPE = null;
       WORKSTATION_TILE_ENTITY_TYPE = null;
       WORKSHOP_TILE_ENTITY_TYPE = null;
+    }
+  }
+
+  @ObjectHolder(MOD_ID)
+  public static class ContainerTypes {
+
+    @ObjectHolder(WorktableContainer.NAME)
+    public static final ContainerType<WorktableContainer> WORKTABLE_CONTAINER_TYPE;
+
+    static {
+      WORKTABLE_CONTAINER_TYPE = null;
     }
   }
 }

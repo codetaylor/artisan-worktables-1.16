@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.IProxy;
 import com.codetaylor.mc.artisanworktables.api.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.event.BlockRegistrationEventHandler;
+import com.codetaylor.mc.artisanworktables.common.event.ContainerTypeRegistrationEventHandler;
 import com.codetaylor.mc.artisanworktables.common.event.ItemRegistrationEventHandler;
 import com.codetaylor.mc.artisanworktables.common.event.TileEntityRegistrationEventHandler;
 import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
@@ -66,6 +67,7 @@ public class CommonProxy
     eventBus.register(new BlockRegistrationEventHandler(this.registeredWorktables, this.registeredWorktablesByTier));
     eventBus.register(new ItemRegistrationEventHandler(this.registeredWorktables));
     eventBus.register(new TileEntityRegistrationEventHandler(this.registeredWorktablesByTier));
+    eventBus.register(new ContainerTypeRegistrationEventHandler());
   }
 
   @Override

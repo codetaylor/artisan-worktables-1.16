@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables;
 
-import com.codetaylor.mc.artisanworktables.block.BasicWorktableBlock;
+import com.codetaylor.mc.artisanworktables.api.Reference;
 import com.codetaylor.mc.artisanworktables.event.BlockRegistrationEventHandler;
 import com.codetaylor.mc.artisanworktables.event.ItemRegistrationEventHandler;
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +23,7 @@ import java.util.List;
 @Mod(ArtisanWorktablesMod.MOD_ID)
 public class ArtisanWorktablesMod {
 
-  public static final String MOD_ID = "artisanworktables";
+  public static final String MOD_ID = Reference.MOD_ID;
   public static final Logger LOGGER = LogManager.getLogger();
 
   public static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get();
@@ -49,17 +48,6 @@ public class ArtisanWorktablesMod {
 
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.register(new BlockRegistrationEventHandler(REGISTERED_WORKTABLES));
-    modEventBus.register(new ItemRegistrationEventHandler());
-  }
-
-  @ObjectHolder(ArtisanWorktablesMod.MOD_ID)
-  public static class Blocks {
-
-    @ObjectHolder(BasicWorktableBlock.NAME)
-    public static final BasicWorktableBlock BASIC_WORKTABLE;
-
-    static {
-      BASIC_WORKTABLE = null;
-    }
+    modEventBus.register(new ItemRegistrationEventHandler(REGISTERED_WORKTABLES));
   }
 }

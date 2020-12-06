@@ -1,17 +1,21 @@
-package com.codetaylor.mc.artisanworktables.block.spi;
+package com.codetaylor.mc.artisanworktables.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public abstract class WorktableBlock
+public class WorktableBlock
     extends Block {
 
   private static final VoxelShape VOXEL_SHAPE = VoxelShapes.or(
@@ -31,9 +35,15 @@ public abstract class WorktableBlock
       Block.makeCuboidShape(4, 3, 12, 12, 4, 13) // brace d
   );
 
-  public WorktableBlock(Properties properties) {
+  public WorktableBlock(Material material, ToolType toolType, SoundType soundType, float hardness, float resistance) {
 
-    super(properties);
+    super(AbstractBlock.Properties.create(material)
+        .harvestTool(toolType)
+        .harvestLevel(0)
+        .sound(soundType)
+        .hardnessAndResistance(hardness, resistance)
+        .notSolid()
+    );
   }
 
   @Nonnull

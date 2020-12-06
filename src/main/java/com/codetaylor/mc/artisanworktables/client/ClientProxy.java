@@ -1,5 +1,8 @@
 package com.codetaylor.mc.artisanworktables.client;
 
-public class ClientProxy {
+import com.codetaylor.mc.artisanworktables.common.CommonProxy;
+
+public class ClientProxy
+    extends CommonProxy {
 
 }

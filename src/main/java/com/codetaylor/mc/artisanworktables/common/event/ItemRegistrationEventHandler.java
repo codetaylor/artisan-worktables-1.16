@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.event;
+package com.codetaylor.mc.artisanworktables.common.event;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import net.minecraft.block.Block;

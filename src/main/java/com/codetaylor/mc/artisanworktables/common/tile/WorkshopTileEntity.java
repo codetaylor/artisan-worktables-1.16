@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.tile;
+package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import net.minecraft.tileentity.TileEntity;

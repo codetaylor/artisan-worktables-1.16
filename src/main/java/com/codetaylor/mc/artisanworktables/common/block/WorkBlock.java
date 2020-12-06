@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.block;
+package com.codetaylor.mc.artisanworktables.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

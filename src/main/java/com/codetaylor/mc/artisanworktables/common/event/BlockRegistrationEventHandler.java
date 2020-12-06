@@ -1,10 +1,10 @@
-package com.codetaylor.mc.artisanworktables.event;
+package com.codetaylor.mc.artisanworktables.common.event;
 
 import com.codetaylor.mc.artisanworktables.api.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.EnumType;
-import com.codetaylor.mc.artisanworktables.block.WorkshopBlock;
-import com.codetaylor.mc.artisanworktables.block.WorkstationBlock;
-import com.codetaylor.mc.artisanworktables.block.WorktableBlock;
+import com.codetaylor.mc.artisanworktables.common.block.WorkshopBlock;
+import com.codetaylor.mc.artisanworktables.common.block.WorkstationBlock;
+import com.codetaylor.mc.artisanworktables.common.block.WorktableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

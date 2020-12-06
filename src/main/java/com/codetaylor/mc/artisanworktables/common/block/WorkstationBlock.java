@@ -1,6 +1,6 @@
-package com.codetaylor.mc.artisanworktables.block;
+package com.codetaylor.mc.artisanworktables.common.block;
 
-import com.codetaylor.mc.artisanworktables.tile.WorkstationTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

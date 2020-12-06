@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.tile;
+package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
@@ -24,7 +24,7 @@ public class WorktableTileEntity
 
     super(
         ArtisanWorktablesMod.TileEntityTypes.WORKTABLE_TILE_ENTITY_TYPE,
-        ArtisanWorktablesMod.tileDataService
+        ArtisanWorktablesMod.getProxy().getTileDataService()
     );
 
     this.craftingStackHandler = new CraftingStackHandler(3 * 3);

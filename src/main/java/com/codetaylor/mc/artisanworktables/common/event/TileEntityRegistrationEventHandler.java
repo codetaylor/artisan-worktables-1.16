@@ -1,9 +1,9 @@
-package com.codetaylor.mc.artisanworktables.event;
+package com.codetaylor.mc.artisanworktables.common.event;
 
 import com.codetaylor.mc.artisanworktables.api.EnumTier;
-import com.codetaylor.mc.artisanworktables.tile.WorkshopTileEntity;
-import com.codetaylor.mc.artisanworktables.tile.WorkstationTileEntity;
-import com.codetaylor.mc.artisanworktables.tile.WorktableTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

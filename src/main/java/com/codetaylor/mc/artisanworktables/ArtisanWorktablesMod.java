@@ -10,6 +10,8 @@ import com.codetaylor.mc.artisanworktables.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.tile.WorktableTileEntity;
 import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
+import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
+import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.SCPacketTileData;
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
@@ -43,9 +45,10 @@ public class ArtisanWorktablesMod {
   public static final List<Block> REGISTERED_WORKTABLES = new ArrayList<>();
   public static final Map<EnumTier, List<Block>> REGISTERED_WORKTABLES_BY_TIER = new EnumMap<>(EnumTier.class);
 
-  private static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
-
   public static IPacketService packetService;
+  public static ITileDataService tileDataService;
+
+  private static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
 
   public ArtisanWorktablesMod() {
 
@@ -68,6 +71,12 @@ public class ArtisanWorktablesMod {
     modEventBus.register(new TileEntityRegistrationEventHandler(REGISTERED_WORKTABLES_BY_TIER));
 
     ArtisanWorktablesMod.packetService = NetworkAPI.createPacketService(MOD_ID, MOD_ID, PACKET_SERVICE_PROTOCOL_VERSION);
+    ArtisanWorktablesMod.tileDataService = NetworkAPI.createTileDataService(MOD_ID, MOD_ID, ArtisanWorktablesMod.packetService);
+
+    ArtisanWorktablesMod.packetService.registerMessage(
+        SCPacketTileData.class,
+        SCPacketTileData.class
+    );
   }
 
   @ObjectHolder(MOD_ID)

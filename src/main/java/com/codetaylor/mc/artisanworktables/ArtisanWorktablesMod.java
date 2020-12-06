@@ -1,82 +1,49 @@
 package com.codetaylor.mc.artisanworktables;
 
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.Reference;
-import com.codetaylor.mc.artisanworktables.event.BlockRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.event.ItemRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.event.TileEntityRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.tile.WorkshopTileEntity;
-import com.codetaylor.mc.artisanworktables.tile.WorkstationTileEntity;
-import com.codetaylor.mc.artisanworktables.tile.WorktableTileEntity;
-import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
-import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
-import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
-import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.SCPacketTileData;
-import com.codetaylor.mc.athenaeum.util.ConfigHelper;
-import net.minecraft.block.Block;
+import com.codetaylor.mc.artisanworktables.client.ClientProxy;
+import com.codetaylor.mc.artisanworktables.common.CommonProxy;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
 @Mod(ArtisanWorktablesMod.MOD_ID)
 public class ArtisanWorktablesMod {
 
   public static final String MOD_ID = Reference.MOD_ID;
   public static final Logger LOGGER = LogManager.getLogger();
+  public static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
 
-  public static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get();
-  public static final Path MOD_CONFIG_PATH = CONFIG_PATH.resolve(MOD_ID);
+  private static ArtisanWorktablesMod instance;
 
-  public static final List<Block> REGISTERED_WORKTABLES = new ArrayList<>();
-  public static final Map<EnumTier, List<Block>> REGISTERED_WORKTABLES_BY_TIER = new EnumMap<>(EnumTier.class);
-
-  public static IPacketService packetService;
-  public static ITileDataService tileDataService;
-
-  private static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
+  private final IProxy proxy;
 
   public ArtisanWorktablesMod() {
 
-    try {
-      Files.createDirectories(MOD_CONFIG_PATH);
+    ArtisanWorktablesMod.instance = this;
 
-    } catch (IOException e) {
-      LOGGER.error("Error creating folder: " + MOD_CONFIG_PATH, e);
-    }
+    this.proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    this.proxy.initialize();
+    this.proxy.registerModEventHandlers(FMLJavaModLoadingContext.get().getModEventBus());
+    this.proxy.registerForgeEventHandlers(MinecraftForge.EVENT_BUS);
+  }
 
-    ModLoadingContext modLoadingContext = ModLoadingContext.get();
+  public static ArtisanWorktablesMod getInstance() {
 
-    String configFilenameCommon = MOD_ID + "-common.toml";
-    modLoadingContext.registerConfig(ModConfig.Type.COMMON, ArtisanWorktablesModCommonConfig.CONFIG_SPEC, MOD_ID + "/" + configFilenameCommon);
-    ConfigHelper.loadConfig(ArtisanWorktablesModCommonConfig.CONFIG_SPEC, MOD_CONFIG_PATH.resolve(configFilenameCommon));
+    return ArtisanWorktablesMod.instance;
+  }
 
-    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    modEventBus.register(new BlockRegistrationEventHandler(REGISTERED_WORKTABLES, REGISTERED_WORKTABLES_BY_TIER));
-    modEventBus.register(new ItemRegistrationEventHandler(REGISTERED_WORKTABLES));
-    modEventBus.register(new TileEntityRegistrationEventHandler(REGISTERED_WORKTABLES_BY_TIER));
+  public static IProxy getProxy() {
 
-    ArtisanWorktablesMod.packetService = NetworkAPI.createPacketService(MOD_ID, MOD_ID, PACKET_SERVICE_PROTOCOL_VERSION);
-    ArtisanWorktablesMod.tileDataService = NetworkAPI.createTileDataService(MOD_ID, MOD_ID, ArtisanWorktablesMod.packetService);
-
-    ArtisanWorktablesMod.packetService.registerMessage(
-        SCPacketTileData.class,
-        SCPacketTileData.class
-    );
+    return ArtisanWorktablesMod.getInstance().proxy;
   }
 
   @ObjectHolder(MOD_ID)

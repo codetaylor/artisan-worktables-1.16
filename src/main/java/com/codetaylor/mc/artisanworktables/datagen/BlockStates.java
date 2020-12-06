@@ -21,7 +21,7 @@ public class BlockStates
   @Override
   protected void registerStatesAndModels() {
 
-    for (Block block : ArtisanWorktablesMod.REGISTERED_WORKTABLES) {
+    for (Block block : ArtisanWorktablesMod.getProxy().getRegisteredWorktables()) {
       this.generate(block);
     }
   }

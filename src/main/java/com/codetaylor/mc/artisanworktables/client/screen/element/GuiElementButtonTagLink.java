@@ -1,24 +1,25 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.ReferenceTexture;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.client.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.client.screen.BaseScreen;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipProvider;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
-public class GuiElementButtonOredictLink
+public class GuiElementButtonTagLink
     extends GuiElementTextureButtonBase
     implements IGuiElementTooltipProvider {
 
   private static final int TEXTURE_BASE_UNLINKED_INDEX = 2;
   private static final int TEXTURE_HOVERED_UNLINKED_INDEX = 3;
 
-  public GuiElementButtonOredictLink(GuiContainerBase guiBase, int elementX, int elementY) {
+  public GuiElementButtonTagLink(GuiContainerBase guiBase, int elementX, int elementY) {
 
     super(
         guiBase,
@@ -37,17 +38,17 @@ public class GuiElementButtonOredictLink
     );
   }
 
-  public boolean isOreDictLinked() {
+  public boolean isTagLinked() {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    return tileEntity.isOreDictLinked();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
+    return tileEntity.isTagLinked();
   }
 
   @Override
   protected int textureIndexGet(int mouseX, int mouseY) {
 
-    if (!this.isOreDictLinked()) {
+    if (!this.isTagLinked()) {
       return super.textureIndexGet(mouseX, mouseY);
 
     } else {
@@ -61,35 +62,35 @@ public class GuiElementButtonOredictLink
   }
 
   @Override
-  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+  public void elementClicked(double mouseX, double mouseY, int mouseButton) {
 
     super.elementClicked(mouseX, mouseY, mouseButton);
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    tileEntity.setOredictLinked(!tileEntity.isOreDictLinked());
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
+    tileEntity.setTagLinked(!tileEntity.isTagLinked());
   }
 
   @Override
-  public List<String> tooltipTextGet(List<String> tooltip) {
+  public List<ITextComponent> tooltipTextGet(List<ITextComponent> list) {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
 
-    if (tileEntity.isOreDictLinked()) {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.oredict.linked"));
+    if (tileEntity.isTagLinked()) {
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.oredict.linked"));
 
     } else {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.oredict.unlinked"));
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.oredict.unlinked"));
     }
-    return tooltip;
+    return list;
   }
 
   @Override
-  public boolean elementIsVisible(int mouseX, int mouseY) {
+  public boolean elementIsVisible(double mouseX, double mouseY) {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
     return tileEntity.isCreative();
   }
 }

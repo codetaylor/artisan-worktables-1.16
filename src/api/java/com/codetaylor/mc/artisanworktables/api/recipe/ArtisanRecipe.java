@@ -63,7 +63,7 @@ public class ArtisanRecipe
       List<IArtisanIngredient> ingredients,
       List<IArtisanIngredient> secondaryIngredients,
       boolean consumeSecondaryIngredients,
-      @Nullable FluidStack fluidIngredient,
+      FluidStack fluidIngredient,
       int experienceRequired,
       int levelRequired,
       boolean consumeExperience,

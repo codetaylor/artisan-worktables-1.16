@@ -1,24 +1,25 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementBase;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 public class GuiElementGhostItem
     extends GuiElementBase {
 
-  private final TileEntityBase tile;
+  private final BaseTileEntity tile;
   private final IItemHandler handler;
   private final IItemHandler handlerGhost;
   private final int index;
 
   public GuiElementGhostItem(
       GuiContainerBase guiBase,
-      TileEntityBase tile,
+      BaseTileEntity tile,
       IItemHandler handler,
       IItemHandler handlerGhost,
       int index,
@@ -36,7 +37,7 @@ public class GuiElementGhostItem
   }
 
   @Override
-  public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+  public void drawBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 
     ItemStack handlerStack = this.handler.getStackInSlot(this.index);
     ItemStack ghostStack = this.handlerGhost.getStackInSlot(this.index);
@@ -44,8 +45,8 @@ public class GuiElementGhostItem
     if (handlerStack.isEmpty()
         && !ghostStack.isEmpty()
         && this.tile.isLocked()) {
-      RenderItem itemRender = this.guiBase.getItemRender();
-      RenderHelper.enableGUIStandardItemLighting();
+      ItemRenderer itemRender = this.guiBase.getItemRender();
+      RenderHelper.enableStandardItemLighting();
       itemRender.renderItemIntoGUI(ghostStack, this.elementXModifiedGet(), this.elementYModifiedGet());
       itemRender.renderItemOverlayIntoGUI(this.guiBase.getFontRenderer(), ghostStack, this.elementXModifiedGet(), this.elementYModifiedGet(), "-");
       RenderHelper.disableStandardItemLighting();
@@ -53,7 +54,7 @@ public class GuiElementGhostItem
   }
 
   @Override
-  public void drawForegroundLayer(int mouseX, int mouseY) {
+  public void drawForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
     //
   }
 }

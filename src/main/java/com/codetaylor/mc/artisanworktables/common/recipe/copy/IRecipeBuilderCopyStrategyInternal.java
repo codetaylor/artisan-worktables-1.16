@@ -1,8 +1,8 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy;
+package com.codetaylor.mc.artisanworktables.common.recipe.copy;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
+import com.codetaylor.mc.artisanworktables.common.recipe.RecipeBuilderInternal;
 
 import java.util.List;
 

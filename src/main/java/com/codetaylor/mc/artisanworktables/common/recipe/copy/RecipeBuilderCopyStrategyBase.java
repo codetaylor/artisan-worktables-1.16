@@ -1,8 +1,8 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy;
+package com.codetaylor.mc.artisanworktables.common.recipe.copy;
 
+import com.blamejared.crafttweaker.api.CraftTweakerAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
+import com.codetaylor.mc.artisanworktables.common.recipe.RecipeBuilderInternal;
 import net.minecraft.item.crafting.IRecipe;
 
 import javax.annotation.Nullable;
@@ -169,7 +169,7 @@ public abstract class RecipeBuilderCopyStrategyBase
 
   protected IRecipeBuilderCopyStrategy setInvalid(String message) {
 
-    CTLogHelper.logErrorFromZenMethod(message);
+    CraftTweakerAPI.logError(message);
     this.invalid = true;
     return this;
   }

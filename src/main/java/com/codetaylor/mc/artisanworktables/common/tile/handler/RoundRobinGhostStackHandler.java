@@ -1,5 +1,7 @@
-package com.codetaylor.mc.artisanworktables.common.tile;
+package com.codetaylor.mc.artisanworktables.common.tile.handler;
 
+import com.codetaylor.mc.artisanworktables.common.tile.util.RoundRobinHelper;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.items.IItemHandler;
@@ -10,11 +12,11 @@ import java.util.List;
 public class RoundRobinGhostStackHandler
     implements IItemHandler {
 
-  private final WorkTileEntity tile;
+  private final BaseTileEntity tile;
   private final IItemHandler stackHandler;
   private final IItemHandler ghostStackHandler;
 
-  public RoundRobinGhostStackHandler(WorkTileEntity tile, IItemHandler stackHandler, IItemHandler ghostStackHandler) {
+  public RoundRobinGhostStackHandler(BaseTileEntity tile, IItemHandler stackHandler, IItemHandler ghostStackHandler) {
 
     this.tile = tile;
     this.stackHandler = stackHandler;

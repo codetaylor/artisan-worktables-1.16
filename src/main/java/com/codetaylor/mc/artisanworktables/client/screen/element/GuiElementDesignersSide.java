@@ -1,9 +1,10 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
+import com.codetaylor.mc.artisanworktables.common.tile.ITileEntityDesigner;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 public class GuiElementDesignersSide
     extends GuiElementTextureRectangle {
@@ -23,10 +24,10 @@ public class GuiElementDesignersSide
   }
 
   @Override
-  public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+  public void drawBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 
-    if (this.tile != null && !this.tile.getTileEntity().isInvalid()) {
-      super.drawBackgroundLayer(partialTicks, mouseX, mouseY);
+    if (this.tile != null && !this.tile.getTileEntity().isRemoved()) {
+      super.drawBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
     }
   }
 }

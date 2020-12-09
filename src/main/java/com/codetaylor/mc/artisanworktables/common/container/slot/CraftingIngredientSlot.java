@@ -1,9 +1,9 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
+package com.codetaylor.mc.artisanworktables.common.container.slot;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
+import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -14,13 +14,13 @@ public class CraftingIngredientSlot
     extends SlotItemHandler
     implements ICreativeSlotClick {
 
-  private final AWContainer container;
-  private final TileEntityBase tile;
+  private final BaseContainer container;
+  private final BaseTileEntity tile;
   private final Runnable slotChangeListener;
 
   public CraftingIngredientSlot(
-      AWContainer container,
-      TileEntityBase tile,
+      BaseContainer container,
+      BaseTileEntity tile,
       Runnable slotChangeListener,
       IItemHandler itemHandler,
       int index,
@@ -50,29 +50,29 @@ public class CraftingIngredientSlot
   }
 
   @Override
-  public boolean canTakeStack(EntityPlayer player) {
+  public boolean canTakeStack(PlayerEntity player) {
 
     return !this.tile.isCreative()
         && super.canTakeStack(player);
   }
 
   @Override
-  public ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickType, EntityPlayer player) {
+  public ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickType, PlayerEntity player) {
 
     ItemStack stack = this.getStack();
 
-    if (!OreDictSlotClickDelegate.slotClick(this.container.inventorySlots, slotId, stack, this.tile.oreDictMap, clickType, player.world.isRemote, this.tile.isOreDictLinked())) {
+    if (!TagSlotClickDelegate.slotClick(this.container.inventorySlots, slotId, stack, this.tile.tagMap, clickType, player.world.isRemote, this.tile.isTagLinked())) {
       ItemStack copy = player.inventory.getItemStack().copy();
       copy.setCount(1);
       this.putStack(copy);
-      this.tile.oreDictMap.removeObject(slotId);
+      this.tile.tagMap.remove(slotId);
     }
 
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean allowOredict() {
+  public boolean allowTag() {
 
     return true;
   }

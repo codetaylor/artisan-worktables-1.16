@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.api.internal.recipe.recipe;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

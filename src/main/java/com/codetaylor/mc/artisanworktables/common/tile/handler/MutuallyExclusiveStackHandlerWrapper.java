@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
+package com.codetaylor.mc.artisanworktables.common.tile.handler;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -68,6 +68,12 @@ public class MutuallyExclusiveStackHandlerWrapper
   public int getSlotLimit(int slot) {
 
     return this.handler.getSlotLimit(slot);
+  }
+
+  @Override
+  public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+    return true;
   }
 
   private boolean matchStacks(@Nonnull ItemStack stackToInsert, ItemStack existingItemStack) {

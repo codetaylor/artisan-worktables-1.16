@@ -1,7 +1,7 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
+package com.codetaylor.mc.artisanworktables.common.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -50,10 +50,10 @@ public class PredicateEnabledSlot
   }
 
   @Override
-  public void onSlotChange(@Nonnull ItemStack p_75220_1_, @Nonnull ItemStack p_75220_2_) {
+  public void onSlotChange(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack) {
 
     if (this.isEnabled()) {
-      super.onSlotChange(p_75220_1_, p_75220_2_);
+      super.onSlotChange(oldStack, newStack);
     }
   }
 
@@ -78,10 +78,10 @@ public class PredicateEnabledSlot
   }
 
   @Override
-  public boolean canTakeStack(EntityPlayer playerIn) {
+  public boolean canTakeStack(PlayerEntity player) {
 
     if (this.isEnabled()) {
-      return super.canTakeStack(playerIn);
+      return super.canTakeStack(player);
     }
 
     return false;
@@ -99,7 +99,7 @@ public class PredicateEnabledSlot
   }
 
   @Override
-  public boolean isSameInventory(Slot other) {
+  public boolean isSameInventory(@Nonnull Slot other) {
 
     if (this.isEnabled()) {
       return super.isSameInventory(other);

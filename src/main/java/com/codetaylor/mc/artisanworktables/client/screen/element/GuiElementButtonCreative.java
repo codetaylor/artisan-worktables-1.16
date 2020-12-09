@@ -1,15 +1,16 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.ReferenceTexture;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableCreativeToggle;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.client.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.client.screen.BaseScreen;
+import com.codetaylor.mc.artisanworktables.common.network.CSPacketWorktableCreativeToggle;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipProvider;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class GuiElementButtonCreative
 
   private boolean isCreative() {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
     return !tileEntity.isCreative();
   }
 
@@ -63,27 +64,28 @@ public class GuiElementButtonCreative
   }
 
   @Override
-  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+  public void elementClicked(double mouseX, double mouseY, int mouseButton) {
 
     super.elementClicked(mouseX, mouseY, mouseButton);
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableCreativeToggle(tileEntity.getPos()));
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
+    ArtisanWorktablesMod.getProxy().getPacketService()
+        .sendToServer((new CSPacketWorktableCreativeToggle(tileEntity.getPos())));
   }
 
   @Override
-  public List<String> tooltipTextGet(List<String> tooltip) {
+  public List<ITextComponent> tooltipTextGet(List<ITextComponent> list) {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
 
     if (tileEntity.isCreative()) {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.enabled"));
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.creative.enabled"));
 
     } else {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.disabled"));
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.creative.disabled"));
     }
-    return tooltip;
+    return list;
   }
 }

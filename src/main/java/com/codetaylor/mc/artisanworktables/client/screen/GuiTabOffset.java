@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.client.screen;
 
 public class GuiTabOffset {
 

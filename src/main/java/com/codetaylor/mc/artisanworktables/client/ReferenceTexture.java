@@ -1,13 +1,13 @@
-package com.codetaylor.mc.artisanworktables;
+package com.codetaylor.mc.artisanworktables.client;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import net.minecraft.util.ResourceLocation;
 
 public class ReferenceTexture {
 
   public static final ResourceLocation RESOURCE_LOCATION_GUI_ELEMENTS = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
+      ArtisanWorktablesMod.MOD_ID,
       "textures/gui/gui_elements.png"
   );
 
@@ -26,7 +26,7 @@ public class ReferenceTexture {
   public static final int TEXTURE_TOOLBOX_HEIGHT = 256;
 
   public static final ResourceLocation RESOURCE_LOCATION_TOOLBOX = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
+      ArtisanWorktablesMod.MOD_ID,
       "textures/gui/toolbox.png"
   );
 
@@ -58,7 +58,7 @@ public class ReferenceTexture {
   public static final int TEXTURE_TOOLBOX_MECHANICAL_HEIGHT = 256;
 
   private static final ResourceLocation RESOURCE_LOCATION_TOOLBOX_MECHANICAL = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
+      ArtisanWorktablesMod.MOD_ID,
       "textures/gui/mechanical_toolbox.png"
   );
 

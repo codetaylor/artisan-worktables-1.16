@@ -48,7 +48,7 @@ public interface IArtisanRecipe {
       ItemStack[] tools,
       IToolHandler[] toolHandlers,
       ICraftingMatrixStackHandler craftingMatrix,
-      @Nullable FluidStack fluidStack,
+      FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier
   );
@@ -188,7 +188,6 @@ public interface IArtisanRecipe {
   /**
    * @return a copy of the fluid requirement, or null if there isn't one
    */
-  @Nullable
   FluidStack getFluidIngredient();
 
   /**

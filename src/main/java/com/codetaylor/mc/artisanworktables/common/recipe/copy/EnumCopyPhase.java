@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy;
+package com.codetaylor.mc.artisanworktables.common.recipe.copy;
 
 public enum EnumCopyPhase {
   Pre, Post

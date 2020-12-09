@@ -8,6 +8,7 @@ import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
@@ -31,9 +32,15 @@ public abstract class BaseScreen
     ));
   }
 
+  public <T extends TileEntity> T getTile() {
+
+    //noinspection unchecked
+    return (T) this.container.getTile();
+  }
+
   protected ResourceLocation getBackgroundTexture() {
 
-    WorktableTileEntity tile = this.container.getTile();
+    WorktableTileEntity tile = (WorktableTileEntity) this.container.getTile();
     String typeName = tile.getTableType().getName();
     String tierName = tile.getTableTier().getName();
     return new ResourceLocation(ArtisanWorktablesMod.MOD_ID, "textures/gui/" + tierName + "_" + typeName + ".png");

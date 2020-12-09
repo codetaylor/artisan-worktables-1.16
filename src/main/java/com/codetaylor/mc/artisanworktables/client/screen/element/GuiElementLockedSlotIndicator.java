@@ -1,21 +1,23 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.ReferenceTexture;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.client.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 public class GuiElementLockedSlotIndicator
     extends GuiElementTextureRectangle {
 
-  private final TileEntityBase tile;
+  private final BaseTileEntity tile;
 
   public GuiElementLockedSlotIndicator(
       GuiContainerBase guiBase,
-      TileEntityBase tile,
+      BaseTileEntity tile,
       int elementX,
       int elementY
   ) {
@@ -32,19 +34,18 @@ public class GuiElementLockedSlotIndicator
   }
 
   @Override
-  public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-//    super.drawBackgroundLayer(partialTicks, mouseX, mouseY);
+  public void drawBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    //
   }
 
   @Override
-  public void drawForegroundLayer(int mouseX, int mouseY) {
+  public void drawForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 
-    super.drawForegroundLayer(mouseX, mouseY);
+    super.drawForegroundLayer(matrixStack, mouseX, mouseY);
 
     this.textureBind(this.textures[0]);
 
-    GlStateManager.color(1,1,1);
+    RenderSystem.color3f(1, 1, 1);
 
     GuiHelper.drawModalRectWithCustomSizedTexture(
         this.elementX,
@@ -57,11 +58,10 @@ public class GuiElementLockedSlotIndicator
         this.textures[0].getWidth(),
         this.textures[0].getHeight()
     );
-    //super.drawBackgroundLayer(0, mouseX, mouseY);
   }
 
   @Override
-  public boolean elementIsVisible(int mouseX, int mouseY) {
+  public boolean elementIsVisible(double mouseX, double mouseY) {
 
     return this.tile.isLocked();
   }

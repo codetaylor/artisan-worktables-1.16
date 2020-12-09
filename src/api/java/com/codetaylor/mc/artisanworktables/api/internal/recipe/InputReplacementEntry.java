@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.api.internal.recipe.recipe;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import net.minecraft.item.crafting.Ingredient;
 

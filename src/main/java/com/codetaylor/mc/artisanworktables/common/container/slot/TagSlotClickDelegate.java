@@ -1,18 +1,16 @@
 package com.codetaylor.mc.artisanworktables.common.container.slot;
 
-import com.codetaylor.mc.athenaeum.util.OreDictHelper;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IntHashMap;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public final class OreDictSlotClickDelegate {
+public final class TagSlotClickDelegate {
 
-  public static boolean slotClick(List<Slot> inventorySlots, int slotId, ItemStack stack, IntHashMap<String> oreDictMap, ClickType clickType, boolean isRemote, boolean oreDictLinked) {
+  public static boolean slotClick(List<Slot> inventorySlots, int slotId, ItemStack stack, Int2ObjectMap<String> tagMap, ClickType clickType, boolean isRemote, boolean tagLinked) {
 
     if (stack.isEmpty()) {
       return false;
@@ -31,14 +29,14 @@ public final class OreDictSlotClickDelegate {
     int[] oreIDs = OreDictionary.getOreIDs(stack);
 
     if (oreIDs.length > 0) {
-      String lookup = oreDictMap.lookup(slotId);
+      String lookup = tagMap.get(slotId);
 
       if (lookup == null) {
         String oreName = OreDictionary.getOreName(oreIDs[0]);
-        oreDictMap.addKey(slotId, oreName);
+        tagMap.put(slotId, oreName);
 
-        if (oreDictLinked) {
-          OreDictSlotClickDelegate.applyToAll(inventorySlots, stack, oreName, oreDictMap);
+        if (tagLinked) {
+          TagSlotClickDelegate.applyToAll(inventorySlots, stack, oreName, tagMap);
         }
 
       } else {
@@ -49,16 +47,16 @@ public final class OreDictSlotClickDelegate {
           if (lookup.equals(oreName)) {
 
             if (i == oreIDs.length - 1) {
-              oreDictMap.removeObject(slotId);
-              if (oreDictLinked) {
-                OreDictSlotClickDelegate.applyToAll(inventorySlots, stack, null, oreDictMap);
+              tagMap.remove(slotId);
+              if (tagLinked) {
+                TagSlotClickDelegate.applyToAll(inventorySlots, stack, null, tagMap);
               }
 
             } else {
               String nextName = OreDictionary.getOreName(oreIDs[i + 1]);
-              oreDictMap.addKey(slotId, nextName);
-              if (oreDictLinked) {
-                OreDictSlotClickDelegate.applyToAll(inventorySlots, stack, nextName, oreDictMap);
+              tagMap.put(slotId, nextName);
+              if (tagLinked) {
+                TagSlotClickDelegate.applyToAll(inventorySlots, stack, nextName, tagMap);
               }
             }
             break;
@@ -70,13 +68,13 @@ public final class OreDictSlotClickDelegate {
     return true;
   }
 
-  private static void applyToAll(List<Slot> inventorySlots, ItemStack stack, @Nullable String oreName, IntHashMap<String> oreDictMap) {
+  private static void applyToAll(List<Slot> inventorySlots, ItemStack stack, @Nullable String oreName, Int2ObjectMap<String> tagMap) {
 
     for (Slot inventorySlot : inventorySlots) {
       int slotNumber = inventorySlot.slotNumber;
 
       if (inventorySlot instanceof ICreativeSlotClick
-          && ((ICreativeSlotClick) inventorySlot).allowOredict()) {
+          && ((ICreativeSlotClick) inventorySlot).allowTag()) {
 
         ItemStack otherStack = inventorySlot.getStack();
 
@@ -90,11 +88,6 @@ public final class OreDictSlotClickDelegate {
           continue;
         }
 
-        if (stack.getMetadata() != otherStack.getMetadata()) {
-          // System.out.println("Meta mismatch");
-          continue;
-        }
-
         if (oreName != null
             && (!OreDictHelper.contains(oreName, stack)
             || !OreDictHelper.contains(oreName, otherStack))) {
@@ -103,18 +96,18 @@ public final class OreDictSlotClickDelegate {
         }
 
         if (oreName == null) {
-          oreDictMap.removeObject(slotNumber);
+          tagMap.remove(slotNumber);
           // System.out.println("Removed slot: " + slotNumber);
 
         } else {
-          oreDictMap.addKey(slotNumber, oreName);
+          tagMap.put(slotNumber, oreName);
           // System.out.println("Added: " + slotNumber + "=" + oreName);
         }
       }
     }
   }
 
-  private OreDictSlotClickDelegate() {
+  private TagSlotClickDelegate() {
     //
   }
 }

@@ -1,6 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
+package com.codetaylor.mc.artisanworktables.common.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
@@ -24,10 +24,9 @@ public class PatternResultSlot
     this.slotChangeListener = slotChangeListener;
   }
 
+  @Nonnull
   @Override
-  public ItemStack onTake(
-      EntityPlayer player, ItemStack stack
-  ) {
+  public ItemStack onTake(@Nonnull PlayerEntity player, @Nonnull ItemStack stack) {
 
     this.slotChangeListener.run();
     return stack;

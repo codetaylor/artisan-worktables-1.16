@@ -1,15 +1,16 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.ReferenceTexture;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableLockedModeToggle;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.client.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.client.screen.BaseScreen;
+import com.codetaylor.mc.artisanworktables.common.network.CSPacketWorktableLockedModeToggle;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipProvider;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class GuiElementButtonLocked
 
   public boolean isLocked() {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
     return tileEntity.isLocked();
   }
 
@@ -63,35 +64,36 @@ public class GuiElementButtonLocked
   }
 
   @Override
-  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+  public void elementClicked(double mouseX, double mouseY, int mouseButton) {
 
     super.elementClicked(mouseX, mouseY, mouseButton);
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableLockedModeToggle(tileEntity.getPos()));
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
+    ArtisanWorktablesMod.getProxy().getPacketService()
+        .sendToServer(new CSPacketWorktableLockedModeToggle(tileEntity.getPos()));
   }
 
   @Override
-  public List<String> tooltipTextGet(List<String> tooltip) {
+  public List<ITextComponent> tooltipTextGet(List<ITextComponent> list) {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
 
     if (tileEntity.isLocked()) {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.locked.enabled"));
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.locked.enabled"));
 
     } else {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.locked.disabled"));
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.button.locked.disabled"));
     }
-    return tooltip;
+    return list;
   }
 
   @Override
-  public boolean elementIsVisible(int mouseX, int mouseY) {
+  public boolean elementIsVisible(double mouseX, double mouseY) {
 
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    return !tileEntity.isCreative();
+    BaseScreen gui = (BaseScreen) this.guiBase;
+    BaseTileEntity tileEntity = gui.getTile();
+    return tileEntity.isCreative();
   }
 }

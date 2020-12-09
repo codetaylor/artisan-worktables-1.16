@@ -77,7 +77,7 @@ public class RecipeRegistry
       boolean isPlayerCreative,
       ItemStack[] tools,
       ICraftingMatrixStackHandler craftingMatrix,
-      @Nullable FluidStack fluidStack,
+      FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier,
       Map<ResourceLocation, IRequirementContext> requirementContextMap

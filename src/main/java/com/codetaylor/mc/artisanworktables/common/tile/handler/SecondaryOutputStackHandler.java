@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.common.tile;
+package com.codetaylor.mc.artisanworktables.common.tile.handler;
 
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileDataItemStackHandler;

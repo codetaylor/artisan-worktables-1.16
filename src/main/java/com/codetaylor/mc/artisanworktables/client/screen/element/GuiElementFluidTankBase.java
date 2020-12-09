@@ -1,15 +1,17 @@
 package com.codetaylor.mc.artisanworktables.client.screen.element;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.common.network.CSPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTankVertical;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.util.List;
 
@@ -35,29 +37,30 @@ public abstract class GuiElementFluidTankBase
     this.blockPos = blockPos;
   }
 
-  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+  public void elementClicked(double mouseX, double mouseY, int mouseButton) {
 
-    if (mouseButton == 0 && GuiScreen.isShiftKeyDown()) {
-      ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableTankDestroyFluid(this.blockPos));
+    if (mouseButton == 0 && Screen.hasShiftDown()) {
+      ArtisanWorktablesMod.getProxy().getPacketService()
+          .sendToServer(new CSPacketWorktableTankDestroyFluid(this.blockPos));
     }
   }
 
-  public List<String> tooltipTextGet(List<String> tooltip) {
+  public List<ITextComponent> tooltipTextGet(List<ITextComponent> list) {
 
-    if (this.fluidTank.getFluid() == null || this.fluidTank.getFluidAmount() == 0) {
-      tooltip.add(I18n.format(ModuleWorktables.Lang.GUI_TOOLTIP_FLUID_EMPTY));
+    if (this.fluidTank.getFluid() == FluidStack.EMPTY || this.fluidTank.getFluidAmount() == 0) {
+      list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.fluid.empty"));
 
     } else {
       Fluid fluid = this.fluidTank.getFluid().getFluid();
-      tooltip.add(fluid.getLocalizedName(this.fluidTank.getFluid()));
-      tooltip.add("" + TextFormatting.GRAY + this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB");
-      tooltip.add(I18n.format(
-          ModuleWorktables.Lang.GUI_TOOLTIP_FLUID_DESTROY,
+      list.add(fluid.getAttributes().getDisplayName(this.fluidTank.getFluid()));
+      list.add(new TranslationTextComponent("" + TextFormatting.GRAY + this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB"));
+      list.add(new TranslationTextComponent(
+          "gui.artisanworktables.tooltip.fluid.empty.destroy",
           TextFormatting.DARK_GRAY,
           TextFormatting.DARK_GRAY
       ));
     }
 
-    return tooltip;
+    return list;
   }
 }

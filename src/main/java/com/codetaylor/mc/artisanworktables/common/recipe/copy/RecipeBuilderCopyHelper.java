@@ -1,12 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy;
+package com.codetaylor.mc.artisanworktables.common.recipe.copy;
 
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.InputReplacements;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilder;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;

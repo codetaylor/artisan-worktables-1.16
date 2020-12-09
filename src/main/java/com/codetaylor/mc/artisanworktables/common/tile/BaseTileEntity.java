@@ -14,7 +14,6 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementCo
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
-import com.codetaylor.mc.artisanworktables.common.recipe.VanillaRecipeCache;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.*;
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
@@ -70,7 +69,6 @@ public abstract class BaseTileEntity
   private boolean locked;
   private boolean initialized;
 
-  private VanillaRecipeCache.InventoryWrapper inventoryWrapper;
   private final List<BaseContainer> containerList = new ArrayList<>();
 
   protected boolean requiresRecipeUpdate;
@@ -177,6 +175,11 @@ public abstract class BaseTileEntity
   // ---------------------------------------------------------------------------
   // Accessors
   // ---------------------------------------------------------------------------
+
+  public boolean allowTabs() {
+
+    return true;
+  }
 
   public EnumType getTableType() {
 
@@ -287,15 +290,6 @@ public abstract class BaseTileEntity
   public void setRequiresRecipeUpdate() {
 
     this.requiresRecipeUpdate = true;
-  }
-
-  public VanillaRecipeCache.InventoryWrapper getInventoryWrapper() {
-
-    if (this.inventoryWrapper == null) {
-      this.inventoryWrapper = new VanillaRecipeCache.InventoryWrapper(this);
-    }
-
-    return this.inventoryWrapper;
   }
 
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
@@ -535,13 +529,6 @@ public abstract class BaseTileEntity
   // ---------------------------------------------------------------------------
 
   @Nullable
-  private IArtisanRecipe getVanillaCraftingRecipe() {
-
-    VanillaRecipeCache.InventoryWrapper inventoryWrapper = this.getInventoryWrapper();
-    return VanillaRecipeCache.getArtisanRecipe(inventoryWrapper, this.world);
-  }
-
-  @Nullable
   public IArtisanRecipe getRecipe(@Nonnull PlayerEntity player) {
 
     if (this.craftingMatrixHandler.isEmpty()) {
@@ -549,12 +536,7 @@ public abstract class BaseTileEntity
       return null;
     }
 
-    FluidStack fluidStack = this.getTank().getFluid();
-
-    if (fluidStack != null) {
-      fluidStack = fluidStack.copy();
-    }
-
+    FluidStack fluidStack = this.getTank().getFluid().copy();
     int playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
     int playerLevels = player.experienceLevel;
     boolean isPlayerCreative = player.isCreative();
@@ -570,7 +552,7 @@ public abstract class BaseTileEntity
       contextMap.put(entry.getKey(), context);
     }
 
-    IArtisanRecipe customRecipe = this.getWorktableRecipeRegistry().findRecipe(
+    return this.getWorktableRecipeRegistry().findRecipe(
         playerExperience,
         playerLevels,
         isPlayerCreative,
@@ -581,15 +563,6 @@ public abstract class BaseTileEntity
         this.getTableTier(),
         contextMap
     );
-
-    if (customRecipe != null) {
-      return customRecipe;
-    }
-
-    // TODO
-    //boolean isVanillaCraftingEnabled = ModuleWorktablesConfig.isVanillaCraftingEnabledFor(this.getType(), this.getTableTier());
-    boolean isVanillaCraftingEnabled = true;
-    return isVanillaCraftingEnabled ? this.getVanillaCraftingRecipe() : null;
   }
 
   // ---------------------------------------------------------------------------

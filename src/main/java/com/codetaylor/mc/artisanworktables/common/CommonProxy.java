@@ -8,6 +8,7 @@ import com.codetaylor.mc.artisanworktables.common.event.BlockRegistrationEventHa
 import com.codetaylor.mc.artisanworktables.common.event.ContainerTypeRegistrationEventHandler;
 import com.codetaylor.mc.artisanworktables.common.event.ItemRegistrationEventHandler;
 import com.codetaylor.mc.artisanworktables.common.event.TileEntityRegistrationEventHandler;
+import com.codetaylor.mc.artisanworktables.common.network.*;
 import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
@@ -55,10 +56,14 @@ public class CommonProxy
     this.packetService = NetworkAPI.createPacketService(modId, modId, ArtisanWorktablesMod.PACKET_SERVICE_PROTOCOL_VERSION);
     this.tileDataService = NetworkAPI.createTileDataService(modId, modId, this.packetService);
 
-    this.packetService.registerMessage(
-        SCPacketTileData.class,
-        SCPacketTileData.class
-    );
+    this.packetService.registerMessage(SCPacketTileData.class, SCPacketTileData.class);
+    this.packetService.registerMessage(CSPacketWorktableClear.class, CSPacketWorktableClear.class);
+    this.packetService.registerMessage(CSPacketWorktableCreativeToggle.class, CSPacketWorktableCreativeToggle.class);
+    this.packetService.registerMessage(CSPacketWorktableLockedModeToggle.class, CSPacketWorktableLockedModeToggle.class);
+    this.packetService.registerMessage(CSPacketWorktableTab.class, CSPacketWorktableTab.class);
+    this.packetService.registerMessage(CSPacketWorktableTankDestroyFluid.class, CSPacketWorktableTankDestroyFluid.class);
+    this.packetService.registerMessage(SCPacketWorktableContainerJoinedBlockBreak.class, SCPacketWorktableContainerJoinedBlockBreak.class);
+    this.packetService.registerMessage(SCPacketWorktableFluidUpdate.class, SCPacketWorktableFluidUpdate.class);
   }
 
   @Override
@@ -89,5 +94,17 @@ public class CommonProxy
   public ITileDataService getTileDataService() {
 
     return this.tileDataService;
+  }
+
+  @Override
+  public IPacketService getPacketService() {
+
+    return this.packetService;
+  }
+
+  @Override
+  public boolean isIntegratedServerRunning() {
+
+    return false;
   }
 }

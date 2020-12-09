@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class WorkshopBlock
-    extends WorkBlock {
+    extends BaseBlock {
 
   private static final VoxelShape VOXEL_SHAPE = VoxelShapes.or(
       Block.makeCuboidShape(0, 8, 0, 16, 16, 16), // top

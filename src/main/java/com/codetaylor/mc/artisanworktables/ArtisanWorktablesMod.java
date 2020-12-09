@@ -3,6 +3,8 @@ package com.codetaylor.mc.artisanworktables;
 import com.codetaylor.mc.artisanworktables.api.Reference;
 import com.codetaylor.mc.artisanworktables.client.ClientProxy;
 import com.codetaylor.mc.artisanworktables.common.CommonProxy;
+import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
+import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
@@ -73,8 +75,16 @@ public class ArtisanWorktablesMod {
     @ObjectHolder(WorktableContainer.NAME)
     public static final ContainerType<WorktableContainer> WORKTABLE_CONTAINER_TYPE;
 
+    @ObjectHolder(WorkstationContainer.NAME)
+    public static final ContainerType<WorkstationContainer> WORKSTATION_CONTAINER_TYPE;
+
+    @ObjectHolder(WorkshopContainer.NAME)
+    public static final ContainerType<WorkshopContainer> WORKSHOP_CONTAINER_TYPE;
+
     static {
       WORKTABLE_CONTAINER_TYPE = null;
+      WORKSTATION_CONTAINER_TYPE = null;
+      WORKSHOP_CONTAINER_TYPE = null;
     }
   }
 }

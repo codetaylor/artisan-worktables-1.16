@@ -27,3 +27,4 @@ forge*changelog.txt
 *.log
 /site/
 /src/generated/
+/libs-src/

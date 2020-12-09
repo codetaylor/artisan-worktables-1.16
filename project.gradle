@@ -35,6 +35,9 @@ repositories {
     // JEI
     maven { url 'http://dvs1.progwml6.com/files/maven' }
 
+    // CraftTweaker
+    maven { url 'https://maven.blamejared.com' }
+
     // Athenaeum
     maven { url "file://${project.projectDir}/../athenaeum-1.16/maven" }
 
@@ -46,4 +49,5 @@ dependencies {
     compile fg.deobf("com.codetaylor.mc.athenaeum:athenaeum-1.16:[0.0.0,)")
     implementation sourceSets.api.output
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.58")
+    compile fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.4:7.1.0.71")
 }

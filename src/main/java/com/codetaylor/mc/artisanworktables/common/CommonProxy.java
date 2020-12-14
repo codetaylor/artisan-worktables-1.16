@@ -3,12 +3,9 @@ package com.codetaylor.mc.artisanworktables.common;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.IProxy;
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
-import com.codetaylor.mc.artisanworktables.common.event.BlockRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.common.event.ContainerTypeRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.common.event.ItemRegistrationEventHandler;
-import com.codetaylor.mc.artisanworktables.common.event.TileEntityRegistrationEventHandler;
+import com.codetaylor.mc.artisanworktables.common.event.*;
 import com.codetaylor.mc.artisanworktables.common.network.*;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
@@ -73,6 +70,7 @@ public class CommonProxy
     eventBus.register(new ItemRegistrationEventHandler(this.registeredWorktables));
     eventBus.register(new TileEntityRegistrationEventHandler(this.registeredWorktablesByTier));
     eventBus.register(new ContainerTypeRegistrationEventHandler());
+    eventBus.register(new RecipeSerializerRegistrationEventHandler());
   }
 
   @Override

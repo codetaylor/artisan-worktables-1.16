@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.tile.handler;
 
-import com.codetaylor.mc.artisanworktables.common.tile.util.RoundRobinHelper;
+import com.codetaylor.mc.artisanworktables.common.util.RoundRobinHelper;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;

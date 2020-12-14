@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.Reference;
-import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.item.ItemStack;

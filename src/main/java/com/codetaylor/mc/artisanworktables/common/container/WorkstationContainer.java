@@ -13,6 +13,6 @@ public class WorkstationContainer
 
   public WorkstationContainer(int id, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity player) {
 
-    super(ArtisanWorktablesMod.ContainerTypes.WORKSTATION_CONTAINER_TYPE, id, world, blockPos, playerInventory, player);
+    super(ArtisanWorktablesMod.ContainerTypes.WORKSTATION, id, world, blockPos, playerInventory, player);
   }
 }

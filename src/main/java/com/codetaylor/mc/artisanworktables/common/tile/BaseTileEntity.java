@@ -1,28 +1,22 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.api.ArtisanRegistries;
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.EnumType;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
-import com.codetaylor.mc.artisanworktables.api.internal.util.EnchantmentHelper;
-import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
+import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingContext;
+import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.common.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.*;
+import com.codetaylor.mc.artisanworktables.common.util.EnchantmentHelper;
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
 import com.codetaylor.mc.athenaeum.network.spi.tile.TileEntityDataBase;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.TileDataFluidTank;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.TileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -65,8 +59,6 @@ public abstract class BaseTileEntity
   private SecondaryOutputStackHandler secondaryOutputHandler;
   private ResultStackHandler resultHandler;
   private TankHandler tank;
-  private boolean creative; // TODO: some of these need to be networked
-  private boolean locked;
   private boolean initialized;
 
   private final List<BaseContainer> containerList = new ArrayList<>();
@@ -75,10 +67,6 @@ public abstract class BaseTileEntity
 
   private final LazyOptional<IItemHandler> itemCapability = LazyOptional.of(() -> this.roundRobinGhostStackHandler);
   private final LazyOptional<FluidTank> fluidCapability = LazyOptional.of(() -> this.tank);
-
-  // used client-side for storing creative table data
-  public Int2ObjectMap<String> tagMap = new Int2ObjectOpenHashMap<>();
-  private boolean tagLinked = true;
 
   // ---------------------------------------------------------------------------
   // Initialization
@@ -134,16 +122,6 @@ public abstract class BaseTileEntity
       contentsChangedEventHandler = (stackHandler, slotIndex) -> {
         this.markDirty();
         this.requiresRecipeUpdate = true;
-
-        if (this.isLocked()) {
-          ItemStack stackInSlot = stackHandler.getStackInSlot(slotIndex);
-
-          if (!stackInSlot.isEmpty()) {
-            ItemStack copy = stackInSlot.copy();
-            copy.setCount(1);
-            this.craftingMatrixHandlerGhost.setStackInSlot(slotIndex, copy);
-          }
-        }
       };
       this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
       this.toolHandler.addObserver(contentsChangedEventHandler);
@@ -221,42 +199,6 @@ public abstract class BaseTileEntity
     return this.resultHandler;
   }
 
-  public boolean isLocked() {
-
-    return this.locked;
-  }
-
-  public void setLocked(boolean locked) {
-
-    this.locked = locked;
-
-    if (locked) {
-
-      for (int i = 0; i < this.craftingMatrixHandler.getSlots(); i++) {
-        ItemStack copy = this.craftingMatrixHandler.getStackInSlot(i).copy();
-
-        if (copy.isEmpty()) {
-          this.craftingMatrixHandlerGhost.setStackInSlot(i, ItemStack.EMPTY);
-
-        } else {
-          copy.setCount(1);
-          this.craftingMatrixHandlerGhost.setStackInSlot(i, copy);
-        }
-      }
-
-    } else {
-
-      for (int i = 0; i < this.craftingMatrixHandlerGhost.getSlots(); i++) {
-        this.craftingMatrixHandlerGhost.setStackInSlot(i, ItemStack.EMPTY);
-      }
-    }
-  }
-
-  public boolean isCreative() {
-
-    return this.creative;
-  }
-
   public void addContainer(BaseContainer container) {
 
     this.containerList.add(container);
@@ -265,21 +207,6 @@ public abstract class BaseTileEntity
   public void removeContainer(BaseContainer container) {
 
     this.containerList.remove(container);
-  }
-
-  public boolean isTagLinked() {
-
-    return this.tagLinked;
-  }
-
-  public void setTagLinked(boolean linked) {
-
-    this.tagLinked = linked;
-  }
-
-  public void setCreative(boolean creative) {
-
-    this.creative = creative;
   }
 
   public ICraftingContext getCraftingContext(PlayerEntity player) {
@@ -345,6 +272,10 @@ public abstract class BaseTileEntity
    */
   public List<BaseTileEntity> getJoinedTables(List<BaseTileEntity> result, @Nullable PlayerEntity player, Predicate<BaseTileEntity> filter) {
 
+    if (this.world == null) {
+      return Collections.emptyList();
+    }
+
     Map<String, BaseTileEntity> joinedTableMap = new TreeMap<>();
     joinedTableMap.put(this.uuid, this);
 
@@ -406,68 +337,6 @@ public abstract class BaseTileEntity
         && player.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
   }
 
-  /**
-   * Searches cardinal directions around all joined tables and returns an adjacent toolbox.
-   * <p>
-   * If more than one toolbox is found, the first toolbox found is returned.
-   * <p>
-   * If no toolbox is found, null is returned.
-   *
-   * @return adjacent toolbox or null
-   */
-  // TODO
-  /*@Nullable
-  public TileEntityToolbox getAdjacentToolbox() {
-
-    List<TileEntityBase> joinedTables = this.getJoinedTables(new ArrayList<>());
-
-    for (TileEntityBase joinedTable : joinedTables) {
-      BlockPos pos = joinedTable.getPos();
-      TileEntity tileEntity;
-
-      for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-
-        if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
-
-          if (tileEntity instanceof TileEntityToolbox) {
-
-            return (TileEntityToolbox) tileEntity;
-          }
-        }
-      }
-    }
-
-    return null;
-  }*/
-  @Nullable
-  public ITileEntityDesigner getAdjacentDesignersTable() {
-
-    if (this.world != null) {
-      List<BaseTileEntity> joinedTables = this.getJoinedTables(new ArrayList<>());
-
-      for (BaseTileEntity joinedTable : joinedTables) {
-        BlockPos pos = joinedTable.getPos();
-        TileEntity tileEntity;
-
-        if ((tileEntity = this.world.getTileEntity(pos)) != null) {
-
-          if (tileEntity instanceof ITileEntityDesigner) {
-            return (ITileEntityDesigner) tileEntity;
-          }
-        }
-      }
-    }
-
-    return null;
-  }
-
-  public RecipeRegistry getWorktableRecipeRegistry() {
-
-    String name = this.getTableType().getName();
-    ResourceLocation resourceLocation = new ResourceLocation(ArtisanWorktablesMod.MOD_ID, name);
-    return ArtisanRegistries.RECIPE_REGISTRY.get(resourceLocation);
-  }
-
   public ItemStack getItemStackForTabDisplay(BlockState state) {
 
     Block block = state.getBlock();
@@ -505,23 +374,6 @@ public abstract class BaseTileEntity
     for (BaseContainer container : this.containerList) {
       container.updateRecipeOutput();
     }
-  }
-
-  public void onTakeResult(PlayerEntity player) {
-
-    if (this.isCreative()) {
-      return;
-    }
-
-    IArtisanRecipe recipe = this.getRecipe(player);
-
-    if (recipe == null) {
-      return;
-    }
-
-    recipe.doCraft(this.getCraftingContext(player), null);
-
-    this.markDirty();
   }
 
   // ---------------------------------------------------------------------------

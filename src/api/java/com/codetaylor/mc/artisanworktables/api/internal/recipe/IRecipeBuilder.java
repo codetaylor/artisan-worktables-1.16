@@ -26,7 +26,7 @@ public interface IRecipeBuilder {
 
   IRecipeBuilder addTool(IArtisanIngredient tool, int toolDamage) throws RecipeBuilderException;
 
-  IRecipeBuilder addOutput(IArtisanItemStack output, int weight) throws RecipeBuilderException;
+  IRecipeBuilder setOutput(IArtisanItemStack output) throws RecipeBuilderException;
 
   IRecipeBuilder setExtraOutput(int index, IArtisanItemStack output, float chance) throws RecipeBuilderException;
 

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
-import com.codetaylor.mc.artisanworktables.api.EnumType;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

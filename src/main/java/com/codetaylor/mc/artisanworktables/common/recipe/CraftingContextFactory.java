@@ -1,9 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.EnumType;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;

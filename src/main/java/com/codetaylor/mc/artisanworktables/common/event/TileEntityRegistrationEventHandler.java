@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.event;
 
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;

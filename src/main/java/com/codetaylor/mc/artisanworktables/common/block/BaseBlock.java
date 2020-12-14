@@ -1,15 +1,11 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
-import com.codetaylor.mc.artisanworktables.api.EnumType;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
 import net.minecraftforge.common.ToolType;
-
-import java.util.List;
 
 public abstract class BaseBlock
     extends Block {

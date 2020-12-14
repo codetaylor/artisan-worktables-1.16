@@ -13,6 +13,6 @@ public class WorkshopContainer
 
   public WorkshopContainer(int id, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity player) {
 
-    super(ArtisanWorktablesMod.ContainerTypes.WORKSHOP_CONTAINER_TYPE, id, world, blockPos, playerInventory, player);
+    super(ArtisanWorktablesMod.ContainerTypes.WORKSHOP, id, world, blockPos, playerInventory, player);
   }
 }

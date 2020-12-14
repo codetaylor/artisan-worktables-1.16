@@ -1,9 +1,5 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
-
 import java.util.Collection;
 import java.util.List;
 

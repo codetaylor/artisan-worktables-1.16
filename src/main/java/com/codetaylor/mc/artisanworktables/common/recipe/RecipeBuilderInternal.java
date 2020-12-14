@@ -1,23 +1,21 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
-import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.copy.IRecipeBuilderCopyStrategyInternal;
+import com.codetaylor.mc.artisanworktables.common.recipe.copy.RecipeBuilderCopyStrategyByName;
+import com.codetaylor.mc.artisanworktables.common.recipe.copy.RecipeBuilderCopyStrategyByOutput;
+import com.codetaylor.mc.artisanworktables.common.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.*;
@@ -30,14 +28,14 @@ public class RecipeBuilderInternal
 
     table = table.toLowerCase();
 
-    if (!ArtisanAPI.isWorktableNameValid(table) && !"all".equals(table)) {
+    if (!Reference.isWorktableNameValid(table) && !"all".equals(table)) {
       throw new RecipeBuilderException("Unknown table type: " + table + ". Valid table types are: " + String.join(
           ",",
-          ArtisanAPI.getWorktableNames()
+          Reference.getWorktableNames()
       ));
     }
 
-    return new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE, recipeFactory);
+    return new RecipeBuilderInternal(table, ArtisanWorktablesMod.getProxy().getRecipeAdditionQueue(), recipeFactory);
   }
 
   public static class Copy {
@@ -76,7 +74,7 @@ public class RecipeBuilderInternal
   private boolean consumeSecondaryIngredients;
   private FluidStack fluidIngredient;
   private List<ToolIngredientEntry> tools;
-  private List<OutputWeightPair> outputWeightPairList;
+  private IArtisanItemStack output;
   private ExtraOutputChancePair[] extraOutputs;
   private int minimumTier;
   private int maximumTier;
@@ -116,7 +114,7 @@ public class RecipeBuilderInternal
     this.secondaryIngredients = Collections.emptyList();
     this.consumeSecondaryIngredients = true;
     this.fluidIngredient = null;
-    this.outputWeightPairList = new ArrayList<>();
+    this.output = null;
     this.extraOutputs = new ExtraOutputChancePair[3];
     Arrays.fill(this.extraOutputs, new ExtraOutputChancePair(ArtisanItemStack.EMPTY, 0));
     this.tools = new ArrayList<>();
@@ -326,16 +324,12 @@ public class RecipeBuilderInternal
   }
 
   @Override
-  public IRecipeBuilder addOutput(IArtisanItemStack output, int weight) throws RecipeBuilderException {
+  public IRecipeBuilder setOutput(IArtisanItemStack output) throws RecipeBuilderException {
 
     this.isNonnull(output, "Output can't be null");
     this.isNotEmpty(output, "Output can't be empty");
 
-    if (weight < 1) {
-      weight = 1;
-    }
-
-    this.outputWeightPairList.add(new OutputWeightPair(output, weight));
+    this.output = output;
     this.outputSet = true;
     return this;
   }
@@ -439,7 +433,7 @@ public class RecipeBuilderInternal
 
     ResourceLocation location = matchRequirementBuilder.getResourceLocation();
 
-    if (Loader.isModLoaded(matchRequirementBuilder.getRequirementId().toLowerCase())) {
+    if (ModList.get().isLoaded(matchRequirementBuilder.getRequirementId().toLowerCase())) {
       IRequirement requirement = matchRequirementBuilder.create();
       this.requirementMap.put(location, requirement);
     }
@@ -477,7 +471,6 @@ public class RecipeBuilderInternal
     // Must be able to calculate recipe tier
     if (!"all".equals(this.tableName)) {
       EnumTier tier = RecipeTierCalculator.calculateTier(
-          this.tableName,
           this.width,
           this.height,
           this.tools.size(),
@@ -548,7 +541,7 @@ public class RecipeBuilderInternal
     copy.consumeSecondaryIngredients = this.consumeSecondaryIngredients;
     copy.fluidIngredient = this.fluidIngredient;
     copy.tools = new ArrayList<>(this.tools);
-    copy.outputWeightPairList = new ArrayList<>(this.outputWeightPairList);
+    copy.output = this.output;
     copy.extraOutputs = new ExtraOutputChancePair[this.extraOutputs.length];
     System.arraycopy(this.extraOutputs, 0, copy.extraOutputs, 0, this.extraOutputs.length);
     copy.minimumTier = this.minimumTier;
@@ -612,11 +605,10 @@ public class RecipeBuilderInternal
 
     if ("all".equals(this.tableName)) {
 
-      for (String worktableName : ArtisanAPI.getWorktableNames()) {
+      for (String worktableName : Reference.getWorktableNames()) {
 
         // Must be able to calculate recipe tier
         EnumTier tier = RecipeTierCalculator.calculateTier(
-            worktableName,
             this.width,
             this.height,
             this.tools.size(),
@@ -643,7 +635,7 @@ public class RecipeBuilderInternal
 
     // Calculate the recipe name and ensure it is unique.
 
-    RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(tableName);
+    RecipeRegistry registry = ArtisanRegistries.getRecipeRegistry(tableName);
 
     if (this.name == null) {
       this.name = this.calculateName(registry, logger);
@@ -674,7 +666,7 @@ public class RecipeBuilderInternal
     registry.addRecipe(this.recipeFactory.create(
         this.name,
         new HashMap<>(this.requirementMap),
-        this.outputWeightPairList,
+        this.output,
         tools,
         this.ingredients,
         this.secondaryIngredients,
@@ -704,9 +696,7 @@ public class RecipeBuilderInternal
     }
 
     // Output
-    for (OutputWeightPair pair : this.outputWeightPairList) {
-      builder.append(HashCodeUtil.get(pair));
-    }
+    builder.append(HashCodeUtil.get(this.output));
 
     // Tools
     for (ToolIngredientEntry entry : this.tools) {
@@ -746,7 +736,7 @@ public class RecipeBuilderInternal
     // check for duplicate recipe name
     while (registry.hasRecipe(recipeName)) {
 
-      if (ModuleWorktablesConfig.ENABLE_DUPLICATE_RECIPE_NAME_WARNINGS) {
+      if (Reference.Config.enableDuplicateRecipeNameWarnings) {
         logger.logWarning("Duplicate recipe name found: " + recipeName);
       }
 

@@ -11,7 +11,7 @@ public class ClientSetupEventHandler {
   @SubscribeEvent
   public void on(FMLClientSetupEvent event) {
 
-    ScreenManager.registerFactory(ArtisanWorktablesMod.ContainerTypes.WORKTABLE_CONTAINER_TYPE, WorktableScreen::new);
+    ScreenManager.registerFactory(ArtisanWorktablesMod.ContainerTypes.WORKTABLE, WorktableScreen::new);
   }
 
 }

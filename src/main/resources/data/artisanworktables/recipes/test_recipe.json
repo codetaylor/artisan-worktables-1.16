@@ -1,0 +1,32 @@
+{
+  "type": "artisanworktables:recipe",
+  "group": "",
+  "pattern": [
+    " s ",
+    "sps",
+    " s "
+  ],
+  "key": {
+    "s": {"item": "minecraft:string"},
+    "p": {"tag": "minecraft:planks"}
+  },
+  "tools": [
+    {"tag": "artisantools:type/hammer", "damage": 15}
+  ],
+  "fluidIngredient": {"fluid": "minecraft:water", "amount": 1000},
+  "consumeSecondaryIngredients": true,
+  "secondaryIngredients": [
+    {"item": "minecraft:emerald"},
+    {"tag": "forge:ingots/iron"}
+  ],
+  "extraOutput": [
+    {"item": "minecraft:diamond", "count": 4, "chance": 0.5}
+  ],
+  "mirrored": true,
+  "minimumTier": 0,
+  "maximumTier": 2,
+  "experienceRequired": 0,
+  "levelRequired": 0,
+  "consumeExperience": true,
+  "result": "minecraft:diamond"
+}

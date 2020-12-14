@@ -1,15 +1,19 @@
 package com.codetaylor.mc.artisanworktables;
 
-import com.codetaylor.mc.artisanworktables.api.Reference;
 import com.codetaylor.mc.artisanworktables.client.ClientProxy;
 import com.codetaylor.mc.artisanworktables.common.CommonProxy;
 import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
+import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
@@ -54,18 +58,18 @@ public class ArtisanWorktablesMod {
   public static class TileEntityTypes {
 
     @ObjectHolder(WorktableTileEntity.NAME)
-    public static final TileEntityType<WorktableTileEntity> WORKTABLE_TILE_ENTITY_TYPE;
+    public static final TileEntityType<WorktableTileEntity> WORKTABLE;
 
     @ObjectHolder(WorkstationTileEntity.NAME)
-    public static final TileEntityType<WorkstationTileEntity> WORKSTATION_TILE_ENTITY_TYPE;
+    public static final TileEntityType<WorkstationTileEntity> WORKSTATION;
 
     @ObjectHolder(WorkshopTileEntity.NAME)
-    public static final TileEntityType<WorkshopTileEntity> WORKSHOP_TILE_ENTITY_TYPE;
+    public static final TileEntityType<WorkshopTileEntity> WORKSHOP;
 
     static {
-      WORKTABLE_TILE_ENTITY_TYPE = null;
-      WORKSTATION_TILE_ENTITY_TYPE = null;
-      WORKSHOP_TILE_ENTITY_TYPE = null;
+      WORKTABLE = null;
+      WORKSTATION = null;
+      WORKSHOP = null;
     }
   }
 
@@ -73,18 +77,34 @@ public class ArtisanWorktablesMod {
   public static class ContainerTypes {
 
     @ObjectHolder(WorktableContainer.NAME)
-    public static final ContainerType<WorktableContainer> WORKTABLE_CONTAINER_TYPE;
+    public static final ContainerType<WorktableContainer> WORKTABLE;
 
     @ObjectHolder(WorkstationContainer.NAME)
-    public static final ContainerType<WorkstationContainer> WORKSTATION_CONTAINER_TYPE;
+    public static final ContainerType<WorkstationContainer> WORKSTATION;
 
     @ObjectHolder(WorkshopContainer.NAME)
-    public static final ContainerType<WorkshopContainer> WORKSHOP_CONTAINER_TYPE;
+    public static final ContainerType<WorkshopContainer> WORKSHOP;
 
     static {
-      WORKTABLE_CONTAINER_TYPE = null;
-      WORKSTATION_CONTAINER_TYPE = null;
-      WORKSHOP_CONTAINER_TYPE = null;
+      WORKTABLE = null;
+      WORKSTATION = null;
+      WORKSHOP = null;
     }
+  }
+
+  @ObjectHolder(MOD_ID)
+  public static class RecipeSerializers {
+
+    public static final IRecipeSerializer<ArtisanRecipeShaped> SHAPED;
+
+    static {
+      SHAPED = null;
+    }
+  }
+
+  public static class RecipeTypes {
+
+    public static final IRecipeType<ArtisanRecipeShaped> SHAPED = IRecipeType.register(MOD_ID + ":shaped");
+    public static final IRecipeType<ArtisanRecipe> SHAPELESS = IRecipeType.register(MOD_ID + ":shapeless");
   }
 }

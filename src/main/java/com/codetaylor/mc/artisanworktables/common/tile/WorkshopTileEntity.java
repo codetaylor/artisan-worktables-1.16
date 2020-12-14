@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.api.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.EnumType;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,7 +19,7 @@ public class WorkshopTileEntity
   public WorkshopTileEntity() {
     // serialization
     super(
-        ArtisanWorktablesMod.TileEntityTypes.WORKSHOP_TILE_ENTITY_TYPE,
+        ArtisanWorktablesMod.TileEntityTypes.WORKSHOP,
         ArtisanWorktablesMod.getProxy().getTileDataService()
     );
   }
@@ -27,7 +27,7 @@ public class WorkshopTileEntity
   public WorkshopTileEntity(EnumType type) {
 
     super(
-        ArtisanWorktablesMod.TileEntityTypes.WORKSHOP_TILE_ENTITY_TYPE,
+        ArtisanWorktablesMod.TileEntityTypes.WORKSHOP,
         ArtisanWorktablesMod.getProxy().getTileDataService(),
         type
     );

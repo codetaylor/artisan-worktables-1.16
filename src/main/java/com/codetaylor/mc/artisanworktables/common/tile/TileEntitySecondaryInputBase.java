@@ -1,10 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
-import com.codetaylor.mc.artisanworktables.api.EnumType;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingContext;
+import com.codetaylor.mc.artisanworktables.common.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.common.recipe.SecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.MutuallyExclusiveStackHandlerWrapper;

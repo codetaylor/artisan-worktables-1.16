@@ -19,7 +19,7 @@ public abstract class ArtisanRecipe
   protected final ToolEntry[] tools;
   protected final ItemStack result;
   protected final NonNullList<Ingredient> ingredients;
-  protected final List<Ingredient> secondaryIngredients;
+  protected final NonNullList<Ingredient> secondaryIngredients;
   protected final boolean consumeSecondaryIngredients;
   protected final FluidStack fluidIngredient;
   protected final ExtraOutputChancePair[] extraOutputs;
@@ -35,7 +35,7 @@ public abstract class ArtisanRecipe
       ToolEntry[] tools,
       ItemStack result,
       NonNullList<Ingredient> ingredients,
-      List<Ingredient> secondaryIngredients,
+      NonNullList<Ingredient> secondaryIngredients,
       boolean consumeSecondaryIngredients,
       FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,

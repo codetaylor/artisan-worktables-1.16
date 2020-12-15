@@ -26,7 +26,7 @@ public class ArtisanRecipeShaped
       ToolEntry[] tools,
       ItemStack result,
       NonNullList<Ingredient> ingredients,
-      List<Ingredient> secondaryIngredients,
+      NonNullList<Ingredient> secondaryIngredients,
       boolean consumeSecondaryIngredients,
       FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,

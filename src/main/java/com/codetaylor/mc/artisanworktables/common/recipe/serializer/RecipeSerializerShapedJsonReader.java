@@ -45,7 +45,7 @@ public class RecipeSerializerShapedJsonReader
     NonNullList<Ingredient> ingredients = RecipeSerializerHelper.deserializeIngredients(pattern, keys, width, height);
     ItemStack result = RecipeSerializerHelper.deserializeItem(JSONUtils.getJsonObject(json, "result"));
     ToolEntry[] tools = this.deserializeTools(json);
-    List<Ingredient> secondaryIngredients = this.deserializeSecondaryIngredients(json);
+    NonNullList<Ingredient> secondaryIngredients = this.deserializeSecondaryIngredients(json);
     boolean consumeSecondaryIngredients = JSONUtils.getBoolean(json, "consumeSecondaryIngredients", true);
     FluidStack fluidIngredient = this.deserializeFluidIngredient(json);
     ArtisanRecipe.ExtraOutputChancePair[] extraOutput = this.deserializeExtraOutput(json);
@@ -108,9 +108,9 @@ public class RecipeSerializerShapedJsonReader
     return fluidIngredient;
   }
 
-  private List<Ingredient> deserializeSecondaryIngredients(JsonObject json) {
+  private NonNullList<Ingredient> deserializeSecondaryIngredients(JsonObject json) {
 
-    List<Ingredient> result = new ArrayList<>(3);
+    NonNullList<Ingredient> result = NonNullList.create();
 
     if (json.has("secondaryIngredients")) {
       JsonArray jsonArray = JSONUtils.getJsonArray(json, "secondaryIngredients");

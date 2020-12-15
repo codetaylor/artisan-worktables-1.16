@@ -16,7 +16,6 @@ public class RecipeSerializerShapedPacketWriter
   public void write(@Nonnull PacketBuffer buffer, @Nonnull ArtisanRecipeShaped recipe) {
 
     // Common between shaped and shapeless
-    buffer.writeString(recipe.getRecipeId().toString());
     buffer.writeString(recipe.getGroup());
     this.writeTools(buffer, recipe.getTools());
     buffer.writeItemStack(recipe.getRecipeOutput());

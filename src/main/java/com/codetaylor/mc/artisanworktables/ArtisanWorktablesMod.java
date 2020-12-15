@@ -5,8 +5,8 @@ import com.codetaylor.mc.artisanworktables.common.CommonProxy;
 import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
-import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShapeless;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
@@ -95,16 +95,21 @@ public class ArtisanWorktablesMod {
   @ObjectHolder(MOD_ID)
   public static class RecipeSerializers {
 
+    @ObjectHolder("shaped")
     public static final IRecipeSerializer<ArtisanRecipeShaped> SHAPED;
+
+    @ObjectHolder("shapeless")
+    public static final IRecipeSerializer<ArtisanRecipeShapeless> SHAPELESS;
 
     static {
       SHAPED = null;
+      SHAPELESS = null;
     }
   }
 
   public static class RecipeTypes {
 
     public static final IRecipeType<ArtisanRecipeShaped> SHAPED = IRecipeType.register(MOD_ID + ":shaped");
-    public static final IRecipeType<ArtisanRecipe> SHAPELESS = IRecipeType.register(MOD_ID + ":shapeless");
+    public static final IRecipeType<ArtisanRecipeShapeless> SHAPELESS = IRecipeType.register(MOD_ID + ":shapeless");
   }
 }

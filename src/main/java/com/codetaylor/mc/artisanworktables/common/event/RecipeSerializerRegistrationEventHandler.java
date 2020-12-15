@@ -1,13 +1,10 @@
 package com.codetaylor.mc.artisanworktables.common.event;
 
-import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.common.recipe.serializer.RecipeSerializerShapedPacketReader;
-import com.codetaylor.mc.artisanworktables.common.recipe.serializer.RecipeSerializerShapedPacketWriter;
-import com.codetaylor.mc.artisanworktables.common.recipe.serializer.RecipeSerializerShaped;
-import com.codetaylor.mc.artisanworktables.common.recipe.serializer.RecipeSerializerShapedJsonReader;
+import com.codetaylor.mc.artisanworktables.common.recipe.serializer.*;
+import com.codetaylor.mc.artisanworktables.common.reference.Reference;
+import com.codetaylor.mc.artisanworktables.common.util.Key;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -19,10 +16,22 @@ public class RecipeSerializerRegistrationEventHandler {
 
     IForgeRegistry<IRecipeSerializer<? extends IRecipe<?>>> registry = event.getRegistry();
 
-    registry.register(new RecipeSerializerShaped(
-        new RecipeSerializerShapedJsonReader(5, 5),
+    registry.register(new RecipeSerializer<>(
+        new RecipeSerializerShapedJsonReader(
+            Reference.MAX_RECIPE_WIDTH,
+            Reference.MAX_RECIPE_HEIGHT
+        ),
         new RecipeSerializerShapedPacketReader(),
         new RecipeSerializerShapedPacketWriter()
-    ).setRegistryName(new ResourceLocation(ArtisanWorktablesMod.MOD_ID, "recipe_serializer_shaped")));
+    ).setRegistryName(Key.from("shaped")));
+
+    registry.register(new RecipeSerializer<>(
+        new RecipeSerializerShapelessJsonReader(
+            Reference.MAX_RECIPE_WIDTH,
+            Reference.MAX_RECIPE_HEIGHT
+        ),
+        new RecipeSerializerShapelessPacketReader(),
+        new RecipeSerializerShapelessPacketWriter()
+    ).setRegistryName(Key.from("shapeless")));
   }
 }

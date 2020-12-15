@@ -57,9 +57,21 @@ public class ArtisanRecipeBuilder {
   // Setters
   // ---------------------------------------------------------------------------
 
+  public ArtisanRecipeBuilder setRecipeId(ResourceLocation recipeId) {
+
+    this.recipeId = recipeId;
+    return this;
+  }
+
   public ArtisanRecipeBuilder setGroup(String group) {
 
     this.group = group;
+    return this;
+  }
+
+  public ArtisanRecipeBuilder setTools(NonNullList<ToolEntry> tools) {
+
+    this.tools = tools;
     return this;
   }
 
@@ -96,6 +108,12 @@ public class ArtisanRecipeBuilder {
   public ArtisanRecipeBuilder setFluidIngredient(FluidStack fluidIngredient) {
 
     this.fluidIngredient = fluidIngredient;
+    return this;
+  }
+
+  public ArtisanRecipeBuilder setExtraOutputs(NonNullList<ArtisanRecipe.ExtraOutputChancePair> extraOutputs) {
+
+    this.extraOutputs = extraOutputs;
     return this;
   }
 
@@ -158,6 +176,10 @@ public class ArtisanRecipeBuilder {
   // ---------------------------------------------------------------------------
 
   private void validateShapeless() throws Exception {
+
+    if (this.recipeId == null) {
+      throw new Exception("Recipe missing recipe id");
+    }
 
     if (this.result == ItemStack.EMPTY) {
       throw new Exception("Recipe missing result item");

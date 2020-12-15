@@ -9,20 +9,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public abstract class ArtisanRecipe
     implements IRecipe<ArtisanInventory> {
 
   protected final ResourceLocation recipeId;
   protected final String group;
-  protected final ToolEntry[] tools;
+  protected final NonNullList<ToolEntry> tools;
   protected final ItemStack result;
   protected final NonNullList<Ingredient> ingredients;
   protected final NonNullList<Ingredient> secondaryIngredients;
   protected final boolean consumeSecondaryIngredients;
   protected final FluidStack fluidIngredient;
-  protected final ExtraOutputChancePair[] extraOutputs;
+  protected final NonNullList<ExtraOutputChancePair> extraOutputs;
   protected final int minimumTier;
   protected final int maximumTier;
   protected final int experienceRequired;
@@ -32,13 +31,13 @@ public abstract class ArtisanRecipe
   public ArtisanRecipe(
       ResourceLocation recipeId,
       String group,
-      ToolEntry[] tools,
+      NonNullList<ToolEntry> tools,
       ItemStack result,
       NonNullList<Ingredient> ingredients,
       NonNullList<Ingredient> secondaryIngredients,
       boolean consumeSecondaryIngredients,
       FluidStack fluidIngredient,
-      ExtraOutputChancePair[] extraOutputs,
+      NonNullList<ExtraOutputChancePair> extraOutputs,
       int minimumTier,
       int maximumTier,
       int experienceRequired,
@@ -77,7 +76,7 @@ public abstract class ArtisanRecipe
     return this.recipeId;
   }
 
-  public ToolEntry[] getTools() {
+  public NonNullList<ToolEntry> getTools() {
 
     return this.tools;
   }
@@ -89,7 +88,7 @@ public abstract class ArtisanRecipe
     return this.ingredients;
   }
 
-  public List<Ingredient> getSecondaryIngredients() {
+  public NonNullList<Ingredient> getSecondaryIngredients() {
 
     return this.secondaryIngredients;
   }
@@ -104,7 +103,7 @@ public abstract class ArtisanRecipe
     return this.fluidIngredient;
   }
 
-  public ExtraOutputChancePair[] getExtraOutputs() {
+  public NonNullList<ExtraOutputChancePair> getExtraOutputs() {
 
     return this.extraOutputs;
   }

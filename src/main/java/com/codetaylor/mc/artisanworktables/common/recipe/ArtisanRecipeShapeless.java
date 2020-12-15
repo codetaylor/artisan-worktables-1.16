@@ -18,7 +18,7 @@ import java.util.List;
 public class ArtisanRecipeShapeless
     extends ArtisanRecipe {
 
-  public ArtisanRecipeShapeless(
+  /* package */ ArtisanRecipeShapeless(
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,

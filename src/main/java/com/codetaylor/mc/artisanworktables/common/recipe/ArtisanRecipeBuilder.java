@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -182,26 +183,38 @@ public class ArtisanRecipeBuilder {
     }
 
     if (this.result == ItemStack.EMPTY) {
-      throw new Exception("Recipe missing result item");
+      throw new Exception(String.format("Recipe missing result item: %s", this.recipeId));
     }
 
     if (this.tools.size() > 3) {
-      throw new Exception(String.format("Recipe can't have more than %d tools", 3));
+      throw new Exception(String.format("Recipe can't have more than %d tools: %s", 3, this.recipeId));
     }
 
     if (this.ingredients.isEmpty()) {
-      throw new Exception("Recipe missing ingredients");
+      throw new Exception(String.format("Recipe missing ingredients: %s", this.recipeId));
     }
 
     if (this.ingredients.size() > Reference.MAX_RECIPE_WIDTH * Reference.MAX_RECIPE_HEIGHT) {
-      throw new Exception(String.format("Recipe can't have more than %d ingredients", Reference.MAX_RECIPE_WIDTH * Reference.MAX_RECIPE_HEIGHT));
+      throw new Exception(String.format("Recipe can't have more than %d ingredients: %s", Reference.MAX_RECIPE_WIDTH * Reference.MAX_RECIPE_HEIGHT, this.recipeId));
     }
 
     if (this.secondaryIngredients.size() > 9) {
-      throw new Exception(String.format("Recipe can't have more than %d secondary ingredients", 9));
+      throw new Exception(String.format("Recipe can't have more than %d secondary ingredients: %s", 9, this.recipeId));
     }
 
-    this.minimumTier = MathHelper.clamp(this.minimumTier, 0, 2);
+    EnumTier tier = RecipeTierCalculator.calculateTier(
+        this.width,
+        this.height,
+        this.tools.size(),
+        this.secondaryIngredients.size(),
+        this.fluidIngredient
+    );
+
+    if (tier == null) {
+      throw new Exception(String.format("Can't calculate minimum tier for recipe: %s", this.recipeId));
+    }
+
+    this.minimumTier = MathHelper.clamp(this.minimumTier, tier.getId(), 2);
     this.maximumTier = MathHelper.clamp(this.maximumTier, this.minimumTier, 2);
     this.experienceRequired = MathHelper.clamp(this.experienceRequired, 0, Integer.MAX_VALUE);
     this.levelRequired = MathHelper.clamp(this.levelRequired, 0, Integer.MAX_VALUE);

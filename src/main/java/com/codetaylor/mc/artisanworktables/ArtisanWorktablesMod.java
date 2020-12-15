@@ -26,6 +26,8 @@ import org.apache.logging.log4j.Logger;
 @Mod(ArtisanWorktablesMod.MOD_ID)
 public class ArtisanWorktablesMod {
 
+  // Notes: https://gist.github.com/codetaylor/09af6cff7747aaf5c0f1bc525fbd6af4
+
   public static final String MOD_ID = Reference.MOD_ID;
   public static final Logger LOGGER = LogManager.getLogger();
   public static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";

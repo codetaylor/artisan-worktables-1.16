@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +25,7 @@ public class RecipeTierCalculator {
         && secondaryIngredientCount == 0) {
 
       if (fluidIngredient == null
-          || fluidIngredient.getAmount() <= Reference.Config.fluidCapacityWorktable) {
+          || fluidIngredient.getAmount() <= ArtisanWorktablesModCommonConfig.fluidCapacityWorktable) {
         return EnumTier.WORKTABLE;
       }
     }
@@ -35,7 +36,7 @@ public class RecipeTierCalculator {
         && toolCount <= 2) {
 
       if (fluidIngredient == null
-          || fluidIngredient.getAmount() <= Reference.Config.fluidCapacityWorkstation) {
+          || fluidIngredient.getAmount() <= ArtisanWorktablesModCommonConfig.fluidCapacityWorkstation) {
         return EnumTier.WORKSTATION;
       }
     }
@@ -46,7 +47,7 @@ public class RecipeTierCalculator {
         && toolCount <= 3) {
 
       if (fluidIngredient == null
-          || fluidIngredient.getAmount() <= Reference.Config.fluidCapacityWorkshop) {
+          || fluidIngredient.getAmount() <= ArtisanWorktablesModCommonConfig.fluidCapacityWorkshop) {
         return EnumTier.WORKSHOP;
       }
     }

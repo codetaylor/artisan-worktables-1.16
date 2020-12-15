@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -10,28 +9,18 @@ import javax.annotation.Nullable;
 
 public class HashCodeUtil {
 
-  public static int get(IArtisanItemStack itemStack) {
-
-    return HashCodeUtil.get(itemStack.toItemStack());
-  }
-
   public static int get(ItemStack itemStack) {
 
     HashCodeBuilder builder = new HashCodeBuilder()
         .append(itemStack.getCount())
-        .append(itemStack.getItem().getUnlocalizedName())
-        .append(itemStack.getItemDamage());
+        .append(itemStack.getItem().getRegistryName())
+        .append(itemStack.getDamage());
 
-    if (itemStack.getTagCompound() != null) {
-      builder.append(itemStack.getTagCompound().hashCode());
+    if (itemStack.getTag() != null) {
+      builder.append(itemStack.getTag().hashCode());
     }
 
     return builder.build();
-  }
-
-  public static int get(IArtisanIngredient ingredient) {
-
-    return HashCodeUtil.get(ingredient.toIngredient());
   }
 
   public static int get(Ingredient ingredient) {
@@ -52,10 +41,10 @@ public class HashCodeUtil {
 
     if (fluidStack != null) {
       builder.append(fluidStack.getFluid().getClass().getName().hashCode());
-      builder.append(fluidStack.amount);
+      builder.append(fluidStack.getAmount());
 
-      if (fluidStack.tag != null) {
-        builder.append(fluidStack.tag.hashCode());
+      if (fluidStack.getTag() != null) {
+        builder.append(fluidStack.getTag().hashCode());
       }
     }
 
@@ -70,15 +59,7 @@ public class HashCodeUtil {
         .build();
   }
 
-  public static int get(OutputWeightPair pair) {
-
-    return new HashCodeBuilder()
-        .append(HashCodeUtil.get(pair.getOutput()))
-        .append(pair.getWeight())
-        .build();
-  }
-
-  public static int get(ExtraOutputChancePair pair) {
+  public static int get(ArtisanRecipe.ExtraOutputChancePair pair) {
 
     return new HashCodeBuilder()
         .append(HashCodeUtil.get(pair.getOutput()))
@@ -89,5 +70,4 @@ public class HashCodeUtil {
   private HashCodeUtil() {
     //
   }
-
 }

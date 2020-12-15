@@ -20,7 +20,7 @@ public class ArtisanRecipeShaped
   protected final int width;
   protected final int height;
 
-  public ArtisanRecipeShaped(
+  /* package */ ArtisanRecipeShaped(
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,

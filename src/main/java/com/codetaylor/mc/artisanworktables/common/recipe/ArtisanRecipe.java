@@ -28,7 +28,7 @@ public abstract class ArtisanRecipe
   protected final int levelRequired;
   protected final boolean consumeExperience;
 
-  public ArtisanRecipe(
+  /* package */ ArtisanRecipe(
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,
@@ -59,12 +59,6 @@ public abstract class ArtisanRecipe
     this.experienceRequired = experienceRequired;
     this.levelRequired = levelRequired;
     this.consumeExperience = consumeExperience;
-
-    // TODO: calculate min and max tier
-    // use width and height for shaped
-    // use ingredient list size for shapeless
-    // use tool count for both
-    // presence of secondary ingredients
   }
 
   // ---------------------------------------------------------------------------

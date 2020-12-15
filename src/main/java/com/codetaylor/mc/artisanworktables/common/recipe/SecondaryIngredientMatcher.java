@@ -1,5 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -7,30 +10,30 @@ public class SecondaryIngredientMatcher
     implements ISecondaryIngredientMatcher {
 
   private final int[] availableAmounts;
-  private final List<IArtisanItemStack> inputs;
+  private final List<ItemStack> inputs;
 
-  public SecondaryIngredientMatcher(List<IArtisanItemStack> inputs) {
+  public SecondaryIngredientMatcher(List<ItemStack> inputs) {
 
     this.inputs = inputs;
     this.availableAmounts = new int[this.inputs.size()];
   }
 
   @Override
-  public boolean matches(Collection<IArtisanIngredient> requiredIngredients) {
+  public boolean matches(Collection<Ingredient> requiredIngredients) {
 
     for (int i = 0; i < this.inputs.size(); i++) {
-      IArtisanItemStack iItemStack = this.inputs.get(i);
+      ItemStack iItemStack = this.inputs.get(i);
       this.availableAmounts[i] = (iItemStack != null) ? iItemStack.getAmount() : 0;
     }
 
-    for (IArtisanIngredient recipeInput : requiredIngredients) {
+    for (Ingredient recipeInput : requiredIngredients) {
       int amountRequired = recipeInput.getAmount();
 
       // Set the amount to 1 to avoid quantity discrepancies when matching
       //IIngredient toMatch = recipeInput.amount(1);
 
       for (int i = 0; i < this.inputs.size(); i++) {
-        IArtisanItemStack input = this.inputs.get(i);
+        ItemStack input = this.inputs.get(i);
 
         if (input == null) {
           continue;

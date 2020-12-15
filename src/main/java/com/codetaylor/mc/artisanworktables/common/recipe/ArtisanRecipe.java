@@ -72,6 +72,16 @@ public abstract class ArtisanRecipe
   // Accessors
   // ---------------------------------------------------------------------------
 
+  public ResourceLocation getRecipeId() {
+
+    return this.recipeId;
+  }
+
+  public ToolEntry[] getTools() {
+
+    return this.tools;
+  }
+
   @Nonnull
   @Override
   public NonNullList<Ingredient> getIngredients() {
@@ -79,9 +89,49 @@ public abstract class ArtisanRecipe
     return this.ingredients;
   }
 
+  public List<Ingredient> getSecondaryIngredients() {
+
+    return this.secondaryIngredients;
+  }
+
+  public boolean consumeSecondaryIngredients() {
+
+    return this.consumeSecondaryIngredients;
+  }
+
   public FluidStack getFluidIngredient() {
 
     return this.fluidIngredient;
+  }
+
+  public ExtraOutputChancePair[] getExtraOutputs() {
+
+    return this.extraOutputs;
+  }
+
+  public int getMinimumTier() {
+
+    return this.minimumTier;
+  }
+
+  public int getMaximumTier() {
+
+    return this.maximumTier;
+  }
+
+  public int getExperienceRequired() {
+
+    return this.experienceRequired;
+  }
+
+  public int getLevelRequired() {
+
+    return this.levelRequired;
+  }
+
+  public boolean consumeExperience() {
+
+    return this.consumeExperience;
   }
 
   // ---------------------------------------------------------------------------

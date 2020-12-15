@@ -1,5 +1,8 @@
-package com.codetaylor.mc.artisanworktables.common.recipe;
+package com.codetaylor.mc.artisanworktables.common.recipe.serializer;
 
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
+import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
 import com.codetaylor.mc.artisanworktables.common.util.RecipeSerializerHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

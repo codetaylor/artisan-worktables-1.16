@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.common.recipe;
+package com.codetaylor.mc.artisanworktables.common.recipe.serializer;
 
 import com.google.gson.JsonObject;
 import net.minecraft.item.crafting.IRecipe;

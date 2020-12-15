@@ -46,6 +46,21 @@ public class ArtisanRecipeShaped
     this.height = height;
   }
 
+  public boolean isMirrored() {
+
+    return this.mirrored;
+  }
+
+  public int getWidth() {
+
+    return this.width;
+  }
+
+  public int getHeight() {
+
+    return this.height;
+  }
+
   @Nonnull
   @Override
   public IRecipeSerializer<?> getSerializer() {

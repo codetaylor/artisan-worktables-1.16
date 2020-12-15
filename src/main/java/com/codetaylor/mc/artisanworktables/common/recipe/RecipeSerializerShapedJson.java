@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RecipeSerializerShapedJson {
+public class RecipeSerializerShapedJson
+    implements IRecipeSerializerJson {
 
   private final int maxWidth;
   private final int maxHeight;
@@ -28,6 +29,7 @@ public class RecipeSerializerShapedJson {
     this.maxHeight = maxHeight;
   }
 
+  @Override
   @Nonnull
   public ArtisanRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
 

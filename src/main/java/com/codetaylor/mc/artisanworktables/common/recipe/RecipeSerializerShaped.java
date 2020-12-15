@@ -13,18 +13,18 @@ public class RecipeSerializerShaped
     extends ForgeRegistryEntry<IRecipeSerializer<?>>
     implements IRecipeSerializer<ArtisanRecipe> {
 
-  private final IRecipeSerializerJson recipeSerializerJson;
+  private final IRecipeSerializerJsonReader recipeSerializerJsonReader;
 
-  public RecipeSerializerShaped(IRecipeSerializerJson recipeSerializerJson) {
+  public RecipeSerializerShaped(IRecipeSerializerJsonReader recipeSerializerJsonReader) {
 
-    this.recipeSerializerJson = recipeSerializerJson;
+    this.recipeSerializerJsonReader = recipeSerializerJsonReader;
   }
 
   @Nonnull
   @Override
   public ArtisanRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
 
-    return this.recipeSerializerJson.read(recipeId, json);
+    return this.recipeSerializerJsonReader.read(recipeId, json);
   }
 
   @Nullable

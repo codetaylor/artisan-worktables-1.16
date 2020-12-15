@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RecipeSerializerShapedJson
-    implements IRecipeSerializerJson {
+public class RecipeSerializerShapedJsonReader
+    implements IRecipeSerializerJsonReader {
 
   private final int maxWidth;
   private final int maxHeight;
 
-  public RecipeSerializerShapedJson(int maxWidth, int maxHeight) {
+  public RecipeSerializerShapedJsonReader(int maxWidth, int maxHeight) {
 
     this.maxWidth = maxWidth;
     this.maxHeight = maxHeight;

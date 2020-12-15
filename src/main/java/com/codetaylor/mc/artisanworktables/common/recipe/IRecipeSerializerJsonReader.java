@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public interface IRecipeSerializerJson {
+public interface IRecipeSerializerJsonReader {
 
   @Nonnull
   ArtisanRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json);

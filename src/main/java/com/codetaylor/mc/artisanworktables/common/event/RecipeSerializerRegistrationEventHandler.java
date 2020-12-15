@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.event;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeSerializerShaped;
+import com.codetaylor.mc.artisanworktables.common.recipe.RecipeSerializerShapedJson;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,8 @@ public class RecipeSerializerRegistrationEventHandler {
 
     IForgeRegistry<IRecipeSerializer<? extends IRecipe<?>>> registry = event.getRegistry();
 
-    registry.register(new RecipeSerializerShaped().setRegistryName(new ResourceLocation(ArtisanWorktablesMod.MOD_ID, "recipe_serializer_shaped")));
+    registry.register(new RecipeSerializerShaped(
+        new RecipeSerializerShapedJson(5, 5)
+    ).setRegistryName(new ResourceLocation(ArtisanWorktablesMod.MOD_ID, "recipe_serializer_shaped")));
   }
 }

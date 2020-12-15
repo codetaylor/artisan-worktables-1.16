@@ -1,12 +1,13 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public interface IRecipeSerializerJsonReader {
+public interface IRecipeSerializerJsonReader<T extends IRecipe<?>> {
 
   @Nonnull
-  ArtisanRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json);
+  T read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json);
 }

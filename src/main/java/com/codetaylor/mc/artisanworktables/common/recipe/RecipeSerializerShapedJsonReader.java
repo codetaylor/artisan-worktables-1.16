@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RecipeSerializerShapedJsonReader
-    implements IRecipeSerializerJsonReader {
+    implements IRecipeSerializerJsonReader<ArtisanRecipeShaped> {
 
   private final int maxWidth;
   private final int maxHeight;
@@ -31,7 +31,7 @@ public class RecipeSerializerShapedJsonReader
 
   @Override
   @Nonnull
-  public ArtisanRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
+  public ArtisanRecipeShaped read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
 
     String group = JSONUtils.getString(json, "group", "");
     Map<String, Ingredient> keys = RecipeSerializerHelper.deserializeKey(JSONUtils.getJsonObject(json, "key"));

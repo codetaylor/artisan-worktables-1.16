@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -19,6 +20,7 @@ public class ArtisanRecipeShapeless
     extends ArtisanRecipe {
 
   /* package */ ArtisanRecipeShapeless(
+      EnumType tableType,
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,
@@ -35,21 +37,21 @@ public class ArtisanRecipeShapeless
       boolean consumeExperience
   ) {
 
-    super(recipeId, group, tools, result, ingredients, secondaryIngredients, consumeSecondaryIngredients, fluidIngredient, extraOutputs, minimumTier, maximumTier, experienceRequired, levelRequired, consumeExperience);
+    super(tableType, recipeId, group, tools, result, ingredients, secondaryIngredients, consumeSecondaryIngredients, fluidIngredient, extraOutputs, minimumTier, maximumTier, experienceRequired, levelRequired, consumeExperience);
   }
 
   @Nonnull
   @Override
   public IRecipeSerializer<?> getSerializer() {
 
-    return ArtisanWorktablesMod.RecipeSerializers.SHAPELESS;
+    return ArtisanWorktablesMod.getProxy().getRegisteredSerializersShapeless().get(this.tableType);
   }
 
   @Nonnull
   @Override
   public IRecipeType<?> getType() {
 
-    return ArtisanWorktablesMod.RecipeTypes.SHAPELESS;
+    return RecipeTypes.SHAPELESS_RECIPE_TYPES.get(this.tableType);
   }
 
   @Override

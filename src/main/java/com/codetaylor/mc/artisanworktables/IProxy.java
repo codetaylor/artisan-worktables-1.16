@@ -1,10 +1,14 @@
 package com.codetaylor.mc.artisanworktables;
 
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
 import net.minecraft.block.Block;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 
+import java.util.EnumMap;
 import java.util.List;
 
 public interface IProxy {
@@ -22,4 +26,8 @@ public interface IProxy {
   IPacketService getPacketService();
 
   boolean isIntegratedServerRunning();
+
+  EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> getRegisteredSerializersShaped();
+
+  EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> getRegisteredSerializersShapeless();
 }

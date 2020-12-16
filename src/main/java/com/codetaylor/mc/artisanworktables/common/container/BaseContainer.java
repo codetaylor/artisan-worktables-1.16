@@ -128,7 +128,7 @@ public abstract class BaseContainer
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         this.containerSlotAdd(new CraftingToolSlot(
             slotChangeListener,
-            itemStack -> ToolValidator.isValidTool(itemStack, world.getRecipeManager()),
+            itemStack -> ToolValidator.isValidTool(this.tile.getTableType(), itemStack, world.getRecipeManager()),
             toolHandler,
             i,
             78 + this.containerToolOffsetGetX(),

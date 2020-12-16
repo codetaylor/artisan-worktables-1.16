@@ -1,52 +1,66 @@
 package com.codetaylor.mc.artisanworktables.common.util;
 
-import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
-import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShapeless;
+import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.EnumMap;
 import java.util.List;
 
+/**
+ * Responsible for checking all AW recipes for the use of the given tool.
+ * <p>
+ * Caches results for performance.
+ * <p>
+ * Uses a synchronized method because it is called from both threads on the
+ * same machine in a single player game.
+ */
 public class ToolValidator {
 
-  private static final ThreadLocal<Object2BooleanMap<ResourceLocation>> CACHE;
+  private static final EnumMap<EnumType, Object2BooleanMap<ResourceLocation>> CACHE;
 
   static {
-    CACHE = ThreadLocal.withInitial(Object2BooleanOpenHashMap::new);
+    CACHE = new EnumMap<>(EnumType.class);
   }
 
-  public static boolean isValidTool(ItemStack tool, RecipeManager recipeManager) {
+  public static synchronized boolean isValidTool(EnumType type, ItemStack tool, RecipeManager recipeManager) {
 
     ResourceLocation resourceLocation = tool.getItem().getRegistryName();
-    Object2BooleanMap<ResourceLocation> cache = CACHE.get();
+
+    Object2BooleanMap<ResourceLocation> cache = CACHE.computeIfAbsent(type, (t) -> new Object2BooleanOpenHashMap<>());
 
     if (cache.containsKey(resourceLocation)) {
       return cache.getBoolean(resourceLocation);
     }
 
-    List<ArtisanRecipeShaped> shapedList = recipeManager.getRecipesForType(ArtisanWorktablesMod.RecipeTypes.SHAPED);
     boolean result = false;
 
-    if (ToolValidator.checkList(tool, shapedList)) {
+    if (ToolValidator.checkRecipeType(tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
       result = true;
+    }
 
-    } else {
-      List<ArtisanRecipeShapeless> shapelessList = recipeManager.getRecipesForType(ArtisanWorktablesMod.RecipeTypes.SHAPELESS);
+    if (!result) {
 
-      if (ToolValidator.checkList(tool, shapelessList)) {
+      if (ToolValidator.checkRecipeType(tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
         result = true;
       }
     }
 
     cache.put(resourceLocation, result);
     return result;
+  }
+
+  private static boolean checkRecipeType(ItemStack tool, RecipeManager recipeManager, IRecipeType<? extends ArtisanRecipe> recipeType) {
+
+    return ToolValidator.checkList(tool, recipeManager.getRecipesForType(recipeType));
   }
 
   private static boolean checkList(ItemStack tool, List<? extends ArtisanRecipe> recipeList) {

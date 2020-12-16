@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -12,6 +13,7 @@ import javax.annotation.Nonnull;
 public abstract class ArtisanRecipe
     implements IRecipe<ArtisanInventory> {
 
+  protected final EnumType tableType;
   protected final ResourceLocation recipeId;
   protected final String group;
   protected final NonNullList<ToolEntry> tools;
@@ -28,6 +30,7 @@ public abstract class ArtisanRecipe
   protected final boolean consumeExperience;
 
   /* package */ ArtisanRecipe(
+      EnumType tableType,
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,
@@ -44,6 +47,7 @@ public abstract class ArtisanRecipe
       boolean consumeExperience
   ) {
 
+    this.tableType = tableType;
     this.recipeId = recipeId;
     this.group = group;
     this.tools = tools;
@@ -63,6 +67,11 @@ public abstract class ArtisanRecipe
   // ---------------------------------------------------------------------------
   // Accessors
   // ---------------------------------------------------------------------------
+
+  public EnumType getTableType() {
+
+    return this.tableType;
+  }
 
   public ResourceLocation getRecipeId() {
 

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -21,6 +22,7 @@ public class ArtisanRecipeShaped
   protected final int height;
 
   /* package */ ArtisanRecipeShaped(
+      EnumType tableType,
       ResourceLocation recipeId,
       String group,
       NonNullList<ToolEntry> tools,
@@ -40,7 +42,7 @@ public class ArtisanRecipeShaped
       int height
   ) {
 
-    super(recipeId, group, tools, result, ingredients, secondaryIngredients, consumeSecondaryIngredients, fluidIngredient, extraOutputs, minimumTier, maximumTier, experienceRequired, levelRequired, consumeExperience);
+    super(tableType, recipeId, group, tools, result, ingredients, secondaryIngredients, consumeSecondaryIngredients, fluidIngredient, extraOutputs, minimumTier, maximumTier, experienceRequired, levelRequired, consumeExperience);
     this.mirrored = mirrored;
     this.width = width;
     this.height = height;
@@ -65,14 +67,14 @@ public class ArtisanRecipeShaped
   @Override
   public IRecipeSerializer<?> getSerializer() {
 
-    return ArtisanWorktablesMod.RecipeSerializers.SHAPED;
+    return ArtisanWorktablesMod.getProxy().getRegisteredSerializersShaped().get(this.tableType);
   }
 
   @Nonnull
   @Override
   public IRecipeType<?> getType() {
 
-    return ArtisanWorktablesMod.RecipeTypes.SHAPED;
+    return RecipeTypes.SHAPED_RECIPE_TYPES.get(this.tableType);
   }
 
   @Override

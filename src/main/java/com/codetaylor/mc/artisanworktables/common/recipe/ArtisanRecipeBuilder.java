@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -237,11 +238,12 @@ public class ArtisanRecipeBuilder {
   // Instantiation
   // ---------------------------------------------------------------------------
 
-  public ArtisanRecipeShapeless buildShapeless() throws Exception {
+  public ArtisanRecipeShapeless buildShapeless(EnumType type) throws Exception {
 
     this.validateShapeless();
 
     return new ArtisanRecipeShapeless(
+        type,
         this.recipeId,
         this.group,
         this.tools,
@@ -259,11 +261,12 @@ public class ArtisanRecipeBuilder {
     );
   }
 
-  public ArtisanRecipeShaped buildShaped() throws Exception {
+  public ArtisanRecipeShaped buildShaped(EnumType type) throws Exception {
 
     this.validateShaped();
 
     return new ArtisanRecipeShaped(
+        type,
         this.recipeId,
         this.group,
         this.tools,

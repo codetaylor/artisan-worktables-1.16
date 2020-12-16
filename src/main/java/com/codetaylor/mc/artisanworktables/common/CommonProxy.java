@@ -5,13 +5,16 @@ import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.IProxy;
 import com.codetaylor.mc.artisanworktables.common.event.*;
 import com.codetaylor.mc.artisanworktables.common.network.*;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.athenaeum.network.api.NetworkAPI;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.SCPacketTileData;
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
 import net.minecraft.block.Block;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -25,11 +28,21 @@ import java.util.*;
 public class CommonProxy
     implements IProxy {
 
-  protected final List<Block> registeredWorktables = new ArrayList<>();
-  protected final Map<EnumTier, List<Block>> registeredWorktablesByTier = new EnumMap<>(EnumTier.class);
+  protected final List<Block> registeredWorktables;
+  protected final Map<EnumTier, List<Block>> registeredWorktablesByTier;
+  protected final EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> registeredSerializersShaped;
+  protected final EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> registeredSerializersShapeless;
 
   protected IPacketService packetService;
   protected ITileDataService tileDataService;
+
+  public CommonProxy() {
+
+    this.registeredWorktables = new ArrayList<>();
+    this.registeredWorktablesByTier = new EnumMap<>(EnumTier.class);
+    this.registeredSerializersShaped = new EnumMap<>(EnumType.class);
+    this.registeredSerializersShapeless = new EnumMap<>(EnumType.class);
+  }
 
   @Override
   public void initialize() {
@@ -70,7 +83,7 @@ public class CommonProxy
     eventBus.register(new ItemRegistrationEventHandler(this.registeredWorktables));
     eventBus.register(new TileEntityRegistrationEventHandler(this.registeredWorktablesByTier));
     eventBus.register(new ContainerTypeRegistrationEventHandler());
-    eventBus.register(new RecipeSerializerRegistrationEventHandler());
+    eventBus.register(new RecipeSerializerRegistrationEventHandler(this.registeredSerializersShaped, this.registeredSerializersShapeless));
   }
 
   @Override
@@ -104,5 +117,17 @@ public class CommonProxy
   public boolean isIntegratedServerRunning() {
 
     return false;
+  }
+
+  @Override
+  public EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> getRegisteredSerializersShaped() {
+
+    return this.registeredSerializersShaped;
+  }
+
+  @Override
+  public EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> getRegisteredSerializersShapeless() {
+
+    return this.registeredSerializersShapeless;
   }
 }

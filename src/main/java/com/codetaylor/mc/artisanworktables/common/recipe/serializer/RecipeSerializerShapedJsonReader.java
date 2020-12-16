@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.recipe.serializer;
 
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeBuilder;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.util.RecipeSerializerHelper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -16,9 +17,12 @@ import java.util.Map;
 public class RecipeSerializerShapedJsonReader
     extends RecipeSerializerJsonReader<ArtisanRecipeShaped> {
 
-  public RecipeSerializerShapedJsonReader(int maxWidth, int maxHeight) {
+  private final EnumType type;
+
+  public RecipeSerializerShapedJsonReader(EnumType type, int maxWidth, int maxHeight) {
 
     super(maxWidth, maxHeight);
+    this.type = type;
   }
 
   @Override
@@ -43,7 +47,7 @@ public class RecipeSerializerShapedJsonReader
           .setMirrored(mirrored)
           .setWidth(width)
           .setHeight(height)
-          .buildShaped();
+          .buildShaped(this.type);
 
     } catch (Exception e) {
       throw new JsonParseException("Error creating recipe: " + recipeId, e);

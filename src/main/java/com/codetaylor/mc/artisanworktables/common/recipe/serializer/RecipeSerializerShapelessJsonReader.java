@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.recipe.serializer;
 
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeBuilder;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShapeless;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -15,9 +16,12 @@ import javax.annotation.Nonnull;
 public class RecipeSerializerShapelessJsonReader
     extends RecipeSerializerJsonReader<ArtisanRecipeShapeless> {
 
-  public RecipeSerializerShapelessJsonReader(int maxWidth, int maxHeight) {
+  private final EnumType type;
+
+  public RecipeSerializerShapelessJsonReader(EnumType type, int maxWidth, int maxHeight) {
 
     super(maxWidth, maxHeight);
+    this.type = type;
   }
 
   @Override
@@ -39,7 +43,7 @@ public class RecipeSerializerShapelessJsonReader
     try {
       return builder
           .setIngredients(ingredients)
-          .buildShapeless();
+          .buildShapeless(this.type);
 
     } catch (Exception e) {
       throw new JsonParseException("Error creating recipe: " + recipeId, e);

@@ -81,7 +81,6 @@ public abstract class BaseContainer
     this.resultHandler = this.tile.getResultHandler();
     this.craftingResultSlot = new CraftingResultSlot(
         this::updateRecipeOutput,
-        this.tile,
         this.resultHandler,
         0,
         this.containerResultPositionGetX(),

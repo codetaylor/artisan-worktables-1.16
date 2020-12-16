@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.common.container.slot;
 
-import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -12,11 +11,9 @@ public class CraftingResultSlot
     extends SlotItemHandler {
 
   private final Runnable slotChangeListener;
-  private final BaseTileEntity tile;
 
   public CraftingResultSlot(
       Runnable slotChangeListener,
-      BaseTileEntity tile,
       IItemHandler itemHandler,
       int index,
       int xPosition,
@@ -24,8 +21,13 @@ public class CraftingResultSlot
   ) {
 
     super(itemHandler, index, xPosition, yPosition);
-    this.tile = tile;
     this.slotChangeListener = slotChangeListener;
+  }
+
+  @Override
+  public boolean isItemValid(@Nonnull ItemStack stack) {
+
+    return false;
   }
 
   @Nonnull

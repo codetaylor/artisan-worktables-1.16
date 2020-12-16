@@ -1,5 +1,5 @@
 {
-  "type": "artisanworktables:recipe",
+  "type": "artisanworktables:shaped",
   "group": "",
   "pattern": [
     " s ",
@@ -11,7 +11,7 @@
     "p": {"tag": "minecraft:planks"}
   },
   "tools": [
-    {"tag": "artisantools:type/hammer", "damage": 15}
+    {"item": "minecraft:diamond_pickaxe", "damage": 15}
   ],
   "fluidIngredient": {"fluid": "minecraft:water", "amount": 1000},
   "consumeSecondaryIngredients": true,
@@ -28,5 +28,7 @@
   "experienceRequired": 0,
   "levelRequired": 0,
   "consumeExperience": true,
-  "result": "minecraft:diamond"
+  "result": {
+    "item": "minecraft:diamond"
+  }
 }

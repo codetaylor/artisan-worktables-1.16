@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.common.recipe;
+package com.codetaylor.mc.artisanworktables.api;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

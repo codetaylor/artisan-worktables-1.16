@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import net.minecraft.block.Block;
@@ -31,6 +32,12 @@ public class WorkstationBlock
   public WorkstationBlock(EnumType type, Material material, ToolType toolType, SoundType soundType, float hardness, float resistance) {
 
     super(type, material, toolType, soundType, hardness, resistance);
+  }
+
+  @Override
+  protected EnumTier getTier() {
+
+    return EnumTier.WORKSTATION;
   }
 
   @Nonnull

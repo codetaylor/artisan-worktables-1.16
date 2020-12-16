@@ -1,12 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
-import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
-import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.common.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.common.recipe.*;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.*;
@@ -20,7 +16,6 @@ import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataServic
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,15 +23,12 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -47,15 +39,12 @@ import java.util.function.Predicate;
 
 public abstract class BaseTileEntity
     extends TileEntityDataBase
-    implements ITickableTileEntity,
-    IContainerProvider {
+    implements ITickableTileEntity {
 
   private String uuid;
   private EnumType type;
   private ToolStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
-  private CraftingMatrixStackHandler craftingMatrixHandlerGhost;
-  private IItemHandler roundRobinGhostStackHandler;
   private SecondaryOutputStackHandler secondaryOutputHandler;
   private ResultStackHandler resultHandler;
   private TankHandler tank;
@@ -65,7 +54,6 @@ public abstract class BaseTileEntity
 
   protected boolean requiresRecipeUpdate;
 
-  private final LazyOptional<IItemHandler> itemCapability = LazyOptional.of(() -> this.roundRobinGhostStackHandler);
   private final LazyOptional<FluidTank> fluidCapability = LazyOptional.of(() -> this.tank);
 
   // ---------------------------------------------------------------------------
@@ -104,17 +92,6 @@ public abstract class BaseTileEntity
     this.resultHandler = new ResultStackHandler(1);
     this.tank = new TankHandler(this.getFluidTankCapacity());
 
-    this.craftingMatrixHandlerGhost = new CraftingMatrixStackHandler(
-        this.craftingMatrixHandler.getWidth(),
-        this.craftingMatrixHandler.getHeight()
-    );
-
-    this.roundRobinGhostStackHandler = new RoundRobinGhostStackHandler(
-        this,
-        this.craftingMatrixHandler,
-        this.craftingMatrixHandlerGhost
-    );
-
     // Observers
 
     {
@@ -133,10 +110,6 @@ public abstract class BaseTileEntity
         this.requiresRecipeUpdate = true;
         this.markDirty();
       });
-    }
-
-    {
-      this.craftingMatrixHandlerGhost.addObserver((stackHandler, slotIndex) -> this.markDirty());
     }
 
     // Network
@@ -172,11 +145,6 @@ public abstract class BaseTileEntity
   public ICraftingMatrixStackHandler getCraftingMatrixHandler() {
 
     return this.craftingMatrixHandler;
-  }
-
-  public ICraftingMatrixStackHandler getCraftingMatrixHandlerGhost() {
-
-    return this.craftingMatrixHandlerGhost;
   }
 
   public ItemStackHandler getToolHandler() {
@@ -381,7 +349,7 @@ public abstract class BaseTileEntity
   // ---------------------------------------------------------------------------
 
   @Nullable
-  public IArtisanRecipe getRecipe(@Nonnull PlayerEntity player) {
+  public ArtisanRecipe getRecipe(@Nonnull PlayerEntity player) {
 
     if (this.craftingMatrixHandler.isEmpty()) {
       // If the crafting grid is empty, we don't even try matching a recipe.
@@ -393,16 +361,9 @@ public abstract class BaseTileEntity
     int playerLevels = player.experienceLevel;
     boolean isPlayerCreative = player.isCreative();
 
-    Map<ResourceLocation, RequirementContextSupplier> contextSupplierRegistry = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER_REGISTRY;
-    Map<ResourceLocation, IRequirementContext> contextMap = new HashMap<>();
+    // TODO
+    /*
     ICraftingContext craftingContext = this.getCraftingContext(player);
-
-    for (Map.Entry<ResourceLocation, RequirementContextSupplier> entry : contextSupplierRegistry.entrySet()) {
-      RequirementContextSupplier contextSupplier = entry.getValue();
-      IRequirementContext context = contextSupplier.get();
-      context.initialize(craftingContext);
-      contextMap.put(entry.getKey(), context);
-    }
 
     return this.getWorktableRecipeRegistry().findRecipe(
         playerExperience,
@@ -415,6 +376,8 @@ public abstract class BaseTileEntity
         this.getTableTier(),
         contextMap
     );
+     */
+    return null;
   }
 
   // ---------------------------------------------------------------------------
@@ -424,8 +387,9 @@ public abstract class BaseTileEntity
   @Override
   public void tick() {
 
-    if (this.isCreative() ||
-        (this.world != null && this.world.isRemote && ArtisanWorktablesMod.getProxy().isIntegratedServerRunning())) {
+    if (this.world != null
+        && this.world.isRemote
+        && ArtisanWorktablesMod.getProxy().isIntegratedServerRunning()) {
       this.requiresRecipeUpdate = false;
     }
 
@@ -440,15 +404,6 @@ public abstract class BaseTileEntity
   // ---------------------------------------------------------------------------
 
   public boolean canHandleRecipeTransferJEI(String name, @Nullable EnumTier tier) {
-
-    // The given tier will be null if we're checking for a vanilla recipe.
-
-    if ("vanilla".equals(name)) {
-      // Check config if allows vanilla crafting.
-      // TODO
-      //return ModuleWorktablesConfig.isVanillaCraftingEnabledFor(this.getType(), this.getTableTier());
-      return true;
-    }
 
     return this.type.getName().equals(name) && tier != null && tier.getId() <= this.getTableTier().getId();
   }
@@ -505,9 +460,6 @@ public abstract class BaseTileEntity
 
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return this.fluidCapability.cast();
-
-    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side != Direction.DOWN) {
-      return this.itemCapability.cast();
     }
 
     return super.getCapability(capability, side);
@@ -525,13 +477,10 @@ public abstract class BaseTileEntity
     this.type = EnumType.fromName(nbt.getString("type"));
     this.initializeInternal(this.type);
     this.craftingMatrixHandler.deserializeNBT(nbt.getCompound("craftingMatrixHandler"));
-    this.craftingMatrixHandlerGhost.deserializeNBT(nbt.getCompound("craftingMatrixHandlerGhost"));
     this.toolHandler.deserializeNBT(nbt.getCompound("toolHandler"));
     this.secondaryOutputHandler.deserializeNBT(nbt.getCompound("secondaryOutputHandler"));
     this.tank.readFromNBT(nbt.getCompound("tank"));
-    this.creative = nbt.getBoolean("creative");
     this.resultHandler.deserializeNBT(nbt.getCompound("resultHandler"));
-    this.locked = nbt.getBoolean("locked");
   }
 
   @Nonnull
@@ -542,13 +491,10 @@ public abstract class BaseTileEntity
     super.write(nbt);
     nbt.putString("type", this.type.getName());
     nbt.put("craftingMatrixHandler", this.craftingMatrixHandler.serializeNBT());
-    nbt.put("craftingMatrixHandlerGhost", this.craftingMatrixHandlerGhost.serializeNBT());
     nbt.put("toolHandler", this.toolHandler.serializeNBT());
     nbt.put("secondaryOutputHandler", this.secondaryOutputHandler.serializeNBT());
     nbt.put("tank", this.tank.writeToNBT(new CompoundNBT()));
-    nbt.putBoolean("creative", this.creative);
     nbt.put("resultHandler", this.resultHandler.serializeNBT());
-    nbt.putBoolean("locked", this.locked);
     return nbt;
   }
 }

@@ -1,15 +1,13 @@
 package com.codetaylor.mc.artisanworktables.api;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.DefaultToolHandler;
-import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class ArtisanToolHandlers {
 
-  private static final IToolHandler DEFAULT_HANDLER = DefaultToolHandler.INSTANCE;
   private static final List<IToolHandler> HANDLERS = new ArrayList<>();
 
   public static void register(IToolHandler toolHandler) {
@@ -17,6 +15,7 @@ public final class ArtisanToolHandlers {
     HANDLERS.add(toolHandler);
   }
 
+  @Nullable
   public static IToolHandler get(ItemStack itemStack) {
 
     for (IToolHandler handler : HANDLERS) {
@@ -26,7 +25,7 @@ public final class ArtisanToolHandlers {
       }
     }
 
-    return DEFAULT_HANDLER;
+    return null;
   }
 
   private ArtisanToolHandlers() {

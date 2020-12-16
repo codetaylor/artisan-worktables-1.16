@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.common.container.slot;
 
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -10,8 +9,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import javax.annotation.Nonnull;
 
 public class CraftingResultSlot
-    extends SlotItemHandler
-    implements ICreativeSlotClick {
+    extends SlotItemHandler {
 
   private final Runnable slotChangeListener;
   private final BaseTileEntity tile;
@@ -34,28 +32,9 @@ public class CraftingResultSlot
   @Override
   public ItemStack onTake(@Nonnull PlayerEntity player, @Nonnull ItemStack stack) {
 
-    this.tile.onTakeResult(player);
+    // TODO
+    //this.tile.onTakeResult(player);
     this.slotChangeListener.run();
     return stack;
-  }
-
-  @Override
-  public boolean isItemValid(@Nonnull ItemStack stack) {
-
-    return this.tile.isCreative();
-  }
-
-  @Override
-  public boolean canTakeStack(PlayerEntity player) {
-
-    return !this.tile.isCreative()
-        && super.canTakeStack(player);
-  }
-
-  @Override
-  public ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player) {
-
-    this.putStack(player.inventory.getItemStack().copy());
-    return ItemStack.EMPTY;
   }
 }

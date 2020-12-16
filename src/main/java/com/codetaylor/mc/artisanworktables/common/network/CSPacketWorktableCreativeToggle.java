@@ -31,8 +31,8 @@ public class CSPacketWorktableCreativeToggle
 
     if (tileEntity instanceof BaseTileEntity) {
       BaseTileEntity table = (BaseTileEntity) tileEntity;
-      table.setCreative(!table.isCreative());
-      table.setLocked(false);
+//      table.setCreative(!table.isCreative());
+//      table.setLocked(false);
       CSPacketWorktableClear.clear(table, CSPacketWorktableClear.CLEAR_ALL);
       table.markDirty();
     }

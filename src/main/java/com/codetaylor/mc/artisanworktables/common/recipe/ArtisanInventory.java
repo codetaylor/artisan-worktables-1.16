@@ -3,23 +3,43 @@ package com.codetaylor.mc.artisanworktables.common.recipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
 public class ArtisanInventory
     implements IInventory {
 
-  private final IItemHandlerModifiable stackHandler;
+  private final ICraftingMatrixStackHandler craftingMatrix;
+  private final FluidStack fluidStack;
   private final int width;
   private final int height;
 
-  public ArtisanInventory(IItemHandlerModifiable stackHandler, int width, int height) {
+  public ArtisanInventory(ICraftingMatrixStackHandler craftingMatrix, FluidStack fluidStack, int width, int height) {
 
-    this.stackHandler = stackHandler;
+    this.craftingMatrix = craftingMatrix;
+    this.fluidStack = fluidStack;
     this.width = width;
     this.height = height;
   }
+
+  // ---------------------------------------------------------------------------
+  // Accessors
+  // ---------------------------------------------------------------------------
+
+  public ICraftingMatrixStackHandler getCraftingMatrix() {
+
+    return this.craftingMatrix;
+  }
+
+  public FluidStack getFluidStack() {
+
+    return this.fluidStack;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Implementation
+  // ---------------------------------------------------------------------------
 
   @Override
   public int getSizeInventory() {
@@ -30,8 +50,8 @@ public class ArtisanInventory
   @Override
   public boolean isEmpty() {
 
-    for (int i = 0; i < this.stackHandler.getSlots(); i++) {
-      ItemStack itemStack = this.stackHandler.getStackInSlot(i);
+    for (int i = 0; i < this.craftingMatrix.getSlots(); i++) {
+      ItemStack itemStack = this.craftingMatrix.getStackInSlot(i);
 
       if (!itemStack.isEmpty()) {
         return false;
@@ -45,25 +65,25 @@ public class ArtisanInventory
   @Override
   public ItemStack getStackInSlot(int index) {
 
-    if (index < 0 || index >= this.stackHandler.getSlots()) {
+    if (index < 0 || index >= this.craftingMatrix.getSlots()) {
       return ItemStack.EMPTY;
     }
 
-    return this.stackHandler.getStackInSlot(index);
+    return this.craftingMatrix.getStackInSlot(index);
   }
 
   @Nonnull
   @Override
   public ItemStack decrStackSize(int index, int count) {
 
-    if (index < 0 || index >= this.stackHandler.getSlots()) {
+    if (index < 0 || index >= this.craftingMatrix.getSlots()) {
       return ItemStack.EMPTY;
     }
 
-    ItemStack stackInSlot = this.stackHandler.getStackInSlot(index);
+    ItemStack stackInSlot = this.craftingMatrix.getStackInSlot(index);
     ItemStack splitStack = stackInSlot.copy().split(count);
     stackInSlot.setCount(stackInSlot.getCount() - splitStack.getCount());
-    this.stackHandler.setStackInSlot(index, stackInSlot);
+    this.craftingMatrix.setStackInSlot(index, stackInSlot);
     return splitStack;
   }
 
@@ -71,23 +91,23 @@ public class ArtisanInventory
   @Override
   public ItemStack removeStackFromSlot(int index) {
 
-    if (index < 0 || index >= this.stackHandler.getSlots()) {
+    if (index < 0 || index >= this.craftingMatrix.getSlots()) {
       return ItemStack.EMPTY;
     }
 
-    ItemStack stackInSlot = this.stackHandler.getStackInSlot(index);
-    this.stackHandler.setStackInSlot(index, ItemStack.EMPTY);
+    ItemStack stackInSlot = this.craftingMatrix.getStackInSlot(index);
+    this.craftingMatrix.setStackInSlot(index, ItemStack.EMPTY);
     return stackInSlot;
   }
 
   @Override
   public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
 
-    if (index < 0 || index >= this.stackHandler.getSlots()) {
+    if (index < 0 || index >= this.craftingMatrix.getSlots()) {
       return;
     }
 
-    this.stackHandler.setStackInSlot(index, stack);
+    this.craftingMatrix.setStackInSlot(index, stack);
   }
 
   @Override
@@ -126,8 +146,8 @@ public class ArtisanInventory
   @Override
   public void clear() {
 
-    for (int i = 0; i < this.stackHandler.getSlots(); i++) {
-      this.stackHandler.setStackInSlot(i, ItemStack.EMPTY);
+    for (int i = 0; i < this.craftingMatrix.getSlots(); i++) {
+      this.craftingMatrix.setStackInSlot(i, ItemStack.EMPTY);
     }
   }
 }

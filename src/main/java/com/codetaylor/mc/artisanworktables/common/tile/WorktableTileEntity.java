@@ -3,13 +3,6 @@ package com.codetaylor.mc.artisanworktables.common.tile;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public class WorktableTileEntity
     extends BaseTileEntity {
@@ -66,13 +59,5 @@ public class WorktableTileEntity
   protected int getCraftingMatrixHeight() {
 
     return 3;
-  }
-
-  @Nullable
-  @ParametersAreNonnullByDefault
-  @Override
-  public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-
-    return new WorktableContainer(id, this.world, this.pos, playerInventory, playerEntity);
   }
 }

@@ -2,8 +2,10 @@ package com.codetaylor.mc.artisanworktables.client.screen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -16,6 +18,8 @@ import javax.annotation.Nonnull;
 
 public abstract class BaseScreen
     extends GuiContainerBase<BaseContainer> {
+
+  protected final int textColor;
 
   public BaseScreen(BaseContainer container, PlayerInventory playerInventory, ITextComponent title, int width, int height) {
 
@@ -30,6 +34,9 @@ public abstract class BaseScreen
         this.xSize,
         this.ySize
     ));
+
+    EnumType tableType = container.getTile().getTableType();
+    this.textColor = TextColorProvider.getColorFor(tableType);
   }
 
   public <T extends TileEntity> T getTile() {
@@ -52,5 +59,12 @@ public abstract class BaseScreen
     this.renderBackground(matrixStack);
     super.render(matrixStack, mouseX, mouseY, partialTicks);
     this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+  }
+
+  @Override
+  protected void drawGuiContainerForegroundLayer(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY) {
+
+    GuiHelper.drawStringOutlined(matrixStack, this.title, this.titleX, this.titleY, this.font, this.textColor, false);
+    GuiHelper.drawStringOutlined(matrixStack, this.playerInventory.getDisplayName(), this.playerInventoryTitleX, this.playerInventoryTitleY, this.font, this.textColor, false);
   }
 }

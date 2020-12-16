@@ -1,10 +1,10 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
-import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.common.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.common.recipe.SecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.MutuallyExclusiveStackHandlerWrapper;
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
@@ -74,11 +74,11 @@ public abstract class TileEntitySecondaryInputBase
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
 
     int slotCount = this.secondaryIngredientHandler.getSlots();
-    List<IArtisanItemStack> inputs = new ArrayList<>(slotCount);
+    List<ItemStack> inputs = new ArrayList<>(slotCount);
 
     for (int i = 0; i < slotCount; i++) {
       ItemStack itemStack = this.secondaryIngredientHandler.getStackInSlot(i);
-      inputs.add(ArtisanItemStack.from(itemStack));
+      inputs.add(itemStack);
     }
 
     return new SecondaryIngredientMatcher(inputs);

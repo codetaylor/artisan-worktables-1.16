@@ -1,15 +1,15 @@
 package com.codetaylor.mc.artisanworktables.common.container;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
-import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
-import com.codetaylor.mc.artisanworktables.common.util.Util;
 import com.codetaylor.mc.artisanworktables.common.container.slot.*;
 import com.codetaylor.mc.artisanworktables.common.network.SCPacketWorktableContainerJoinedBlockBreak;
-import com.codetaylor.mc.artisanworktables.common.tile.*;
-import com.codetaylor.mc.artisanworktables.common.util.RoundRobinHelper;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.TileEntitySecondaryInputBase;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,7 +21,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -41,9 +40,7 @@ public abstract class BaseContainer
   private World world;
   private BaseTileEntity tile;
   //TODO: private TileEntityToolbox toolbox;
-  private ITileEntityDesigner designersTable;
   private final ItemStackHandler resultHandler;
-  private final ItemStackHandler patternResultHandler;
   private FluidStack lastFluidStack;
   private final PlayerEntity player;
   //TODO: private final List<ToolboxSideSlot> toolboxSideSlotList;
@@ -63,18 +60,15 @@ public abstract class BaseContainer
 //  public final int slotIndexToolboxEnd;
   public final int slotIndexSecondaryInputStart;
   public final int slotIndexSecondaryInputEnd;
-  public final int slotIndexPattern;
-  public final int slotIndexPatternResult;
-  private final ItemStackHandler patternHandler;
 
   public BaseContainer(@Nullable ContainerType<?> type, int id, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
 
     super(type, id, playerInventory);
 
+    this.lastFluidStack = FluidStack.EMPTY;
     this.world = world;
     this.tile = (BaseTileEntity) world.getTileEntity(pos);
     //TODO: this.toolbox = this.getToolbox(this.tile);
-    this.designersTable = this.getAdjacentDesignersTable(this.tile);
 
     this.tile.addContainer(this);
 
@@ -103,8 +97,6 @@ public abstract class BaseContainer
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
       for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
         this.containerSlotAdd(new CraftingIngredientSlot(
-            this,
-            this.tile,
             slotChangeListener,
             craftingMatrixHandler,
             x + y * craftingMatrixHandler.getWidth(),
@@ -135,14 +127,8 @@ public abstract class BaseContainer
 
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         this.containerSlotAdd(new CraftingToolSlot(
-            this,
-            this.tile,
             slotChangeListener,
-            itemStack -> {
-              RecipeRegistry worktableRecipeRegistry = this.tile.getWorktableRecipeRegistry();
-              return this.tile.isCreative()
-                  || worktableRecipeRegistry.containsRecipeWithTool(ArtisanToolHandlers.get(itemStack), itemStack);
-            },
+            itemStack -> true,
             toolHandler,
             i,
             78 + this.containerToolOffsetGetX(),
@@ -160,7 +146,6 @@ public abstract class BaseContainer
 
       for (int i = 0; i < 3; i++) {
         this.containerSlotAdd(new CraftingExtraResultSlot(
-            this.tile,
             this.tile.getSecondaryOutputHandler(),
             i,
             116 + i * 18,
@@ -172,7 +157,6 @@ public abstract class BaseContainer
 
       for (int i = 0; i < 3; i++) {
         this.containerSlotAdd(new CraftingExtraResultSlot(
-            this.tile,
             this.tile.getSecondaryOutputHandler(),
             i,
             152,
@@ -191,8 +175,6 @@ public abstract class BaseContainer
 
       for (int i = 0; i < slotCount; i++) {
         this.containerSlotAdd(new CraftingSecondarySlot(
-            this,
-            this.tile,
             slotChangeListener,
             handler,
             i,
@@ -205,41 +187,6 @@ public abstract class BaseContainer
     } else {
       this.slotIndexSecondaryInputStart = -1;
       this.slotIndexSecondaryInputEnd = -1;
-    }
-    // ------------------------------------------------------------------------
-    // Designer's Table
-    if (this.canPlayerUsePatternSlots()) {
-      this.slotIndexPattern = this.nextSlotIndex;
-      this.patternHandler = this.designersTable.getPatternStackHandler();
-      this.containerSlotAdd(new PatternSlot(
-          this::canPlayerUsePatternSlots,
-          this::updateRecipeOutput,
-          this.patternHandler,
-          0,
-          2 * -18 + this.containerToolboxOffsetGetX(),
-          8
-      ));
-
-      this.slotIndexPatternResult = this.nextSlotIndex;
-      this.patternResultHandler = new ItemStackHandler(1);
-      this.containerSlotAdd(new PatternResultSlot(
-          this::canPlayerUsePatternSlots,
-          () -> {
-            ItemStack stackInSlot = this.patternHandler.getStackInSlot(0);
-            this.patternHandler.setStackInSlot(0, Util.decrease(stackInSlot, 1, false));
-            this.updateRecipeOutput();
-          },
-          this.patternResultHandler,
-          0,
-          this.containerToolboxOffsetGetX(),
-          8
-      ));
-
-    } else {
-      this.patternHandler = null;
-      this.patternResultHandler = null;
-      this.slotIndexPattern = -1;
-      this.slotIndexPatternResult = -1;
     }
 
     // ------------------------------------------------------------------------
@@ -375,11 +322,6 @@ public abstract class BaseContainer
 //    return tile.getAdjacentToolbox();
 //  }
 
-  private ITileEntityDesigner getAdjacentDesignersTable(BaseTileEntity tile) {
-
-    return tile.getAdjacentDesignersTable();
-  }
-
   public void onJoinedBlockBreak(World world, BlockPos pos) {
 
     if (!world.isRemote) {
@@ -426,78 +368,25 @@ public abstract class BaseContainer
 //
 //    return this.hasValidToolbox() && this.toolbox.canPlayerUse(this.player);
 //  }
-  @Nullable
-  public ITileEntityDesigner getDesignersTable() {
-
-    if (this.hasValidPatternSlots()) {
-
-      return this.designersTable;
-    }
-
-    return null;
-  }
-
-  public boolean hasValidPatternSlots() {
-
-    return this.designersTable != null
-        && !this.designersTable.getTileEntity().isRemoved();
-  }
-
-  public boolean canPlayerUsePatternSlots() {
-
-    return this.hasValidPatternSlots()
-        && this.designersTable.canPlayerUse(this.player)
-        /*&& ModuleWorktablesConfig.patternSlotsEnabledForTier(this.tile.getTableTier())*/; // TODO
-  }
-
   public void updateRecipeOutput() {
 
     if (this.tile == null) {
       return;
     }
 
-    if (this.tile.isCreative()) {
-      return;
-    }
-
-    IArtisanRecipe recipe = this.tile.getRecipe(this.player);
+    ArtisanRecipe recipe = this.tile.getRecipe(this.player);
 
     if (recipe != null) {
-      this.resultHandler.setStackInSlot(0, recipe.getOutput().toItemStack());
-
-      // TODO
-//      if (this.canPlayerUsePatternSlots()) {
-//
-//        if (this.patternHandler.getStackInSlot(0).isEmpty()) {
-//          this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
-//
-//        } else if (recipe.getName() != null) {
-//
-//          if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.enablePatternCreationForRecipesWithRequirements()
-//              || (recipe.getExperienceRequired() == 0 && recipe.getRequirements().isEmpty())) {
-//
-//            // 2019-09-23 added the null check because vanilla recipes have a null name
-//            ItemDesignPattern item = ModuleWorktables.Items.DESIGN_PATTERN;
-//            ItemStack stack = new ItemStack(item);
-//            item.setRecipeName(stack, recipe.getName());
-//            this.patternResultHandler.setStackInSlot(0, stack);
-//          }
-//        }
-//      }
+      this.resultHandler.setStackInSlot(0, recipe.getRecipeOutput());
 
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
-
-      if (this.canPlayerUsePatternSlots()) {
-        this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
-      }
     }
   }
 
   @Override
   public void onCraftMatrixChanged(@Nonnull IInventory inventory) {
-
-    //
+    // TODO: should we detect and send changes?
   }
 
   @Override
@@ -600,20 +489,6 @@ public abstract class BaseContainer
     );
   }
 
-  private boolean mergeBlankPattern(ItemStack itemStack, boolean reverse) {
-
-    if (this.slotIndexPattern == -1) {
-      return false;
-    }
-
-    return this.mergeItemStack(
-        itemStack,
-        this.slotIndexPattern,
-        this.slotIndexPattern + 1,
-        reverse
-    );
-  }
-
   // TODO
 //  private boolean mergeToolbox(ItemStack itemStack, boolean reverse) {
 //
@@ -666,40 +541,6 @@ public abstract class BaseContainer
       ItemStack itemStack = slot.getStack();
       itemStackCopy = itemStack.copy();
 
-      if (this.tile.isLocked()
-          && (this.isSlotIndexInventory(slotIndex) || this.isSlotIndexHotbar(slotIndex))) {
-
-        // If the table is locked and the player has shift-clicked something in
-        // the inventory or hotbar...
-
-        ICraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
-        ICraftingMatrixStackHandler craftingMatrixHandlerGhost = this.tile.getCraftingMatrixHandlerGhost();
-
-        int count = itemStack.getCount();
-
-        for (int i = 0; i < count; i++) {
-          List<Tuple> list = RoundRobinHelper.getSortedIndices(itemStack, craftingMatrixHandler, craftingMatrixHandlerGhost);
-
-          if (list.isEmpty()) {
-            return ItemStack.EMPTY;
-          }
-
-          ItemStack copy = itemStack.copy();
-          copy.setCount(1);
-          int index = (int) list.get(0).getA();
-          ItemStack result = craftingMatrixHandler.insertItem(index, copy, false);
-
-          if (result.isEmpty()) {
-            itemStack.shrink(1);
-
-          } else {
-            return ItemStack.EMPTY;
-          }
-        }
-
-        return ItemStack.EMPTY;
-      }
-
       if (this.isSlotIndexResult(slotIndex)) {
         // Result
 
@@ -707,7 +548,7 @@ public abstract class BaseContainer
         // grid has multiple, complete recipes, this will be executed for each complete
         // recipe.
 
-        IArtisanRecipe recipe = this.tile.getRecipe(player);
+        ArtisanRecipe recipe = this.tile.getRecipe(player);
 
         if (recipe == null) {
           return ItemStack.EMPTY;
@@ -729,8 +570,7 @@ public abstract class BaseContainer
           return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeBlankPattern(itemStack, false)
-            && !this.mergeCraftingMatrix(itemStack, false)
+        if (!this.mergeCraftingMatrix(itemStack, false)
             && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
@@ -744,8 +584,7 @@ public abstract class BaseContainer
           return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeBlankPattern(itemStack, false)
-            && !this.mergeCraftingMatrix(itemStack, false)
+        if (!this.mergeCraftingMatrix(itemStack, false)
             && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeInventory(itemStack, false)) {
           return ItemStack.EMPTY;
@@ -875,8 +714,7 @@ public abstract class BaseContainer
       @Nullable EnumTier tier
   ) {
 
-    return !this.tile.isCreative()
-        && this.tile.canHandleRecipeTransferJEI(name, tier);
+    return this.tile.canHandleRecipeTransferJEI(name, tier);
   }
 
   @Override
@@ -896,17 +734,17 @@ public abstract class BaseContainer
     FluidTank tank = this.tile.getTank();
     FluidStack fluidStack = tank.getFluid();
 
-    if (this.lastFluidStack != null
-        && fluidStack == null) {
+    if (this.lastFluidStack != FluidStack.EMPTY
+        && fluidStack == FluidStack.EMPTY) {
       this.lastFluidStack = null;
       this.updateRecipeOutput();
 
-    } else if (this.lastFluidStack == null
-        && fluidStack != null) {
+    } else if (this.lastFluidStack == FluidStack.EMPTY
+        && fluidStack != FluidStack.EMPTY) {
       this.lastFluidStack = fluidStack.copy();
       this.updateRecipeOutput();
 
-    } else if (this.lastFluidStack != null) {
+    } else if (this.lastFluidStack != FluidStack.EMPTY) {
 
       if (!this.lastFluidStack.isFluidStackIdentical(fluidStack)) {
         this.lastFluidStack = fluidStack.copy();
@@ -925,17 +763,6 @@ public abstract class BaseContainer
   @Nonnull
   @Override
   public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickType, @Nonnull PlayerEntity player) {
-
-    if (this.tile.isCreative()) {
-
-      if (slotId > -1) {
-        Slot slot = this.inventorySlots.get(slotId);
-
-        if (slot instanceof ICreativeSlotClick) {
-          return ((ICreativeSlotClick) slot).creativeSlotClick(slotId, dragType, clickType, player);
-        }
-      }
-    }
 
     if (slotId == this.slotIndexResult
         || (slotId >= this.slotIndexSecondaryOutputStart && slotId <= this.slotIndexSecondaryOutputEnd)) {

@@ -12,9 +12,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class RecipeSerializerRegistrationEventHandler {
 
   @SubscribeEvent
-  public void on(RegistryEvent.Register<IRecipeSerializer<? extends IRecipe<?>>> event) {
+  public void on(RegistryEvent.Register<IRecipeSerializer<?>> event) {
 
-    IForgeRegistry<IRecipeSerializer<? extends IRecipe<?>>> registry = event.getRegistry();
+    IForgeRegistry<IRecipeSerializer<?>> registry = event.getRegistry();
 
     registry.register(new RecipeSerializer<>(
         new RecipeSerializerShapedJsonReader(

@@ -20,16 +20,4 @@ public class ToolboxSideSlot
     this.originX = originX;
     this.originY = originY;
   }
-
-  public void move(int positionX, int positionY) {
-
-    this.xPos = positionX;
-    this.yPos = positionY;
-  }
-
-  public void moveToOrigin() {
-
-    this.xPos = this.originX;
-    this.yPos = this.originY;
-  }
 }

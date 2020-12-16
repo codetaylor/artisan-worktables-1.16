@@ -1,11 +1,26 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
+import com.codetaylor.mc.artisanworktables.common.container.ContainerProvider;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public abstract class BaseBlock
     extends Block {
@@ -34,5 +49,27 @@ public abstract class BaseBlock
   public EnumType getType() {
 
     return this.type;
+  }
+
+  protected abstract EnumTier getTier();
+
+  @Nonnull
+  @ParametersAreNonnullByDefault
+  @SuppressWarnings("deprecation")
+  @Override
+  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+
+    if (!world.isRemote) {
+      TileEntity tileEntity = world.getTileEntity(pos);
+
+      if (tileEntity instanceof BaseTileEntity) {
+        ContainerProvider containerProvider = new ContainerProvider(this.getTier(), this.getType(), world, pos);
+        NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
+
+      } else {
+        throw new IllegalStateException("Invalid tile entity found!");
+      }
+    }
+    return ActionResultType.SUCCESS;
   }
 }

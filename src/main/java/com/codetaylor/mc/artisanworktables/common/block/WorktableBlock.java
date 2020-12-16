@@ -1,26 +1,19 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,6 +44,12 @@ public class WorktableBlock
     super(type, material, toolType, soundType, hardness, resistance);
   }
 
+  @Override
+  protected EnumTier getTier() {
+
+    return EnumTier.WORKTABLE;
+  }
+
   @Nonnull
   @ParametersAreNonnullByDefault
   @Override
@@ -64,26 +63,5 @@ public class WorktableBlock
   public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 
     return new WorktableTileEntity(this.getType());
-  }
-
-  @Nonnull
-  @ParametersAreNonnullByDefault
-  @SuppressWarnings("deprecation")
-  @Override
-  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-
-    // TODO: prevent concurrent usage
-
-    if (!world.isRemote) {
-      TileEntity tileEntity = world.getTileEntity(pos);
-
-      if (tileEntity instanceof INamedContainerProvider) {
-        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-
-      } else {
-        throw new IllegalStateException("Our named container provider is missing!");
-      }
-    }
-    return ActionResultType.SUCCESS;
   }
 }

@@ -50,8 +50,7 @@ public class CSPacketWorktableTab
 
     if (tileEntity instanceof BaseTileEntity) {
 
-      if (!ModuleWorktablesConfig.PREVENT_CONCURRENT_USAGE
-          || !BaseContainer.anyPlayerHasContainerOpen((ServerWorld) player.world, message.blockPos)) {
+      if (!BaseContainer.anyPlayerHasContainerOpen((ServerWorld) player.world, message.blockPos)) {
         NetworkHooks.openGui(player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
       }
     }

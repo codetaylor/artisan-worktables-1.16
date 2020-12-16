@@ -23,11 +23,11 @@ public class SecondaryIngredientMatcher
 
     for (int i = 0; i < this.inputs.size(); i++) {
       ItemStack iItemStack = this.inputs.get(i);
-      this.availableAmounts[i] = (iItemStack != null) ? iItemStack.getAmount() : 0;
+      this.availableAmounts[i] = (iItemStack != null) ? iItemStack.getCount() : 0;
     }
 
     for (Ingredient recipeInput : requiredIngredients) {
-      int amountRequired = recipeInput.getAmount();
+      int amountRequired = 1; //recipeInput.getAmount();
 
       // Set the amount to 1 to avoid quantity discrepancies when matching
       //IIngredient toMatch = recipeInput.amount(1);
@@ -39,10 +39,7 @@ public class SecondaryIngredientMatcher
           continue;
         }
 
-        // Set the amount to 1 to avoid quantity discrepancies when matching
-        //input = input.amount(1);
-
-        if (recipeInput.matchesIgnoreAmount(input)) {
+        if (recipeInput.test(input)) {
 
           if (this.availableAmounts[i] >= amountRequired) {
             // more ingredients are available in this stack than are required

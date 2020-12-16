@@ -32,10 +32,10 @@ public class CSPacketWorktableLockedModeToggle
     if (tileEntity instanceof BaseTileEntity) {
       BaseTileEntity table = (BaseTileEntity) tileEntity;
 
-      if (ModuleWorktablesConfig.allowSlotLockingForTier(table.getTableTier())) {
-        table.setLocked(!table.isLocked());
-        table.markDirty();
-      }
+//      if (ModuleWorktablesConfig.allowSlotLockingForTier(table.getTableTier())) {
+//        table.setLocked(!table.isLocked());
+//        table.markDirty();
+//      }
     }
 
     supplier.get().setPacketHandled(true);

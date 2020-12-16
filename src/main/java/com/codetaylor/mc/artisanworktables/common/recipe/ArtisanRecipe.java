@@ -5,7 +5,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -138,22 +137,18 @@ public abstract class ArtisanRecipe
     return this.group;
   }
 
-  @Override
-  public boolean matches(@Nonnull ArtisanInventory inventory, @Nonnull World world) {
-
-    return false;
-  }
-
   @Nonnull
   @Override
   public ItemStack getCraftingResult(@Nonnull ArtisanInventory inventory) {
 
+    // TODO
     return null;
   }
 
   @Override
   public boolean canFit(int width, int height) {
 
+    // TODO
     return false;
   }
 
@@ -161,14 +156,14 @@ public abstract class ArtisanRecipe
   @Override
   public ItemStack getRecipeOutput() {
 
-    return null;
+    return this.result.copy();
   }
 
   @Nonnull
   @Override
   public ResourceLocation getId() {
 
-    return null;
+    return this.recipeId;
   }
 
   public static class ExtraOutputChancePair {

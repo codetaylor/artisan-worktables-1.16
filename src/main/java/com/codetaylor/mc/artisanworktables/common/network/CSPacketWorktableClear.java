@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.common.network;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IMessage;
 import com.codetaylor.mc.athenaeum.network.spi.packet.SPacketTileEntityBase;
 import net.minecraft.item.ItemStack;
@@ -53,7 +54,8 @@ public class CSPacketWorktableClear
   public CSPacketWorktableClear decode(CSPacketWorktableClear message, PacketBuffer packetBuffer) {
 
     super.decode(message, packetBuffer);
-    this.clearFlags = packetBuffer.readInt();
+    message.clearFlags = packetBuffer.readInt();
+    return message;
   }
 
   @Override

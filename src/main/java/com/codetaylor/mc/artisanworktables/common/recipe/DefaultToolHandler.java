@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

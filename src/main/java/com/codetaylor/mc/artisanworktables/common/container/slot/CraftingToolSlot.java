@@ -30,7 +30,6 @@ public class CraftingToolSlot
   public void onSlotChanged() {
 
     super.onSlotChanged();
-
     this.slotChangeListener.run();
   }
 

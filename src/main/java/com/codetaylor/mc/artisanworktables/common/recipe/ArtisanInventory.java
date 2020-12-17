@@ -1,24 +1,47 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ArtisanInventory
     implements IInventory {
 
+  private final EnumTier tableTier;
+  private final PlayerData playerData;
   private final ICraftingMatrixStackHandler craftingMatrix;
   private final FluidStack fluidStack;
+  private final ItemStack[] tools;
+  private final IToolHandler[] toolHandlers;
+  private final ISecondaryIngredientMatcher secondaryIngredientMatcher;
   private final int width;
   private final int height;
 
-  public ArtisanInventory(ICraftingMatrixStackHandler craftingMatrix, FluidStack fluidStack, int width, int height) {
+  public ArtisanInventory(
+      EnumTier tableTier,
+      PlayerData playerData,
+      ICraftingMatrixStackHandler craftingMatrix,
+      FluidStack fluidStack,
+      ItemStack[] tools,
+      IToolHandler[] toolHandlers,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher,
+      int width,
+      int height
+  ) {
 
+    this.tableTier = tableTier;
+    this.playerData = playerData;
     this.craftingMatrix = craftingMatrix;
     this.fluidStack = fluidStack;
+    this.tools = tools;
+    this.toolHandlers = toolHandlers;
+    this.secondaryIngredientMatcher = secondaryIngredientMatcher;
     this.width = width;
     this.height = height;
   }
@@ -26,6 +49,11 @@ public class ArtisanInventory
   // ---------------------------------------------------------------------------
   // Accessors
   // ---------------------------------------------------------------------------
+
+  public EnumTier getTableTier() {
+
+    return this.tableTier;
+  }
 
   public ICraftingMatrixStackHandler getCraftingMatrix() {
 
@@ -35,6 +63,26 @@ public class ArtisanInventory
   public FluidStack getFluidStack() {
 
     return this.fluidStack;
+  }
+
+  public Optional<PlayerData> getPlayerData() {
+
+    return Optional.ofNullable(this.playerData);
+  }
+
+  public ItemStack[] getTools() {
+
+    return this.tools;
+  }
+
+  public IToolHandler[] getToolHandlers() {
+
+    return this.toolHandlers;
+  }
+
+  public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
+
+    return this.secondaryIngredientMatcher;
   }
 
   // ---------------------------------------------------------------------------
@@ -148,6 +196,20 @@ public class ArtisanInventory
 
     for (int i = 0; i < this.craftingMatrix.getSlots(); i++) {
       this.craftingMatrix.setStackInSlot(i, ItemStack.EMPTY);
+    }
+  }
+
+  public static class PlayerData {
+
+    public final boolean isCreative;
+    public final int experience;
+    public final int levels;
+
+    public PlayerData(boolean isCreative, int experience, int levels) {
+
+      this.isCreative = isCreative;
+      this.experience = experience;
+      this.levels = levels;
     }
   }
 }

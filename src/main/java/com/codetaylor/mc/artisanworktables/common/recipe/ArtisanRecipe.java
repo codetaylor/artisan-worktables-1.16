@@ -1,11 +1,15 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
+import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -174,6 +178,123 @@ public abstract class ArtisanRecipe
 
     return this.recipeId;
   }
+
+  // ---------------------------------------------------------------------------
+  // Matching
+  // ---------------------------------------------------------------------------
+
+  @Override
+  public boolean matches(ArtisanInventory inventory, World world) {
+
+    if (!this.matchTier(inventory.getTableTier())) {
+      return false;
+    }
+
+    if (inventory.getPlayerData().isPresent()
+        && !this.matchPlayer(inventory.getPlayerData().get())) {
+      return false;
+    }
+
+    if (this.tools.size() > inventory.getTools().length) {
+      // this recipe requires more tools than the number of tools available in the table
+      return false;
+    }
+
+    if (this.fluidIngredient != FluidStack.EMPTY) {
+
+      if (!inventory.getFluidStack().containsFluid(this.fluidIngredient)) {
+        return false;
+      }
+    }
+
+    if (!this.secondaryIngredients.isEmpty()
+        && !inventory.getSecondaryIngredientMatcher().matches(this.secondaryIngredients)) {
+      return false;
+    }
+
+    return this.matchTools(inventory.getTools(), inventory.getToolHandlers());
+  }
+
+  public boolean matchTier(EnumTier tier) {
+
+    return this.minimumTier <= tier.getId()
+        && this.maximumTier >= tier.getId();
+  }
+
+  private boolean matchPlayer(ArtisanInventory.PlayerData playerData) {
+
+    if (!playerData.isCreative) {
+
+      if (playerData.experience < this.experienceRequired) {
+        return false;
+      }
+
+      return (playerData.levels >= this.levelRequired);
+    }
+
+    return true;
+  }
+
+  private boolean matchTools(ItemStack[] tools, IToolHandler[] toolHandlers) {
+
+    int toolCount = this.tools.size();
+    byte mask = 0;
+    byte matchCount = 0;
+
+    tableTools:
+    for (int i = 0; i < tools.length; i++) {
+
+      for (int j = 0; j < toolCount; j++) {
+        int bit = (1 << j);
+
+        // Has the recipe tool already been matched?
+        // Is the table tool valid?
+        // Does the table tool have sufficient durability?
+        if ((mask & bit) != bit
+            && this.tools.get(j).matches(toolHandlers[i], tools[i])
+            && this.hasSufficientToolDurability(toolHandlers[i], tools[i])) {
+          mask |= bit;
+          matchCount += 1;
+          continue tableTools;
+        }
+      }
+    }
+
+    return (matchCount == toolCount);
+  }
+
+  private boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool) {
+
+    if (tool.isEmpty()) {
+      return false;
+    }
+
+    if (ArtisanWorktablesModCommonConfig.restrictCraftMinimumDurability) {
+      ToolEntry toolEntry = this.findToolEntry(handler, tool);
+
+      if (toolEntry != null) {
+        int toolDamage = toolEntry.getDamage();
+        return handler.canAcceptAllDamage(tool, toolDamage);
+      }
+    }
+
+    return true;
+  }
+
+  private ToolEntry findToolEntry(IToolHandler handler, ItemStack tool) {
+
+    for (ToolEntry toolEntry : this.tools) {
+
+      if (toolEntry.matches(handler, tool)) {
+        return toolEntry;
+      }
+    }
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Data
+  // ---------------------------------------------------------------------------
 
   public static class ExtraOutputChancePair {
 

@@ -57,20 +57,15 @@ public class ArtisanRecipeShapeless
   @Override
   public boolean matches(@Nonnull ArtisanInventory inventory, @Nonnull World world) {
 
+    if (!super.matches(inventory, world)) {
+      return false;
+    }
+
     ICraftingMatrixStackHandler craftingMatrix = inventory.getCraftingMatrix();
-    FluidStack fluidStack = inventory.getFluidStack();
 
     int count = 0;
     List<ItemStack> itemList = new ArrayList<>();
     List<Ingredient> ingredients = this.getIngredients();
-    FluidStack fluidIngredient = this.getFluidIngredient();
-
-    if (fluidIngredient != FluidStack.EMPTY) {
-
-      if (!fluidStack.containsFluid(fluidIngredient)) {
-        return false;
-      }
-    }
 
     for (int i = 0; i < craftingMatrix.getSlots(); i++) {
       ItemStack itemStack = craftingMatrix.getStackInSlot(i);

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.recipe.*;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
@@ -18,6 +19,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +29,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
@@ -194,18 +196,25 @@ public abstract class BaseTileEntity
 
   public ItemStack[] getTools() {
 
-    int slotCount = this.toolHandler.getSlots();
-    List<ItemStack> tools = new ArrayList<>(slotCount);
-
-    for (int i = 0; i < slotCount; i++) {
-      ItemStack stackInSlot = this.toolHandler.getStackInSlot(i);
-
-      if (!stackInSlot.isEmpty()) {
-        tools.add(stackInSlot);
-      }
+    switch (this.toolHandler.getSlots()) {
+      case 1:
+        return new ItemStack[]{
+            this.toolHandler.getStackInSlot(0)
+        };
+      case 2:
+        return new ItemStack[]{
+            this.toolHandler.getStackInSlot(0),
+            this.toolHandler.getStackInSlot(1)
+        };
+      case 3:
+        return new ItemStack[]{
+            this.toolHandler.getStackInSlot(0),
+            this.toolHandler.getStackInSlot(1),
+            this.toolHandler.getStackInSlot(2)
+        };
+      default:
+        throw new IllegalStateException("Tool handler should have between 1 and 3 slots!");
     }
-
-    return tools.toArray(new ItemStack[0]);
   }
 
   public boolean hasTool() {
@@ -351,33 +360,74 @@ public abstract class BaseTileEntity
   @Nullable
   public ArtisanRecipe getRecipe(@Nonnull PlayerEntity player) {
 
+    if (this.world == null) {
+      return null;
+    }
+
     if (this.craftingMatrixHandler.isEmpty()) {
       // If the crafting grid is empty, we don't even try matching a recipe.
       return null;
     }
 
-    FluidStack fluidStack = this.getTank().getFluid().copy();
+    RecipeManager recipeManager = this.world.getRecipeManager();
+    ArtisanInventory inventory = this.getInventory(player);
+
+    {
+      IRecipeType<? extends ArtisanRecipeShaped> recipeType = RecipeTypes.SHAPED_RECIPE_TYPES.get(this.type);
+      Optional<? extends ArtisanRecipeShaped> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
+
+      if (recipe.isPresent()) {
+        return recipe.get();
+      }
+    }
+
+    {
+      IRecipeType<? extends ArtisanRecipeShapeless> recipeType = RecipeTypes.SHAPELESS_RECIPE_TYPES.get(this.type);
+      Optional<? extends ArtisanRecipeShapeless> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
+
+      if (recipe.isPresent()) {
+        return recipe.get();
+      }
+    }
+
+    return null;
+  }
+
+  private ArtisanInventory getInventory(@Nonnull PlayerEntity player) {
+
+    ItemStack[] tools = this.getTools();
+
+    return new ArtisanInventory(
+        this.getTableTier(),
+        this.getPlayerData(player),
+        this.craftingMatrixHandler,
+        this.tank.getFluid(),
+        tools,
+        this.getToolHandlers(tools),
+        this.getSecondaryIngredientMatcher(),
+        this.getCraftingMatrixWidth(),
+        this.getCraftingMatrixHeight()
+    );
+  }
+
+  private ArtisanInventory.PlayerData getPlayerData(PlayerEntity player) {
+
     int playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
     int playerLevels = player.experienceLevel;
     boolean isPlayerCreative = player.isCreative();
 
-    // TODO
-    /*
-    ICraftingContext craftingContext = this.getCraftingContext(player);
+    return new ArtisanInventory.PlayerData(isPlayerCreative, playerExperience, playerLevels);
+  }
 
-    return this.getWorktableRecipeRegistry().findRecipe(
-        playerExperience,
-        playerLevels,
-        isPlayerCreative,
-        this.getTools(),
-        this.craftingMatrixHandler,
-        fluidStack,
-        this.getSecondaryIngredientMatcher(),
-        this.getTableTier(),
-        contextMap
-    );
-     */
-    return null;
+  private IToolHandler[] getToolHandlers(ItemStack[] tools) {
+
+    IToolHandler[] handlers = new IToolHandler[tools.length];
+
+    for (int i = 0; i < tools.length; i++) {
+      handlers[i] = ArtisanToolHandlers.get(tools[i]);
+    }
+
+    return handlers;
   }
 
   // ---------------------------------------------------------------------------

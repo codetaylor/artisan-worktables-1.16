@@ -84,7 +84,7 @@ public abstract class RecipeSerializerJsonReader<R extends ArtisanRecipe>
 
     FluidStack fluidIngredient;
     if (json.has("fluidIngredient")) {
-      fluidIngredient = RecipeSerializerHelper.deserializeFluid(JSONUtils.getJsonObject(json, "fluidIngredient", new JsonObject()), 1000);
+      fluidIngredient = RecipeSerializerHelper.deserializeFluid(JSONUtils.getJsonObject(json, "fluidIngredient"), 1000);
 
     } else {
       fluidIngredient = FluidStack.EMPTY;

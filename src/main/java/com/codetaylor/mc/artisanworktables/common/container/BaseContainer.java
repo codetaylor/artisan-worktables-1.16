@@ -71,6 +71,7 @@ public abstract class BaseContainer
     this.tile = (BaseTileEntity) world.getTileEntity(pos);
     //TODO: this.toolbox = this.getToolbox(this.tile);
 
+    assert this.tile != null;
     this.tile.addContainer(this);
 
     this.player = playerInventory.player;

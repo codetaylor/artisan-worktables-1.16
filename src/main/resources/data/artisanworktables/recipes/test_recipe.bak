@@ -13,6 +13,12 @@
   "tools": [
     {"item": "minecraft:diamond_pickaxe", "damage": 15}
   ],
+  "fluidIngredient": {"fluid": "minecraft:water", "amount": 1000},
+  "consumeSecondaryIngredients": true,
+  "secondaryIngredients": [
+    {"item": "minecraft:emerald"},
+    {"tag": "forge:ingots/iron"}
+  ],
   "extraOutput": [
     {"item": "minecraft:diamond", "count": 4, "chance": 0.5}
   ],

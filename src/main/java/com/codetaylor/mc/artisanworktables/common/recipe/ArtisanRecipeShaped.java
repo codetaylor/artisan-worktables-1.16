@@ -80,15 +80,11 @@ public class ArtisanRecipeShaped
   @Override
   public boolean matches(@Nonnull ArtisanInventory inventory, @Nonnull World world) {
 
-    ICraftingMatrixStackHandler craftingMatrix = inventory.getCraftingMatrix();
-    FluidStack fluidStack = inventory.getFluidStack();
-
-    if (this.fluidIngredient != FluidStack.EMPTY) {
-
-      if (!fluidStack.containsFluid(this.fluidIngredient)) {
-        return false;
-      }
+    if (!super.matches(inventory, world)) {
+      return false;
     }
+
+    ICraftingMatrixStackHandler craftingMatrix = inventory.getCraftingMatrix();
 
     for (int x = 0; x <= craftingMatrix.getWidth() - this.width; ++x) {
 

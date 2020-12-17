@@ -1,8 +1,8 @@
-package com.codetaylor.mc.artisanworktables.api;
+package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +15,16 @@ public final class ArtisanToolHandlers {
     HANDLERS.add(toolHandler);
   }
 
-  @Nullable
   public static IToolHandler get(ItemStack itemStack) {
 
     for (IToolHandler handler : HANDLERS) {
 
-      if (handler.matches(itemStack)) {
+      if (handler.handles(itemStack)) {
         return handler;
       }
     }
 
-    return null;
+    return DefaultToolHandler.INSTANCE;
   }
 
   private ArtisanToolHandlers() {

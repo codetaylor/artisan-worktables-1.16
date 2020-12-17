@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.util;
 
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.api.IToolHandler;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
@@ -41,15 +43,17 @@ public class ToolValidator {
       return cache.getBoolean(resourceLocation);
     }
 
+    IToolHandler toolHandler = ArtisanToolHandlers.get(tool);
+
     boolean result = false;
 
-    if (ToolValidator.checkRecipeType(tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
+    if (ToolValidator.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
       result = true;
     }
 
     if (!result) {
 
-      if (ToolValidator.checkRecipeType(tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
+      if (ToolValidator.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
         result = true;
       }
     }
@@ -58,21 +62,24 @@ public class ToolValidator {
     return result;
   }
 
-  private static boolean checkRecipeType(ItemStack tool, RecipeManager recipeManager, IRecipeType<? extends ArtisanRecipe> recipeType) {
+  private static boolean checkRecipeType(IToolHandler toolHandler, ItemStack tool, RecipeManager recipeManager, IRecipeType<? extends ArtisanRecipe> recipeType) {
 
-    return ToolValidator.checkList(tool, recipeManager.getRecipesForType(recipeType));
+    return ToolValidator.checkList(toolHandler, tool, recipeManager.getRecipesForType(recipeType));
   }
 
-  private static boolean checkList(ItemStack tool, List<? extends ArtisanRecipe> recipeList) {
+  private static boolean checkList(IToolHandler toolHandler, ItemStack tool, List<? extends ArtisanRecipe> recipeList) {
 
-    for (ArtisanRecipe artisanRecipeShaped : recipeList) {
-      NonNullList<ToolEntry> tools = artisanRecipeShaped.getTools();
+    for (ArtisanRecipe artisanRecipe : recipeList) {
+      NonNullList<ToolEntry> tools = artisanRecipe.getTools();
 
       for (ToolEntry toolEntry : tools) {
-        boolean valid = toolEntry.getTool().test(tool);
+        ItemStack[] toolStacks = toolEntry.getToolStacks();
 
-        if (valid) {
-          return true;
+        for (ItemStack recipeTool : toolStacks) {
+
+          if (toolHandler.matches(tool, recipeTool)) {
+            return true;
+          }
         }
       }
     }

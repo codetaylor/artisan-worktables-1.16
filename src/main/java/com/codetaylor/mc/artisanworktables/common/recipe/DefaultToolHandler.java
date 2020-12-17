@@ -14,7 +14,7 @@ public class DefaultToolHandler
   public static final DefaultToolHandler INSTANCE = new DefaultToolHandler();
 
   @Override
-  public boolean matches(ItemStack itemStack) {
+  public boolean handles(ItemStack itemStack) {
 
     return itemStack.isDamageable();
   }

@@ -12,7 +12,7 @@ public interface IToolHandler {
    * @param itemStack the tool
    * @return true if this tool handler is responsible for the given tool
    */
-  boolean matches(ItemStack itemStack);
+  boolean handles(ItemStack itemStack);
 
   /**
    * @param tool        the tool

@@ -82,6 +82,7 @@ public abstract class BaseContainer
     this.slotIndexResult = this.nextSlotIndex;
     this.resultHandler = this.tile.getResultHandler();
     this.craftingResultSlot = new CraftingResultSlot(
+        this.tile,
         this::updateRecipeOutput,
         this.resultHandler,
         0,

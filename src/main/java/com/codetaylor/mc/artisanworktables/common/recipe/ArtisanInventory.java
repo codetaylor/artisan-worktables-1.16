@@ -6,8 +6,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class ArtisanInventory
@@ -16,21 +19,25 @@ public class ArtisanInventory
   private final EnumTier tableTier;
   private final PlayerData playerData;
   private final ICraftingMatrixStackHandler craftingMatrix;
-  private final FluidStack fluidStack;
+  private final FluidTank fluidTank;
   private final ItemStack[] tools;
   private final IToolHandler[] toolHandlers;
+  private final IItemHandlerModifiable toolHandler;
   private final ISecondaryIngredientMatcher secondaryIngredientMatcher;
+  private final IItemHandlerModifiable secondaryIngredientHandler;
   private final int width;
   private final int height;
 
   public ArtisanInventory(
       EnumTier tableTier,
-      PlayerData playerData,
+      @Nullable PlayerData playerData,
       ICraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack,
+      FluidTank fluidTank,
       ItemStack[] tools,
       IToolHandler[] toolHandlers,
+      IItemHandlerModifiable toolHandler,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
+      IItemHandlerModifiable secondaryIngredientHandler,
       int width,
       int height
   ) {
@@ -38,10 +45,12 @@ public class ArtisanInventory
     this.tableTier = tableTier;
     this.playerData = playerData;
     this.craftingMatrix = craftingMatrix;
-    this.fluidStack = fluidStack;
+    this.fluidTank = fluidTank;
     this.tools = tools;
     this.toolHandlers = toolHandlers;
+    this.toolHandler = toolHandler;
     this.secondaryIngredientMatcher = secondaryIngredientMatcher;
+    this.secondaryIngredientHandler = secondaryIngredientHandler;
     this.width = width;
     this.height = height;
   }
@@ -60,9 +69,14 @@ public class ArtisanInventory
     return this.craftingMatrix;
   }
 
+  public FluidTank getFluidTank() {
+
+    return this.fluidTank;
+  }
+
   public FluidStack getFluidStack() {
 
-    return this.fluidStack;
+    return this.fluidTank.getFluid();
   }
 
   public Optional<PlayerData> getPlayerData() {
@@ -80,9 +94,26 @@ public class ArtisanInventory
     return this.toolHandlers;
   }
 
+  public IItemHandlerModifiable getToolHandler() {
+
+    return this.toolHandler;
+  }
+
+  @Nullable
+  public IItemHandlerModifiable getToolReplacementHandler() {
+
+    // TODO
+    return null;
+  }
+
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
 
     return this.secondaryIngredientMatcher;
+  }
+
+  public IItemHandlerModifiable getSecondaryIngredientHandler() {
+
+    return this.secondaryIngredientHandler;
   }
 
   // ---------------------------------------------------------------------------

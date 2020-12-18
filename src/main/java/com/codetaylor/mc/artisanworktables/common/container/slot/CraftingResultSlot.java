@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.container.slot;
 
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -10,9 +11,11 @@ import javax.annotation.Nonnull;
 public class CraftingResultSlot
     extends SlotItemHandler {
 
+  private final BaseTileEntity tile;
   private final Runnable slotChangeListener;
 
   public CraftingResultSlot(
+      BaseTileEntity tile,
       Runnable slotChangeListener,
       IItemHandler itemHandler,
       int index,
@@ -21,6 +24,7 @@ public class CraftingResultSlot
   ) {
 
     super(itemHandler, index, xPosition, yPosition);
+    this.tile = tile;
     this.slotChangeListener = slotChangeListener;
   }
 
@@ -34,8 +38,7 @@ public class CraftingResultSlot
   @Override
   public ItemStack onTake(@Nonnull PlayerEntity player, @Nonnull ItemStack stack) {
 
-    // TODO
-    //this.tile.onTakeResult(player);
+    this.tile.onTakeResult(player);
     this.slotChangeListener.run();
     return stack;
   }

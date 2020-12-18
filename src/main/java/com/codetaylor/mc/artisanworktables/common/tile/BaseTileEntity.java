@@ -53,6 +53,7 @@ public abstract class BaseTileEntity
   private boolean initialized;
 
   private final List<BaseContainer> containerList = new ArrayList<>();
+  private final CraftHandler craftHandler = new CraftHandler();
 
   protected boolean requiresRecipeUpdate;
 
@@ -353,6 +354,19 @@ public abstract class BaseTileEntity
     }
   }
 
+  public void onTakeResult(PlayerEntity player) {
+
+    ArtisanRecipe recipe = this.getRecipe(player);
+
+    if (recipe == null || this.world == null) {
+      return;
+    }
+
+    this.craftHandler.doCraft(this.world, this.pos, player, recipe, this.getInventory(player), null);
+
+    this.markDirty();
+  }
+
   // ---------------------------------------------------------------------------
   // Recipe
   // ---------------------------------------------------------------------------
@@ -400,11 +414,13 @@ public abstract class BaseTileEntity
     return new ArtisanInventory(
         this.getTableTier(),
         this.getPlayerData(player),
-        this.craftingMatrixHandler,
-        this.tank.getFluid(),
+        this.getCraftingMatrixHandler(),
+        this.getTank(),
         tools,
         this.getToolHandlers(tools),
+        this.getToolHandler(),
         this.getSecondaryIngredientMatcher(),
+        this.getSecondaryOutputHandler(),
         this.getCraftingMatrixWidth(),
         this.getCraftingMatrixHeight()
     );

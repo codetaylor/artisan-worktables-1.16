@@ -263,7 +263,7 @@ public abstract class ArtisanRecipe
     return (matchCount == toolCount);
   }
 
-  private boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool) {
+  public boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool) {
 
     if (tool.isEmpty()) {
       return false;
@@ -281,7 +281,7 @@ public abstract class ArtisanRecipe
     return true;
   }
 
-  private ToolEntry findToolEntry(IToolHandler handler, ItemStack tool) {
+  public ToolEntry findToolEntry(IToolHandler handler, ItemStack tool) {
 
     for (ToolEntry toolEntry : this.tools) {
 

@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.common.container.ContainerProvider;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
+import com.codetaylor.mc.athenaeum.util.FluidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -17,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
@@ -63,6 +66,17 @@ public abstract class BaseBlock
       TileEntity tileEntity = world.getTileEntity(pos);
 
       if (tileEntity instanceof BaseTileEntity) {
+
+        FluidTank tank = ((BaseTileEntity) tileEntity).getTank();
+
+        if (FluidHelper.drainWaterFromBottle(player, tank)
+            || FluidHelper.drainWaterIntoBottle(player, tank)
+            || FluidUtil.interactWithFluidHandler(player, hand, tank)) {
+
+          System.out.println(tank.getFluid().getDisplayName().getString() + " " + tank.getFluid().getAmount());
+          return ActionResultType.SUCCESS;
+        }
+
         ContainerProvider containerProvider = new ContainerProvider(this.getTier(), this.getType(), world, pos);
         NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
 

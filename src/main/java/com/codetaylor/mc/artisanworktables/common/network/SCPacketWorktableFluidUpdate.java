@@ -48,7 +48,7 @@ public class SCPacketWorktableFluidUpdate
 
     super.encode(message, packetBuffer);
 
-    packetBuffer.writeCompoundTag(this.fluidTank.writeToNBT(new CompoundNBT()));
+    packetBuffer.writeCompoundTag(message.fluidTank.writeToNBT(new CompoundNBT()));
   }
 
   @Override

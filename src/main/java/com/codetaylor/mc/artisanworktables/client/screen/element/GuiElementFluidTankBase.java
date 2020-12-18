@@ -53,12 +53,11 @@ public abstract class GuiElementFluidTankBase
     } else {
       Fluid fluid = this.fluidTank.getFluid().getFluid();
       list.add(fluid.getAttributes().getDisplayName(this.fluidTank.getFluid()));
-      list.add(new TranslationTextComponent("" + TextFormatting.GRAY + this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB"));
+      list.add(new TranslationTextComponent(this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB")
+          .mergeStyle(TextFormatting.GRAY));
       list.add(new TranslationTextComponent(
-          "gui.artisanworktables.tooltip.fluid.destroy",
-          TextFormatting.DARK_GRAY,
-          TextFormatting.DARK_GRAY
-      ));
+          "gui.artisanworktables.tooltip.fluid.destroy"
+      ).mergeStyle(TextFormatting.DARK_GRAY));
     }
 
     return list;

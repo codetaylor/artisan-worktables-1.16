@@ -1,16 +1,14 @@
 package com.codetaylor.mc.artisanworktables.common.network;
 
-import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
+import com.codetaylor.mc.artisanworktables.common.container.ContainerProvider;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IMessage;
 import com.codetaylor.mc.athenaeum.network.spi.packet.SPacketTileEntityBase;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SSetSlotPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -49,10 +47,9 @@ public class CSPacketWorktableTab
     }
 
     if (tileEntity instanceof BaseTileEntity) {
-
-      if (!BaseContainer.anyPlayerHasContainerOpen((ServerWorld) player.world, message.blockPos)) {
-        NetworkHooks.openGui(player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-      }
+      BaseTileEntity table = (BaseTileEntity) tileEntity;
+      ContainerProvider containerProvider = new ContainerProvider(table.getTableTier(), table.getTableType(), table.getWorld(), table.getPos());
+      NetworkHooks.openGui(player, containerProvider, tileEntity.getPos());
     }
 
     if (!heldStack.isEmpty()) {

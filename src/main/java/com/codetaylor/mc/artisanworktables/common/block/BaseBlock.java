@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.block;
 
+import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.common.container.ContainerProvider;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
@@ -62,7 +63,11 @@ public abstract class BaseBlock
   @Override
   public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
 
-    if (!world.isRemote) {
+    if (world.isRemote) {
+      GuiElementTabs.RECALCULATE_TAB_OFFSETS = true;
+
+    } else {
+
       TileEntity tileEntity = world.getTileEntity(pos);
 
       if (tileEntity instanceof BaseTileEntity) {
@@ -84,6 +89,7 @@ public abstract class BaseBlock
         throw new IllegalStateException("Invalid tile entity found!");
       }
     }
+
     return ActionResultType.SUCCESS;
   }
 }

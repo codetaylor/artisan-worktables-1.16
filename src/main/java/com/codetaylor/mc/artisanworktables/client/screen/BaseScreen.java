@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.client.screen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementFluidTankSmall;
+import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
@@ -41,6 +42,7 @@ public abstract class BaseScreen
     this.textColor = TextColorProvider.getColorFor(tableType);
 
     BaseTileEntity tile = this.getContainer().getTile();
+
     this.guiContainerElementAdd(new GuiElementFluidTankSmall(
         this,
         tile.getTank(),
@@ -48,6 +50,12 @@ public abstract class BaseScreen
         this.textColor,
         8,
         17
+    ));
+
+    this.guiContainerElementAdd(new GuiElementTabs(
+        this,
+        tile,
+        176
     ));
   }
 

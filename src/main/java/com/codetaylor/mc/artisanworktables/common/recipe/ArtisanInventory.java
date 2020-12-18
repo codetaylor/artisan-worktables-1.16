@@ -25,6 +25,7 @@ public class ArtisanInventory
   private final IItemHandlerModifiable toolHandler;
   private final ISecondaryIngredientMatcher secondaryIngredientMatcher;
   private final IItemHandlerModifiable secondaryIngredientHandler;
+  private final IItemHandlerModifiable secondaryOutputHandler;
   private final int width;
   private final int height;
 
@@ -38,6 +39,7 @@ public class ArtisanInventory
       IItemHandlerModifiable toolHandler,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       IItemHandlerModifiable secondaryIngredientHandler,
+      IItemHandlerModifiable secondaryOutputHandler,
       int width,
       int height
   ) {
@@ -51,6 +53,7 @@ public class ArtisanInventory
     this.toolHandler = toolHandler;
     this.secondaryIngredientMatcher = secondaryIngredientMatcher;
     this.secondaryIngredientHandler = secondaryIngredientHandler;
+    this.secondaryOutputHandler = secondaryOutputHandler;
     this.width = width;
     this.height = height;
   }
@@ -114,6 +117,11 @@ public class ArtisanInventory
   public IItemHandlerModifiable getSecondaryIngredientHandler() {
 
     return this.secondaryIngredientHandler;
+  }
+
+  public IItemHandlerModifiable getSecondaryOutputHandler() {
+
+    return this.secondaryOutputHandler;
   }
 
   // ---------------------------------------------------------------------------

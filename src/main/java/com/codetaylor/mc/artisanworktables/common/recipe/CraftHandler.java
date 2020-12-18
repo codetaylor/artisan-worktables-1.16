@@ -48,7 +48,7 @@ public class CraftHandler {
       // This method must only be called on the server. It depends on RNG
       // and, as such, must be calculated with server authority.
       // Check for and populate secondary, tertiary and quaternary outputs
-      extraOutputList = this.onCraftProcessExtraOutput(recipe.getExtraOutputs(), extraOutputList);
+      extraOutputList = this.onCraftProcessExtraOutput(world, pos, inventory.getSecondaryOutputHandler(), recipe.getExtraOutputs(), extraOutputList);
     }
 
     // Decrease stacks in crafting matrix
@@ -104,6 +104,9 @@ public class CraftHandler {
   }
 
   private List<ItemStack> onCraftProcessExtraOutput(
+      World world,
+      BlockPos pos,
+      IItemHandlerModifiable secondaryOutputHandler,
       NonNullList<ArtisanRecipe.ExtraOutputChancePair> extraOutputs,
       List<ItemStack> result
   ) {
@@ -111,11 +114,30 @@ public class CraftHandler {
     for (ArtisanRecipe.ExtraOutputChancePair extraOutput : extraOutputs) {
 
       if (Util.RANDOM.nextFloat() < extraOutput.getChance()) {
-        result.add(extraOutput.getOutput());
+        result.add(this.generateExtraOutput(world, pos, secondaryOutputHandler, extraOutput.getOutput()));
       }
     }
 
     return result;
+  }
+
+  private ItemStack generateExtraOutput(World world, BlockPos pos, IItemHandlerModifiable secondaryOutputHandler, ItemStack extraOutput) {
+
+    ItemStack insertResult = extraOutput.copy();
+
+    for (int i = 0; i < 3; i++) {
+      insertResult = secondaryOutputHandler.insertItem(i, insertResult, false);
+
+      if (insertResult.isEmpty()) {
+        break;
+      }
+    }
+
+    if (!insertResult.isEmpty() && !world.isRemote) {
+      Util.spawnStackOnTop(world, insertResult, pos.add(0, 0, 0), 1.0);
+    }
+
+    return extraOutput;
   }
 
   private void onCraftReduceIngredients(ArtisanInventory inventory) {

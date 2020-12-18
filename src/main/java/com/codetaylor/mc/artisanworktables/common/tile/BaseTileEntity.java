@@ -421,6 +421,7 @@ public abstract class BaseTileEntity
         this.getToolHandler(),
         this.getSecondaryIngredientMatcher(),
         this.getSecondaryOutputHandler(),
+        this.getSecondaryOutputHandler(),
         this.getCraftingMatrixWidth(),
         this.getCraftingMatrixHeight()
     );

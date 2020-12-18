@@ -49,6 +49,8 @@ public abstract class GuiElementFluidTankBase
 
     if (this.fluidTank.getFluid() == FluidStack.EMPTY || this.fluidTank.getFluidAmount() == 0) {
       list.add(new TranslationTextComponent("gui.artisanworktables.tooltip.fluid.empty"));
+      list.add(new TranslationTextComponent(this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB")
+          .mergeStyle(TextFormatting.GRAY));
 
     } else {
       Fluid fluid = this.fluidTank.getFluid().getFluid();

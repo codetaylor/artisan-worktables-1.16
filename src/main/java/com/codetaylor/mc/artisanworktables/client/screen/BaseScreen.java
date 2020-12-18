@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.client.screen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -37,6 +39,16 @@ public abstract class BaseScreen
 
     EnumType tableType = container.getTile().getTableType();
     this.textColor = TextColorProvider.getColorFor(tableType);
+
+    BaseTileEntity tile = this.getContainer().getTile();
+    this.guiContainerElementAdd(new GuiElementFluidTankSmall(
+        this,
+        tile.getTank(),
+        tile.getPos(),
+        this.textColor,
+        8,
+        17
+    ));
   }
 
   public <T extends TileEntity> T getTile() {
@@ -64,6 +76,7 @@ public abstract class BaseScreen
   @Override
   protected void drawGuiContainerForegroundLayer(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY) {
 
+    super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
     GuiHelper.drawStringOutlined(matrixStack, this.title, this.titleX, this.titleY, this.font, this.textColor, false);
     GuiHelper.drawStringOutlined(matrixStack, this.playerInventory.getDisplayName(), this.playerInventoryTitleX, this.playerInventoryTitleY, this.font, this.textColor, false);
   }

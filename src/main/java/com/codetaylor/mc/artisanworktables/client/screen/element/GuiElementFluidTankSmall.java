@@ -53,7 +53,7 @@ public class GuiElementFluidTankSmall
     GuiHelper.drawModalRectWithCustomSizedTexture(
         this.elementX,
         this.elementY,
-        0,
+        1000,
         ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionX(),
         ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionY(),
         ELEMENT_OVERLAY_WIDTH,

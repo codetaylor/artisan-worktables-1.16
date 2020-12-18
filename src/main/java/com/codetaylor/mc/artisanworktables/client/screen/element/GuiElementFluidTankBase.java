@@ -55,7 +55,7 @@ public abstract class GuiElementFluidTankBase
       list.add(fluid.getAttributes().getDisplayName(this.fluidTank.getFluid()));
       list.add(new TranslationTextComponent("" + TextFormatting.GRAY + this.fluidTank.getFluidAmount() + " / " + this.fluidTank.getCapacity() + " mB"));
       list.add(new TranslationTextComponent(
-          "gui.artisanworktables.tooltip.fluid.empty.destroy",
+          "gui.artisanworktables.tooltip.fluid.destroy",
           TextFormatting.DARK_GRAY,
           TextFormatting.DARK_GRAY
       ));

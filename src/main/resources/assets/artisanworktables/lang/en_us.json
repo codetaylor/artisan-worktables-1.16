@@ -44,5 +44,7 @@
   "block.artisanworktables.workshop_potter": "Potter's Workshop",
   "block.artisanworktables.workshop_scribe": "Scribe's Workshop",
   "block.artisanworktables.workshop_tailor": "Tailor's Workshop",
-  "block.artisanworktables.workshop_tanner": "Tanner's Workshop"
+  "block.artisanworktables.workshop_tanner": "Tanner's Workshop",
+  "gui.artisanworktables.tooltip.fluid.empty": "Empty",
+  "gui.artisanworktables.tooltip.fluid.destroy": "%sDestroy fluid: %sSHIFT + LEFT-CLICK"
 }

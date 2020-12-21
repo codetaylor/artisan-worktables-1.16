@@ -10,6 +10,7 @@
     "s": {"item": "minecraft:string"},
     "p": {"tag": "minecraft:planks"}
   },
+  "fluidIngredient": {"fluid": "minecraft:water", "amount": 100},
   "tools": [
     {"item": "minecraft:diamond_pickaxe", "damage": 15}
   ],

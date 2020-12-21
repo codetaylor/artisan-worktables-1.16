@@ -6,7 +6,6 @@ import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -67,7 +66,7 @@ public abstract class BaseScreen
 
   protected ResourceLocation getBackgroundTexture() {
 
-    WorktableTileEntity tile = (WorktableTileEntity) this.container.getTile();
+    BaseTileEntity tile = this.container.getTile();
     String typeName = tile.getTableType().getName();
     String tierName = tile.getTableTier().getName();
     return new ResourceLocation(ArtisanWorktablesMod.MOD_ID, "textures/gui/" + tierName + "_" + typeName + ".png");

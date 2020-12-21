@@ -10,6 +10,7 @@ import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
@@ -88,6 +89,17 @@ public class ArtisanWorktablesMod {
       WORKTABLE = null;
       WORKSTATION = null;
       WORKSHOP = null;
+    }
+  }
+
+  @ObjectHolder(MOD_ID)
+  public static class ParticleTypes {
+
+    @ObjectHolder("mage")
+    public static final BasicParticleType MAGE;
+
+    static {
+      MAGE = null;
     }
   }
 }

@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class WorktableBlock
     extends BaseBlock {
 
-  private static final VoxelShape VOXEL_SHAPE = VoxelShapes.or(
+  public static final VoxelShape VOXEL_SHAPE = VoxelShapes.or(
       Block.makeCuboidShape(0, 7, 0, 16, 15, 16), // top
       Block.makeCuboidShape(1, 6, 1, 15, 7, 15), // inset
       Block.makeCuboidShape(2, 2, 2, 4, 6, 4), // leg a

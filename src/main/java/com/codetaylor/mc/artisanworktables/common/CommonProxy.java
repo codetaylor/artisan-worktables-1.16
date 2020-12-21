@@ -84,6 +84,7 @@ public class CommonProxy
     eventBus.register(new TileEntityRegistrationEventHandler(this.registeredWorktablesByTier));
     eventBus.register(new ContainerTypeRegistrationEventHandler());
     eventBus.register(new RecipeSerializerRegistrationEventHandler(this.registeredSerializersShaped, this.registeredSerializersShapeless));
+    eventBus.register(new ParticleTypeRegistrationEventHandler());
   }
 
   @Override

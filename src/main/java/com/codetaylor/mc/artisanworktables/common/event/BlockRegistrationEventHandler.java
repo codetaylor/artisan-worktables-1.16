@@ -1,10 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.event;
 
+import com.codetaylor.mc.artisanworktables.common.block.*;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.common.block.WorkshopBlock;
-import com.codetaylor.mc.artisanworktables.common.block.WorkstationBlock;
-import com.codetaylor.mc.artisanworktables.common.block.WorktableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -52,15 +50,28 @@ public class BlockRegistrationEventHandler {
 
   private void register(IForgeRegistry<Block> registry, Material material, ToolType toolType, SoundType soundType, EnumType type) {
 
-    this.register(registry, EnumTier.WORKTABLE, type.getName(),
-        new WorktableBlock(type, material, toolType, soundType, 2.0f, 3.0f)
-    );
-    this.register(registry, EnumTier.WORKSTATION, type.getName(),
-        new WorkstationBlock(type, material, toolType, soundType, 3.0f, 6.0f)
-    );
-    this.register(registry, EnumTier.WORKSHOP, type.getName(),
-        new WorkshopBlock(type, material, toolType, soundType, 4.0f, 12.0f)
-    );
+    if (type == EnumType.MAGE) {
+      this.register(registry, EnumTier.WORKTABLE, type.getName(),
+          new MageWorktableBlock(material, toolType, soundType, 2.0f, 3.0f)
+      );
+      this.register(registry, EnumTier.WORKSTATION, type.getName(),
+          new MageWorkstationBlock(material, toolType, soundType, 3.0f, 6.0f)
+      );
+      this.register(registry, EnumTier.WORKSHOP, type.getName(),
+          new MageWorkshopBlock(material, toolType, soundType, 4.0f, 12.0f)
+      );
+
+    } else {
+      this.register(registry, EnumTier.WORKTABLE, type.getName(),
+          new WorktableBlock(type, material, toolType, soundType, 2.0f, 3.0f)
+      );
+      this.register(registry, EnumTier.WORKSTATION, type.getName(),
+          new WorkstationBlock(type, material, toolType, soundType, 3.0f, 6.0f)
+      );
+      this.register(registry, EnumTier.WORKSHOP, type.getName(),
+          new WorkshopBlock(type, material, toolType, soundType, 4.0f, 12.0f)
+      );
+    }
   }
 
   private void register(IForgeRegistry<Block> registry, EnumTier tier, String registryName, Block block) {

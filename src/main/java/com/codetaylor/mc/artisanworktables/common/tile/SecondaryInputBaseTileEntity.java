@@ -76,6 +76,7 @@ public abstract class SecondaryInputBaseTileEntity
     return new SecondaryIngredientMatcher(inputs);
   }
 
+  @Override
   public IItemHandlerModifiable getSecondaryIngredientHandler() {
 
     return this.secondaryIngredientHandler;

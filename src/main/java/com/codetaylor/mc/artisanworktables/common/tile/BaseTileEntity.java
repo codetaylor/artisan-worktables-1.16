@@ -31,6 +31,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -42,6 +43,8 @@ import java.util.function.Predicate;
 public abstract class BaseTileEntity
     extends TileEntityDataBase
     implements ITickableTileEntity {
+
+  private static final IItemHandlerModifiable SECONDARY_INGREDIENT_HANDLER_DEFAULT = new ItemStackHandler(0);
 
   private String uuid;
   private EnumType type;
@@ -193,6 +196,11 @@ public abstract class BaseTileEntity
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
 
     return ISecondaryIngredientMatcher.FALSE;
+  }
+
+  public IItemHandlerModifiable getSecondaryIngredientHandler() {
+
+    return SECONDARY_INGREDIENT_HANDLER_DEFAULT;
   }
 
   public ItemStack[] getTools() {
@@ -420,7 +428,7 @@ public abstract class BaseTileEntity
         this.getToolHandlers(tools),
         this.getToolHandler(),
         this.getSecondaryIngredientMatcher(),
-        this.getSecondaryOutputHandler(),
+        this.getSecondaryIngredientHandler(),
         this.getSecondaryOutputHandler(),
         this.getCraftingMatrixWidth(),
         this.getCraftingMatrixHeight()

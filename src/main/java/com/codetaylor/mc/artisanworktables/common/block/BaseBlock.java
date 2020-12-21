@@ -78,7 +78,6 @@ public abstract class BaseBlock
             || FluidHelper.drainWaterIntoBottle(player, tank)
             || FluidUtil.interactWithFluidHandler(player, hand, tank)) {
 
-          System.out.println(tank.getFluid().getDisplayName().getString() + " " + tank.getFluid().getAmount());
           return ActionResultType.SUCCESS;
         }
 

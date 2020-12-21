@@ -1,5 +1,7 @@
-package com.codetaylor.mc.artisanworktables.common.recipe;
+package com.codetaylor.mc.artisanworktables.common.util;
 
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ToolIngredientEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -7,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.annotation.Nullable;
 
-public class HashCodeUtil {
+public final class HashCodeHelper {
 
   public static int get(ItemStack itemStack) {
 
@@ -29,7 +31,7 @@ public class HashCodeUtil {
     ItemStack[] matchingStacks = ingredient.getMatchingStacks();
 
     for (ItemStack itemStack : matchingStacks) {
-      builder.append(HashCodeUtil.get(itemStack));
+      builder.append(HashCodeHelper.get(itemStack));
     }
 
     return builder.build();
@@ -54,7 +56,7 @@ public class HashCodeUtil {
   public static int get(ToolIngredientEntry entry) {
 
     return new HashCodeBuilder()
-        .append(HashCodeUtil.get(entry.getTool()))
+        .append(HashCodeHelper.get(entry.getTool()))
         .append(entry.getDamage())
         .build();
   }
@@ -62,12 +64,12 @@ public class HashCodeUtil {
   public static int get(ArtisanRecipe.ExtraOutputChancePair pair) {
 
     return new HashCodeBuilder()
-        .append(HashCodeUtil.get(pair.getOutput()))
+        .append(HashCodeHelper.get(pair.getOutput()))
         .append(pair.getChance())
         .build();
   }
 
-  private HashCodeUtil() {
+  private HashCodeHelper() {
     //
   }
 }

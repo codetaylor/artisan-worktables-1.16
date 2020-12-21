@@ -7,7 +7,7 @@ import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.TileEntitySecondaryInputBase;
+import com.codetaylor.mc.artisanworktables.common.tile.SecondaryInputBaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.util.ToolValidator;
@@ -170,9 +170,9 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Secondary input
-    if (this.tile instanceof TileEntitySecondaryInputBase) {
+    if (this.tile instanceof SecondaryInputBaseTileEntity) {
       this.slotIndexSecondaryInputStart = this.nextSlotIndex;
-      IItemHandler handler = ((TileEntitySecondaryInputBase) this.tile).getSecondaryIngredientHandler();
+      IItemHandler handler = ((SecondaryInputBaseTileEntity) this.tile).getSecondaryIngredientHandler();
       int slotCount = handler.getSlots();
 
       for (int i = 0; i < slotCount; i++) {

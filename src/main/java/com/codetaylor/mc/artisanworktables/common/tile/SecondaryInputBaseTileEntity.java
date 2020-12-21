@@ -13,37 +13,29 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TileEntitySecondaryInputBase
+public abstract class SecondaryInputBaseTileEntity
     extends BaseTileEntity {
 
   protected ObservableStackHandler secondaryIngredientHandler;
   protected MutuallyExclusiveStackHandlerWrapper wrapper;
 
-  protected final LazyOptional<IItemHandler> itemCapability = LazyOptional.of(() -> this.secondaryIngredientHandler);
-
   // ---------------------------------------------------------------------------
   // Initialization
   // ---------------------------------------------------------------------------
 
-  protected TileEntitySecondaryInputBase(TileEntityType<?> tileEntityType, ITileDataService tileDataService) {
+  protected SecondaryInputBaseTileEntity(TileEntityType<?> tileEntityType, ITileDataService tileDataService) {
 
     super(tileEntityType, tileDataService);
   }
 
-  protected TileEntitySecondaryInputBase(TileEntityType<?> tileEntityType, ITileDataService tileDataService, EnumType type) {
+  protected SecondaryInputBaseTileEntity(TileEntityType<?> tileEntityType, ITileDataService tileDataService, EnumType type) {
 
     super(tileEntityType, tileDataService, type);
   }
@@ -92,17 +84,6 @@ public abstract class TileEntitySecondaryInputBase
   // ---------------------------------------------------------------------------
   // Capability
   // ---------------------------------------------------------------------------
-
-  @Nonnull
-  @Override
-  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side != Direction.DOWN) {
-      return this.itemCapability.cast();
-    }
-
-    return super.getCapability(capability, side);
-  }
 
   @ParametersAreNonnullByDefault
   @Override

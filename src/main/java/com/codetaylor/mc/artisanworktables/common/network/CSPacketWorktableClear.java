@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.common.network;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.TileEntitySecondaryInputBase;
+import com.codetaylor.mc.artisanworktables.common.tile.SecondaryInputBaseTileEntity;
 import com.codetaylor.mc.athenaeum.network.spi.packet.IMessage;
 import com.codetaylor.mc.athenaeum.network.spi.packet.SPacketTileEntityBase;
 import net.minecraft.item.ItemStack;
@@ -116,9 +116,9 @@ public class CSPacketWorktableClear
       }
     }
 
-    if (tileEntity instanceof TileEntitySecondaryInputBase
+    if (tileEntity instanceof SecondaryInputBaseTileEntity
         && (clearFlags & CLEAR_SECONDARY_INPUT) == CLEAR_SECONDARY_INPUT) {
-      IItemHandlerModifiable secondaryIngredientHandler = ((TileEntitySecondaryInputBase) tileEntity).getSecondaryIngredientHandler();
+      IItemHandlerModifiable secondaryIngredientHandler = ((SecondaryInputBaseTileEntity) tileEntity).getSecondaryIngredientHandler();
 
       for (int i = 0; i < secondaryIngredientHandler.getSlots(); i++) {
         secondaryIngredientHandler.setStackInSlot(i, ItemStack.EMPTY);

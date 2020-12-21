@@ -5,7 +5,7 @@ import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 
 public class WorkshopTileEntity
-    extends BaseTileEntity {
+    extends SecondaryInputBaseTileEntity {
 
   public static final String NAME = "workshop";
 

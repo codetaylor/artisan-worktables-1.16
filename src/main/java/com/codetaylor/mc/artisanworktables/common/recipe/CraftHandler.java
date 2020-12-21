@@ -48,7 +48,7 @@ public class CraftHandler {
       // This method must only be called on the server. It depends on RNG
       // and, as such, must be calculated with server authority.
       // Check for and populate secondary, tertiary and quaternary outputs
-      extraOutputList = this.onCraftProcessExtraOutput(world, pos, inventory.getSecondaryOutputHandler(), recipe.getExtraOutputs(), extraOutputList);
+      this.onCraftProcessExtraOutput(world, pos, inventory.getSecondaryOutputHandler(), recipe.getExtraOutputs(), extraOutputList);
     }
 
     // Decrease stacks in crafting matrix
@@ -103,7 +103,7 @@ public class CraftHandler {
     }
   }
 
-  private List<ItemStack> onCraftProcessExtraOutput(
+  private void onCraftProcessExtraOutput(
       World world,
       BlockPos pos,
       IItemHandlerModifiable secondaryOutputHandler,
@@ -117,8 +117,6 @@ public class CraftHandler {
         result.add(this.generateExtraOutput(world, pos, secondaryOutputHandler, extraOutput.getOutput()));
       }
     }
-
-    return result;
   }
 
   private ItemStack generateExtraOutput(World world, BlockPos pos, IItemHandlerModifiable secondaryOutputHandler, ItemStack extraOutput) {

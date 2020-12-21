@@ -42,19 +42,24 @@ public abstract class BaseScreen
 
     BaseTileEntity tile = this.getContainer().getTile();
 
-    this.guiContainerElementAdd(new GuiElementFluidTankSmall(
-        this,
-        tile.getTank(),
-        tile.getPos(),
-        this.textColor,
-        8,
-        17
-    ));
+    this.addFluidTankElement(tile, this.textColor);
 
     this.guiContainerElementAdd(new GuiElementTabs(
         this,
         tile,
         176
+    ));
+  }
+
+  protected void addFluidTankElement(BaseTileEntity tile, int overlayColor) {
+
+    this.guiContainerElementAdd(new GuiElementFluidTankSmall(
+        this,
+        tile.getTank(),
+        tile.getPos(),
+        overlayColor,
+        8,
+        17
     ));
   }
 

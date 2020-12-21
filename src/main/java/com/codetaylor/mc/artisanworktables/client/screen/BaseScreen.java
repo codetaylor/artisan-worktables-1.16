@@ -27,6 +27,12 @@ public abstract class BaseScreen
 
     super(container, playerInventory, title, width, height);
 
+    // This needs to be set here because the playerInventoryTitleY is calculated
+    // from the ySize in the call to super ctor, but the correct value of ySize is
+    // set after the call to super ctor.
+    this.playerInventoryTitleX = 8;
+    this.playerInventoryTitleY = this.ySize - 94;
+
     // background texture
     this.guiContainerElementAdd(new GuiElementTextureRectangle(
         this,

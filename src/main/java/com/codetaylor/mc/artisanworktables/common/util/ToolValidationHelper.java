@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.util;
 
-import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.IToolHandler;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
@@ -25,7 +25,7 @@ import java.util.List;
  * Uses a synchronized method because it is called from both threads on the
  * same machine in a single player game.
  */
-public class ToolValidator {
+public final class ToolValidationHelper {
 
   private static final EnumMap<EnumType, Object2BooleanMap<ResourceLocation>> CACHE;
 
@@ -47,13 +47,13 @@ public class ToolValidator {
 
     boolean result = false;
 
-    if (ToolValidator.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
+    if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
       result = true;
     }
 
     if (!result) {
 
-      if (ToolValidator.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
+      if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
         result = true;
       }
     }
@@ -64,7 +64,7 @@ public class ToolValidator {
 
   private static boolean checkRecipeType(IToolHandler toolHandler, ItemStack tool, RecipeManager recipeManager, IRecipeType<? extends ArtisanRecipe> recipeType) {
 
-    return ToolValidator.checkList(toolHandler, tool, recipeManager.getRecipesForType(recipeType));
+    return ToolValidationHelper.checkList(toolHandler, tool, recipeManager.getRecipesForType(recipeType));
   }
 
   private static boolean checkList(IToolHandler toolHandler, ItemStack tool, List<? extends ArtisanRecipe> recipeList) {
@@ -87,4 +87,7 @@ public class ToolValidator {
     return false;
   }
 
+  private ToolValidationHelper() {
+    //
+  }
 }

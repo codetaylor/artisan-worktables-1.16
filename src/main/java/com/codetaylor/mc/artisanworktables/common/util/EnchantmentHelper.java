@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 
-public class EnchantmentHelper {
+public final class EnchantmentHelper {
 
   public static int getPlayerExperienceTotal(PlayerEntity player) {
 
@@ -84,4 +84,7 @@ public class EnchantmentHelper {
     }
   }
 
+  private EnchantmentHelper() {
+    //
+  }
 }

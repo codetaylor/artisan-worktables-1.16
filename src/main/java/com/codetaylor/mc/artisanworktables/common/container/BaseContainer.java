@@ -10,7 +10,7 @@ import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.SecondaryInputBaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
-import com.codetaylor.mc.artisanworktables.common.util.ToolValidator;
+import com.codetaylor.mc.artisanworktables.common.util.ToolValidationHelper;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -130,7 +130,7 @@ public abstract class BaseContainer
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         this.containerSlotAdd(new CraftingToolSlot(
             slotChangeListener,
-            itemStack -> ToolValidator.isValidTool(this.tile.getTableType(), itemStack, world.getRecipeManager()),
+            itemStack -> ToolValidationHelper.isValidTool(this.tile.getTableType(), itemStack, world.getRecipeManager()),
             toolHandler,
             i,
             78 + this.containerToolOffsetGetX(),

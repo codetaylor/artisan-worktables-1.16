@@ -55,6 +55,8 @@ public abstract class BaseTileEntity
   private TankHandler tank;
   private boolean initialized;
 
+  private MageToolObserver mageToolObserver;
+
   private final List<BaseContainer> containerList = new ArrayList<>();
   private final CraftHandler craftHandler = new CraftHandler();
 
@@ -109,6 +111,12 @@ public abstract class BaseTileEntity
       this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
       this.toolHandler.addObserver(contentsChangedEventHandler);
       this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
+    }
+
+    // Mage table observer
+    {
+      this.mageToolObserver = new MageToolObserver(this);
+      this.toolHandler.addObserver(this.mageToolObserver);
     }
 
     {
@@ -373,6 +381,11 @@ public abstract class BaseTileEntity
     this.craftHandler.doCraft(this.world, this.pos, player, recipe, this.getInventory(player), null);
 
     this.markDirty();
+  }
+
+  public void notifyCraftComplete() {
+
+    this.mageToolObserver.checkToolState(this.toolHandler);
   }
 
   // ---------------------------------------------------------------------------

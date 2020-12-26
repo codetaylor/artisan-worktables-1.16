@@ -4,12 +4,15 @@ import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.util.Util;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -24,9 +27,18 @@ import java.util.Random;
 public abstract class MageBaseBlock
     extends BaseBlock {
 
+  public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+
   protected MageBaseBlock(EnumType type, Material material, ToolType toolType, SoundType soundType, float hardness, float resistance) {
 
     super(type, material, toolType, soundType, hardness, resistance);
+    this.setDefaultState(this.stateContainer.getBaseState().with(ACTIVE, false));
+  }
+
+  @Override
+  protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+
+    builder.add(ACTIVE);
   }
 
   @ParametersAreNonnullByDefault

@@ -1,12 +1,14 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.IToolHandler;
+import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.util.EnchantmentHelper;
 import com.codetaylor.mc.artisanworktables.common.util.Util;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -68,7 +70,7 @@ public class CraftHandler {
     // and is only used here to determine if onCraftCompleteServer should be called.
     if (!world.isRemote
         && !craftedItem.isEmpty()) {
-      this.onCraftCompleteServer(craftedItem, inventory, player);
+      this.onCraftCompleteServer(craftedItem, inventory, player, pos);
     }
 
     if (output != null) {
@@ -425,7 +427,8 @@ public class CraftHandler {
   protected void onCraftCompleteServer(
       ItemStack craftedItem,
       ArtisanInventory inventory,
-      @Nullable PlayerEntity player
+      @Nullable PlayerEntity player,
+      BlockPos pos
   ) {
 
     if (player == null) {
@@ -437,5 +440,12 @@ public class CraftHandler {
         craftedItem.copy(),
         inventory
     ));
+
+    World world = player.getEntityWorld();
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity instanceof BaseTileEntity) {
+      ((BaseTileEntity) tileEntity).notifyCraftComplete();
+    }
   }
 }

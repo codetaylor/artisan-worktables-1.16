@@ -11,7 +11,7 @@
     "p": {"tag": "minecraft:planks"}
   },
   "tools": [
-    {"item": "minecraft:diamond_pickaxe", "damage": 15}
+    {"item": "minecraft:diamond_pickaxe", "damage": 10000}
   ],
   "mirrored": true,
   "minimumTier": 0,

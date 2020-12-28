@@ -31,7 +31,7 @@ public abstract class BaseScreen
     // from the ySize in the call to super ctor, but the correct value of ySize is
     // set after the call to super ctor.
     this.playerInventoryTitleX = 8;
-    this.playerInventoryTitleY = this.ySize - 94;
+    this.playerInventoryTitleY = this.ySize - 93;
 
     // background texture
     this.guiContainerElementAdd(new GuiElementTextureRectangle(

@@ -171,6 +171,10 @@ public abstract class BaseScreen
       GuiHelper.drawStringOutlined(matrixStack, GuiHelper.asGalactic((IFormattableTextComponent) this.title), this.titleX, this.titleY, this.font, this.textColor, false);
       GuiHelper.drawStringOutlined(matrixStack, GuiHelper.asGalactic((IFormattableTextComponent) this.playerInventory.getDisplayName()), this.playerInventoryTitleX, this.playerInventoryTitleY, this.font, this.textColor, false);
 
+    } else if (this.tile.getTableType() == EnumType.DESIGNER) {
+      this.getFontRenderer().func_243248_b(matrixStack, this.title, this.titleX, this.titleY, Color.WHITE.getRGB());
+      this.getFontRenderer().func_243248_b(matrixStack, this.playerInventory.getDisplayName(), this.playerInventoryTitleX, this.playerInventoryTitleY, Color.WHITE.getRGB());
+
     } else {
       GuiHelper.drawStringOutlined(matrixStack, this.title, this.titleX, this.titleY, this.font, this.textColor, false);
       GuiHelper.drawStringOutlined(matrixStack, this.playerInventory.getDisplayName(), this.playerInventoryTitleX, this.playerInventoryTitleY, this.font, this.textColor, false);

@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.block;
 
 import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.common.container.ContainerProvider;
+import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
@@ -12,6 +13,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -22,6 +25,9 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -90,5 +96,41 @@ public abstract class BaseBlock
     }
 
     return ActionResultType.SUCCESS;
+  }
+
+  @ParametersAreNonnullByDefault
+  @Override
+  public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+
+    if (!state.isIn(newState.getBlock())) {
+      TileEntity tileEntity = world.getTileEntity(pos);
+
+      if (tileEntity instanceof BaseTileEntity) {
+        BaseTileEntity baseTileEntity = (BaseTileEntity) tileEntity;
+
+        ItemStackHandler toolHandler = baseTileEntity.getToolHandler();
+        ICraftingMatrixStackHandler craftingMatrixHandler = baseTileEntity.getCraftingMatrixHandler();
+        ItemStackHandler secondaryOutputHandler = baseTileEntity.getSecondaryOutputHandler();
+        IItemHandlerModifiable secondaryIngredientHandler = baseTileEntity.getSecondaryIngredientHandler();
+
+        this.dropItems(world, pos, toolHandler);
+        this.dropItems(world, pos, craftingMatrixHandler);
+        this.dropItems(world, pos, secondaryOutputHandler);
+        this.dropItems(world, pos, secondaryIngredientHandler);
+      }
+
+      super.onReplaced(state, world, pos, newState, isMoving);
+    }
+  }
+
+  private void dropItems(World world, BlockPos pos, IItemHandler handler) {
+
+    for (int i = 0; i < handler.getSlots(); i++) {
+      ItemStack itemStack = handler.getStackInSlot(i);
+
+      if (!itemStack.isEmpty()) {
+        InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, itemStack);
+      }
+    }
   }
 }

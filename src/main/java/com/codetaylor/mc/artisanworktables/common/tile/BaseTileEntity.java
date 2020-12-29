@@ -408,8 +408,8 @@ public abstract class BaseTileEntity
     ArtisanInventory inventory = this.getInventory(player);
 
     {
-      IRecipeType<? extends ArtisanRecipeShaped> recipeType = RecipeTypes.SHAPED_RECIPE_TYPES.get(this.type);
-      Optional<? extends ArtisanRecipeShaped> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
+      IRecipeType<ArtisanRecipe> recipeType = RecipeTypes.SHAPED_RECIPE_TYPES.get(this.type);
+      Optional<ArtisanRecipe> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
 
       if (recipe.isPresent()) {
         return recipe.get();
@@ -417,8 +417,8 @@ public abstract class BaseTileEntity
     }
 
     {
-      IRecipeType<? extends ArtisanRecipeShapeless> recipeType = RecipeTypes.SHAPELESS_RECIPE_TYPES.get(this.type);
-      Optional<? extends ArtisanRecipeShapeless> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
+      IRecipeType<ArtisanRecipe> recipeType = RecipeTypes.SHAPELESS_RECIPE_TYPES.get(this.type);
+      Optional<ArtisanRecipe> recipe = recipeManager.getRecipe(recipeType, inventory, this.world);
 
       if (recipe.isPresent()) {
         return recipe.get();

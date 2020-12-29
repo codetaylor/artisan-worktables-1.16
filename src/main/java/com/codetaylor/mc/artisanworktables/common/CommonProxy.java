@@ -15,11 +15,16 @@ import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.SCPacketTileDat
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -130,5 +135,18 @@ public class CommonProxy
   public EnumMap<EnumType, IRecipeSerializer<? extends ArtisanRecipe>> getRegisteredSerializersShapeless() {
 
     return this.registeredSerializersShapeless;
+  }
+
+  @Nullable
+  @Override
+  public RecipeManager getRecipeManager() {
+
+    MinecraftServer minecraftServer = LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
+
+    if (minecraftServer != null) {
+      return minecraftServer.getRecipeManager();
+    }
+
+    return null;
   }
 }

@@ -8,8 +8,8 @@ import java.util.EnumMap;
 
 public final class RecipeTypes {
 
-  public static final EnumMap<EnumType, IRecipeType<? extends ArtisanRecipeShaped>> SHAPED_RECIPE_TYPES;
-  public static final EnumMap<EnumType, IRecipeType<? extends ArtisanRecipeShapeless>> SHAPELESS_RECIPE_TYPES;
+  public static final EnumMap<EnumType, IRecipeType<ArtisanRecipe>> SHAPED_RECIPE_TYPES;
+  public static final EnumMap<EnumType, IRecipeType<ArtisanRecipe>> SHAPELESS_RECIPE_TYPES;
 
   static {
     SHAPED_RECIPE_TYPES = new EnumMap<>(EnumType.class);

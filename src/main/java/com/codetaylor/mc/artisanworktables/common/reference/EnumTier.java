@@ -1,10 +1,18 @@
 package com.codetaylor.mc.artisanworktables.common.reference;
 
+import java.util.Comparator;
+import java.util.stream.Stream;
+
 public enum EnumTier {
 
   WORKTABLE(0, "worktable"),
   WORKSTATION(1, "workstation"),
   WORKSHOP(2, "workshop");
+
+  public static final String[] NAMES = Stream.of(EnumType.values())
+      .sorted(Comparator.comparing(EnumType::getName))
+      .map(EnumType::getName)
+      .toArray(String[]::new);
 
   private int id;
   private String name;
@@ -35,5 +43,20 @@ public enum EnumTier {
     }
 
     throw new IllegalArgumentException("Invalid id: " + id);
+  }
+
+  public static EnumTier fromName(String name) {
+
+    EnumTier[] values = EnumTier.values();
+    name = name.toLowerCase();
+
+    for (EnumTier value : values) {
+
+      if (value.name.equals(name)) {
+        return value;
+      }
+    }
+
+    throw new IllegalArgumentException("Unknown name: " + name);
   }
 }

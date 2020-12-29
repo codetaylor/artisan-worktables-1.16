@@ -48,6 +48,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.ext.forge.version}"
     compile fg.deobf("com.codetaylor.mc.athenaeum:athenaeum-1.16:[0.0.0,)")
     implementation sourceSets.api.output
+    compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.58:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.0.58")
     compile fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.4:7.1.0.71")
 }

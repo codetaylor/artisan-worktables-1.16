@@ -2,10 +2,13 @@ package com.codetaylor.mc.artisanworktables.common.plugin.jei;
 
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShapeless;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -13,10 +16,13 @@ import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -90,6 +96,70 @@ public class Category
     this.setupFluid(index, recipe, fluidStacks, this.tier);
     this.setupSecondaryIngredients(index, recipe, stacks, this.tier);
     this.setupTransferButton(layout, this.tier);
+  }
+
+  @Override
+  public void draw(@Nonnull ArtisanRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+
+    Minecraft minecraft = Minecraft.getInstance();
+
+//    RenderSystem.enableDepthTest();
+//    RenderSystem.depthMask(false);
+//    RenderSystem.disableDepthTest();
+
+    matrixStack.push();
+    matrixStack.scale(0.5f, 0.5f, 1);
+    matrixStack.translate(0, 0, 200);
+    //matrixStack.push();
+
+    int size = Math.min(recipe.getExtraOutputs().size(), 3);
+
+    if (this.tier == EnumTier.WORKSHOP) {
+
+      int xPos = 256;
+      int yPos = 12;
+
+      for (int i = 0; i < size; i++) {
+        float chance = recipe.getExtraOutputs().get(i).getChance();
+        this.drawExtraOutputChanceString(minecraft.fontRenderer, matrixStack, chance, xPos + 36 * i, yPos);
+      }
+
+    } else {
+
+      int xPos = 331;
+      int yPos = 32;
+
+      for (int i = 0; i < size; i++) {
+        float chance = recipe.getExtraOutputs().get(i).getChance();
+        this.drawExtraOutputChanceString(minecraft.fontRenderer, matrixStack, chance, xPos, yPos + 36 * i);
+      }
+    }
+
+    //matrixStack.pop();
+
+    if (recipe instanceof ArtisanRecipeShapeless) {
+
+      if (this.tier == EnumTier.WORKSHOP) {
+        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, 288, 58, 18, 17, 0, 0, 0, 1, 1);
+
+      } else {
+        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, 234, 8, 18, 17, 0, 0, 0, 1, 1);
+      }
+    }
+
+    matrixStack.pop();
+  }
+
+  private void drawExtraOutputChanceString(
+      FontRenderer fontRenderer,
+      MatrixStack matrixStack,
+      float secondaryOutputChance,
+      int positionX,
+      int positionY
+  ) {
+
+    String label = (int) (secondaryOutputChance * 100) + "%";
+    fontRenderer.func_243248_b(matrixStack, new TranslationTextComponent(label), positionX - fontRenderer.getStringWidth(label) * 0.5f, positionY, 0xFFFFFFFF);
   }
 
   private void setupTransferButton(IRecipeLayout layout, EnumTier tier) {

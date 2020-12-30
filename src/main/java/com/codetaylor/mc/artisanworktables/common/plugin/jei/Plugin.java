@@ -26,6 +26,8 @@ import java.util.*;
 public class Plugin
     implements IModPlugin {
 
+  public static final ResourceLocation RECIPE_BACKGROUND = Key.from("textures/gui/recipe_background.png");
+
   public static final Map<EnumTier, Map<EnumType, ResourceLocation>> CATEGORY_KEYS;
 
   static {

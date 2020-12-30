@@ -13,6 +13,10 @@
   "tools": [
     {"item": "minecraft:diamond_pickaxe", "damage": 10000}
   ],
+  "secondaryIngredients": [
+    {"item": "minecraft:emerald"},
+    {"tag": "forge:ingots/iron"}
+  ],
   "mirrored": true,
   "minimumTier": 0,
   "maximumTier": 2,

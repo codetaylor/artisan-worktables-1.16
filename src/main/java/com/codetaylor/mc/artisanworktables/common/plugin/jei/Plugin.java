@@ -38,13 +38,6 @@ public class Plugin
     }
   }
 
-  private final CategoryFactory categoryFactory;
-
-  public Plugin() {
-
-    this.categoryFactory = new CategoryFactory();
-  }
-
   @Nonnull
   @Override
   public ResourceLocation getPluginUid() {
@@ -56,6 +49,7 @@ public class Plugin
   public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
 
     IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+    CategoryFactory categoryFactory = new CategoryFactory(guiHelper.createCraftingGridHelper(1), new WorkshopCraftingGridHelper(1));
     List<Block> registeredWorktables = ArtisanWorktablesMod.getProxy().getRegisteredWorktables();
     List<IRecipeCategory<?>> recipeCategoryList = new ArrayList<>(registeredWorktables.size());
 
@@ -66,7 +60,7 @@ public class Plugin
       EnumTier tier = EnumTier.fromName(split[0]);
       EnumType type = EnumType.fromName(split[1]);
 
-      BaseCategory<?> category = this.categoryFactory.create(tier, type, block, guiHelper);
+      BaseCategory<?> category = categoryFactory.create(tier, type, block, guiHelper);
       recipeCategoryList.add(category);
     }
 

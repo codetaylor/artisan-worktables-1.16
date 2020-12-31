@@ -140,10 +140,10 @@ public class Category
     if (recipe instanceof ArtisanRecipeShapeless) {
 
       if (this.tier == EnumTier.WORKSHOP) {
-        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, 288, 58, 18, 17, 0, 0, 0, 1, 1);
+        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, matrixStack, 288, 58, 18, 17, 0, 0, 0, 1, 1);
 
       } else {
-        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, 234, 8, 18, 17, 0, 0, 0, 1, 1);
+        GuiHelper.drawTexturedRect(minecraft, Plugin.RECIPE_BACKGROUND, matrixStack, 234, 8, 18, 17, 0, 0, 0, 1, 1);
       }
     }
 

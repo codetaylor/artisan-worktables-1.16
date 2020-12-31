@@ -86,6 +86,7 @@ public class GuiElementTabs
       int textureX = (this.worktable.getWorktableGuiTabTextureYOffset() / 12) * (TAB_WIDTH + BUTTON_WIDTH * 2);
 
       GuiHelper.drawModalRectWithCustomSizedTexture(
+          matrixStack,
           this.elementXModifiedGet() + TAB_LEFT_OFFSET + TAB_ITEM_HORIZONTAL_OFFSET - 18,
           tabY,
           0,
@@ -103,6 +104,7 @@ public class GuiElementTabs
       int textureX = (this.worktable.getWorktableGuiTabTextureYOffset() / 12) * (TAB_WIDTH + BUTTON_WIDTH * 2);
 
       GuiHelper.drawModalRectWithCustomSizedTexture(
+          matrixStack,
           this.elementXModifiedGet() + this.elementWidthModifiedGet() - 12,
           tabY,
           0,
@@ -123,6 +125,7 @@ public class GuiElementTabs
 
       if (joinedTable == this.worktable) {
         GuiHelper.drawModalRectWithCustomSizedTexture(
+            matrixStack,
             tabX,
             tabY + TAB_CURRENT_OFFSET,
             0,
@@ -136,6 +139,7 @@ public class GuiElementTabs
 
       } else {
         GuiHelper.drawModalRectWithCustomSizedTexture(
+            matrixStack,
             tabX,
             tabY,
             0,

@@ -51,6 +51,7 @@ public class GuiElementFluidTankLarge
     );
 
     GuiHelper.drawModalRectWithCustomSizedTexture(
+        matrixStack,
         this.elementX,
         this.elementY,
         0,
@@ -63,6 +64,7 @@ public class GuiElementFluidTankLarge
     );
 
     GuiHelper.drawModalRectWithCustomSizedTexture(
+        matrixStack,
         this.elementX,
         this.elementY + ELEMENT_OVERLAY_HEIGHT - 16,
         0,

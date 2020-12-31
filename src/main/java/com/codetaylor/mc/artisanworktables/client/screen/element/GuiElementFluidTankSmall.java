@@ -6,7 +6,6 @@ import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementClickable;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.BlockPos;
@@ -51,6 +50,7 @@ public class GuiElementFluidTankSmall
     );
 
     GuiHelper.drawModalRectWithCustomSizedTexture(
+        matrixStack,
         this.elementX,
         this.elementY,
         1000,

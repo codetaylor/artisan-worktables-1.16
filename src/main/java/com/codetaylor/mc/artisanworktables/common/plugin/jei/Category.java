@@ -9,6 +9,7 @@ import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -103,14 +104,9 @@ public class Category
 
     Minecraft minecraft = Minecraft.getInstance();
 
-//    RenderSystem.enableDepthTest();
-//    RenderSystem.depthMask(false);
-//    RenderSystem.disableDepthTest();
-
     matrixStack.push();
     matrixStack.scale(0.5f, 0.5f, 1);
     matrixStack.translate(0, 0, 200);
-    //matrixStack.push();
 
     int size = Math.min(recipe.getExtraOutputs().size(), 3);
 
@@ -135,7 +131,7 @@ public class Category
       }
     }
 
-    //matrixStack.pop();
+    RenderSystem.enableBlend();
 
     if (recipe instanceof ArtisanRecipeShapeless) {
 

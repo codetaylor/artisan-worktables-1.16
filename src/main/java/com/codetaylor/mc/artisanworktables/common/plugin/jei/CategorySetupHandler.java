@@ -153,7 +153,7 @@ public class CategorySetupHandler {
 
       if (tools.size() > 1) {
         stacks.init(index[0], true, 74, 20 + 22);
-        stacks.set(31, tools.get(1));
+        stacks.set(index[0], tools.get(1));
         index[0] += 1;
       }
 

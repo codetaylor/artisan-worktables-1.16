@@ -46,5 +46,10 @@
   "block.artisanworktables.workshop_tailor": "Tailor's Workshop",
   "block.artisanworktables.workshop_tanner": "Tanner's Workshop",
   "gui.artisanworktables.tooltip.fluid.empty": "Empty",
-  "gui.artisanworktables.tooltip.fluid.destroy": "Destroy fluid: SHIFT + LEFT-CLICK"
+  "gui.artisanworktables.tooltip.fluid.destroy": "Destroy fluid: SHIFT + LEFT-CLICK",
+  "jei.artisanworktables.tooltip.shapeless.recipe": "Shapeless Recipe",
+  "jei.artisanworktables.xp.cost": "XP Cost: %d",
+  "jei.artisanworktables.level.cost": "Level Cost: %d",
+  "jei.artisanworktables.xp.required": "Minimum XP: %d",
+  "jei.artisanworktables.level.required": "Minimum Level: %d"
 }

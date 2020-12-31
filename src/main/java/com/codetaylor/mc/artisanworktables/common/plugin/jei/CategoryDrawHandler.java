@@ -9,6 +9,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -23,7 +24,7 @@ public class CategoryDrawHandler {
     this.tier = tier;
   }
 
-  public void draw(@Nonnull ArtisanRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+  public void draw(@Nonnull ArtisanRecipe recipe, MatrixStack matrixStack, int backgroundHeight) {
 
     Minecraft minecraft = Minecraft.getInstance();
     FontRenderer fontRenderer = minecraft.fontRenderer;
@@ -32,6 +33,7 @@ public class CategoryDrawHandler {
     matrixStack.translate(0, 0, 200);
 
     this.drawToolDamageStrings(recipe, matrixStack, fontRenderer);
+    this.drawExperienceString(recipe, matrixStack, backgroundHeight, fontRenderer);
 
     matrixStack.push();
     matrixStack.scale(0.5f, 0.5f, 1);
@@ -41,6 +43,37 @@ public class CategoryDrawHandler {
 
     matrixStack.pop();
     matrixStack.pop();
+  }
+
+  private void drawExperienceString(@Nonnull ArtisanRecipe recipe, MatrixStack matrixStack, int backgroundHeight, FontRenderer fontRenderer) {
+
+    String experienceString = null;
+
+    if (recipe.getExperienceRequired() > 0) {
+
+      if (recipe.consumeExperience()) {
+        experienceString = I18n.format("jei.artisanworktables.xp.cost", recipe.getExperienceRequired());
+
+      } else {
+        experienceString = I18n.format(
+            "jei.artisanworktables.xp.required",
+            recipe.getExperienceRequired()
+        );
+      }
+
+    } else if (recipe.getLevelRequired() > 0) {
+
+      if (recipe.consumeExperience()) {
+        experienceString = I18n.format("jei.artisanworktables.level.cost", recipe.getLevelRequired());
+
+      } else {
+        experienceString = I18n.format("jei.artisanworktables.level.required", recipe.getLevelRequired());
+      }
+    }
+
+    if (experienceString != null) {
+      this.drawExperienceString(fontRenderer, matrixStack, backgroundHeight, experienceString);
+    }
   }
 
   private void drawToolDamageStrings(@Nonnull ArtisanRecipe recipe, MatrixStack matrixStack, FontRenderer fontRenderer) {
@@ -126,5 +159,16 @@ public class CategoryDrawHandler {
           0xFFFFFFFF
       );
     }
+  }
+
+  private void drawExperienceString(FontRenderer fontRenderer, MatrixStack matrixStack, int backgroundHeight, String experienceString) {
+
+    fontRenderer.drawString(
+        matrixStack,
+        experienceString,
+        5,
+        backgroundHeight - 10,
+        0xFF80FF20
+    );
   }
 }

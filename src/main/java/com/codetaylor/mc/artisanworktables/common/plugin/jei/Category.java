@@ -100,7 +100,7 @@ public class Category
   @Override
   public void draw(@Nonnull ArtisanRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
 
-    this.categoryDrawHandler.draw(recipe, matrixStack, mouseX, mouseY);
+    this.categoryDrawHandler.draw(recipe, matrixStack, this.getBackground().getHeight());
   }
 
   private void setupTransferButton(IRecipeLayout layout, EnumTier tier) {

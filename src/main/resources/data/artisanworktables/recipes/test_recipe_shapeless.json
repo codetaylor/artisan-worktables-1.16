@@ -25,7 +25,7 @@
   ],
   "minimumTier": 0,
   "maximumTier": 2,
-  "experienceRequired": 0,
+  "experienceRequired": 100,
   "levelRequired": 0,
   "consumeExperience": true,
   "result": {

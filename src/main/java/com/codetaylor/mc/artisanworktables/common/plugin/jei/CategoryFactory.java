@@ -22,7 +22,7 @@ public class CategoryFactory {
     this.workshopCraftingGridHelper = workshopCraftingGridHelper;
   }
 
-  public BaseCategory<?> create(EnumTier tier, EnumType type, Block block, IGuiHelper guiHelper) {
+  public BaseCategory<?> create(EnumTier tier, EnumType type, Block block, IGuiHelper guiHelper, CategoryDrawHandler categoryDrawHandler) {
 
     return new Category(
         tier,
@@ -31,7 +31,8 @@ public class CategoryFactory {
         this.createBackground(tier, guiHelper, Key.from(String.format("textures/gui/%s_%s.png", tier.getName(), type.getName()))),
         guiHelper.createDrawableIngredient(new ItemStack(block)),
         Plugin.CATEGORY_KEYS.get(tier).get(type),
-        tier == EnumTier.WORKSHOP ? this.workshopCraftingGridHelper : this.craftingGridHelper
+        tier == EnumTier.WORKSHOP ? this.workshopCraftingGridHelper : this.craftingGridHelper,
+        categoryDrawHandler
     );
   }
 

@@ -55,14 +55,21 @@ public class Plugin
     List<Block> registeredWorktables = ArtisanWorktablesMod.getProxy().getRegisteredWorktables();
     List<IRecipeCategory<?>> recipeCategoryList = new ArrayList<>(registeredWorktables.size());
 
+    Map<EnumTier, CategoryDrawHandler> categoryDrawHandlerMap = new EnumMap<>(EnumTier.class);
+
+    for (EnumTier tier : EnumTier.values()) {
+      categoryDrawHandlerMap.put(tier, new CategoryDrawHandler(tier));
+    }
+
     for (Block block : registeredWorktables) {
       ResourceLocation registryName = block.getRegistryName();
       String path = Objects.requireNonNull(registryName).getPath();
       String[] split = path.split("_");
       EnumTier tier = EnumTier.fromName(split[0]);
       EnumType type = EnumType.fromName(split[1]);
+      CategoryDrawHandler categoryDrawHandler = categoryDrawHandlerMap.get(tier);
 
-      BaseCategory<?> category = categoryFactory.create(tier, type, block, guiHelper);
+      BaseCategory<?> category = categoryFactory.create(tier, type, block, guiHelper, categoryDrawHandler);
       recipeCategoryList.add(category);
     }
 

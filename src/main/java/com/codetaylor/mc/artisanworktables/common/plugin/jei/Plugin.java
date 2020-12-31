@@ -9,6 +9,7 @@ import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.util.Key;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -51,14 +52,18 @@ public class Plugin
   public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
 
     IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-    CategoryFactory categoryFactory = new CategoryFactory(guiHelper.createCraftingGridHelper(1), new WorkshopCraftingGridHelper(1));
+    ICraftingGridHelper craftingGridHelper = guiHelper.createCraftingGridHelper(1);
+    WorkshopCraftingGridHelper workshopCraftingGridHelper = new WorkshopCraftingGridHelper(1);
+    CategoryFactory categoryFactory = new CategoryFactory();
     List<Block> registeredWorktables = ArtisanWorktablesMod.getProxy().getRegisteredWorktables();
     List<IRecipeCategory<?>> recipeCategoryList = new ArrayList<>(registeredWorktables.size());
 
     Map<EnumTier, CategoryDrawHandler> categoryDrawHandlerMap = new EnumMap<>(EnumTier.class);
+    Map<EnumTier, CategorySetupHandler> categorySetupHandlerMap = new EnumMap<>(EnumTier.class);
 
     for (EnumTier tier : EnumTier.values()) {
       categoryDrawHandlerMap.put(tier, new CategoryDrawHandler(tier));
+      categorySetupHandlerMap.put(tier, new CategorySetupHandler(tier, tier == EnumTier.WORKSHOP ? workshopCraftingGridHelper : craftingGridHelper));
     }
 
     for (Block block : registeredWorktables) {
@@ -67,9 +72,10 @@ public class Plugin
       String[] split = path.split("_");
       EnumTier tier = EnumTier.fromName(split[0]);
       EnumType type = EnumType.fromName(split[1]);
+      CategorySetupHandler categorySetupHandler = categorySetupHandlerMap.get(tier);
       CategoryDrawHandler categoryDrawHandler = categoryDrawHandlerMap.get(tier);
 
-      BaseCategory<?> category = categoryFactory.create(tier, type, block, guiHelper, categoryDrawHandler);
+      BaseCategory<?> category = categoryFactory.create(tier, type, block, guiHelper, categorySetupHandler, categoryDrawHandler);
       recipeCategoryList.add(category);
     }
 

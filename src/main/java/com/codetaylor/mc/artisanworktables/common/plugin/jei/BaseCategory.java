@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.common.plugin.jei;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -19,9 +18,15 @@ public abstract class BaseCategory<R>
   protected final IDrawable background;
   protected final IDrawable icon;
   protected final ResourceLocation uid;
-  protected final ICraftingGridHelper craftingGridHelper;
 
-  public BaseCategory(EnumType type, EnumTier tier, String titleKey, IDrawable background, IDrawable icon, ResourceLocation uid, ICraftingGridHelper craftingGridHelper) {
+  public BaseCategory(
+      EnumType type,
+      EnumTier tier,
+      String titleKey,
+      IDrawable background,
+      IDrawable icon,
+      ResourceLocation uid
+  ) {
 
     this.type = type;
     this.tier = tier;
@@ -29,7 +34,6 @@ public abstract class BaseCategory<R>
     this.background = background;
     this.icon = icon;
     this.uid = uid;
-    this.craftingGridHelper = craftingGridHelper;
   }
 
   @Nonnull

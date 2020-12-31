@@ -9,8 +9,7 @@
   "fluidIngredient": {"fluid": "minecraft:water", "amount": 100},
   "tools": [
     {"item": "minecraft:diamond_pickaxe", "damage": 15},
-    {"item": "minecraft:diamond_axe", "damage": 15},
-    {"item": "minecraft:diamond_hoe", "damage": 15}
+    {"item": "minecraft:diamond_axe", "damage": 15}
   ],
   "secondaryIngredients": [
     {"item": "minecraft:emerald"},

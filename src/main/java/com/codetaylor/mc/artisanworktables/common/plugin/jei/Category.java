@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.plugin.jei;
 
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShapeless;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
@@ -12,10 +13,13 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Category
@@ -83,5 +87,29 @@ public class Category
   public void draw(@Nonnull ArtisanRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
 
     this.categoryDrawHandler.draw(recipe, matrixStack, this.getBackground().getHeight());
+  }
+
+  @Nonnull
+  @Override
+  public List<ITextComponent> getTooltipStrings(@Nonnull ArtisanRecipe recipe, double mouseX, double mouseY) {
+
+    if (recipe instanceof ArtisanRecipeShapeless) {
+
+      int x = 117;
+      int y = 4;
+
+      if (this.tier == EnumTier.WORKSHOP) {
+        x = 144;
+        y = 29;
+      }
+
+      if (mouseX >= x && mouseX <= x + 9 && mouseY >= y && mouseY <= y + 9) {
+        List<ITextComponent> tooltip = new ArrayList<>();
+        tooltip.add(new TranslationTextComponent("jei.artisanworktables.tooltip.shapeless.recipe"));
+        return tooltip;
+      }
+    }
+
+    return Collections.emptyList();
   }
 }

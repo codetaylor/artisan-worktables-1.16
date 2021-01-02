@@ -2,6 +2,10 @@ package com.codetaylor.mc.artisanworktables.common.plugin.jei;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.block.BaseBlock;
+import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
+import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
+import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
+import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
@@ -15,6 +19,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
@@ -110,6 +115,33 @@ public class Plugin
       EnumTier tier = EnumTier.fromName(Objects.requireNonNull(baseBlock.getRegistryName()).getPath().split("_")[0]);
 
       registry.addRecipeCatalyst(new ItemStack(block), CATEGORY_KEYS.get(tier).get(type));
+    }
+  }
+
+  @Override
+  public void registerRecipeTransferHandlers(@Nonnull IRecipeTransferRegistration registry) {
+
+    for (EnumTier tier : EnumTier.values()) {
+
+      Class<? extends BaseContainer> containerClass;
+
+      switch (tier) {
+        case WORKTABLE:
+          containerClass = WorktableContainer.class;
+          break;
+        case WORKSTATION:
+          containerClass = WorkstationContainer.class;
+          break;
+        case WORKSHOP:
+          containerClass = WorkshopContainer.class;
+          break;
+        default:
+          throw new RuntimeException("Unknown tier: " + tier);
+      }
+
+      for (EnumType type : EnumType.values()) {
+        registry.addRecipeTransferHandler(new RecipeTransferInfo<>(containerClass, tier, type, CATEGORY_KEYS.get(tier).get(type)));
+      }
     }
   }
 

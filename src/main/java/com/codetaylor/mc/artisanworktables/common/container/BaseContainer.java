@@ -5,7 +5,6 @@ import com.codetaylor.mc.artisanworktables.common.container.slot.*;
 import com.codetaylor.mc.artisanworktables.common.network.SCPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.SecondaryInputBaseTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
@@ -651,72 +650,9 @@ public abstract class BaseContainer
     return itemStackCopy;
   }
 
-  public List<Slot> getRecipeSlotsJEI(List<Slot> result, int transferGridSize) {
-
-    // grid
-
-    /*
-    2019-10-15 - Issue #196
-    A smaller grid size is returned if the transfer handler making the request
-    passes a smaller transferGridSize parameter. This prevents the smaller
-    transfer handlers from making a mess in the larger tables.
-     */
-
-    int rowLength = (this.tile.getTableTier() == EnumTier.WORKSHOP) ? 5 : 3;
-
-    for (int row = 0; row < transferGridSize; row++) {
-      for (int col = 0; col < transferGridSize; col++) {
-        result.add(this.inventorySlots.get(this.slotIndexCraftingMatrixStart + col + (row * rowLength)));
-      }
-    }
-
-    // tool
-    for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
-      result.add(this.inventorySlots.get(i));
-    }
-
-    // Intentionally left out the secondary ingredient slots to prevent JEI from
-    // transferring items to these slots when the transfer button is clicked.
-
-    return result;
-  }
-
-  public List<Slot> getInventorySlotsJEI(List<Slot> result) {
-
-    for (int i = this.slotIndexInventoryStart; i <= this.slotIndexInventoryEnd; i++) {
-      result.add(this.inventorySlots.get(i));
-    }
-
-    for (int i = this.slotIndexHotbarStart; i <= this.slotIndexHotbarEnd; i++) {
-      result.add(this.inventorySlots.get(i));
-    }
-
-    // TODO
-//    if (this.canPlayerUseToolbox()) {
-//
-//      for (int i = this.slotIndexToolboxStart; i <= this.slotIndexToolboxEnd; i++) {
-//        result.add(this.inventorySlots.get(i));
-//      }
-//    }
-
-    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryInputEnd; i++) {
-      result.add(this.inventorySlots.get(i));
-    }
-
-    return result;
-  }
-
   public BaseTileEntity getTile() {
 
     return this.tile;
-  }
-
-  public boolean canHandleRecipeTransferJEI(
-      String name,
-      @Nullable EnumTier tier
-  ) {
-
-    return this.tile.canHandleRecipeTransferJEI(name, tier);
   }
 
   @Override
@@ -726,8 +662,11 @@ public abstract class BaseContainer
 
     //System.out.println("Player: " + this.player + ", Stack:" + this.craftingResultSlot.getStack());
 
+    World world = this.tile.getWorld();
+
     if (this.tile == null
-        || this.tile.getWorld().isRemote) {
+        || world == null
+        || world.isRemote) {
       return;
     }
 

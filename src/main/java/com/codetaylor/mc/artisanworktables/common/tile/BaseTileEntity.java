@@ -488,15 +488,6 @@ public abstract class BaseTileEntity
   }
 
   // ---------------------------------------------------------------------------
-  // Integration
-  // ---------------------------------------------------------------------------
-
-  public boolean canHandleRecipeTransferJEI(String name, @Nullable EnumTier tier) {
-
-    return this.type.getName().equals(name) && tier != null && tier.getId() <= this.getTableTier().getId();
-  }
-
-  // ---------------------------------------------------------------------------
   // GUI
   // ---------------------------------------------------------------------------
 

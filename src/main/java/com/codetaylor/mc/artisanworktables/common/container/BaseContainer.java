@@ -19,11 +19,8 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
@@ -31,7 +28,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public abstract class BaseContainer
     extends ContainerBase {
@@ -85,8 +81,8 @@ public abstract class BaseContainer
         this::updateRecipeOutput,
         this.resultHandler,
         0,
-        this.containerResultPositionGetX(),
-        this.containerResultPositionGetY()
+        this.getResultPositionX(),
+        this.getResultPositionY()
     );
     this.containerSlotAdd(this.craftingResultSlot);
 
@@ -132,8 +128,8 @@ public abstract class BaseContainer
             itemStack -> ToolValidationHelper.isValidTool(this.tile.getTableType(), itemStack, world.getRecipeManager()),
             toolHandler,
             i,
-            78 + this.containerToolOffsetGetX(),
-            35 + 22 * i + this.containerToolOffsetGetY()
+            78 + this.getToolOffsetX(),
+            35 + 22 * i + this.getToolOffsetY()
         ));
       }
       this.slotIndexToolsEnd = this.nextSlotIndex - 1;
@@ -180,7 +176,7 @@ public abstract class BaseContainer
             handler,
             i,
             8 + i * 18,
-            75 + this.containerSecondaryInputOffsetGetY()
+            75 + this.getSecondaryInputOffsetY()
         ));
       }
       this.slotIndexSecondaryInputEnd = this.nextSlotIndex - 1;
@@ -225,12 +221,27 @@ public abstract class BaseContainer
     this.updateRecipeOutput();
   }
 
+  // ---------------------------------------------------------------------------
+  // Accessors
+  // ---------------------------------------------------------------------------
+
+  public BaseTileEntity getTile() {
+
+    return this.tile;
+  }
+
+  // TODO
+//  private TileEntityToolbox getToolbox(TileEntityBase tile) {
+//
+//    return tile.getAdjacentToolbox();
+//  }
+
   private int containerToolboxOffsetGetX() {
 
     return -26;
   }
 
-  private int containerSecondaryInputOffsetGetY() {
+  private int getSecondaryInputOffsetY() {
 
     if (this.tile instanceof WorkshopTileEntity) {
       return 36;
@@ -239,7 +250,7 @@ public abstract class BaseContainer
     return 0;
   }
 
-  private int containerToolOffsetGetX() {
+  private int getToolOffsetX() {
 
     if (this.tile instanceof WorkshopTileEntity) {
       return 36;
@@ -248,7 +259,7 @@ public abstract class BaseContainer
     return 0;
   }
 
-  private int containerToolOffsetGetY() {
+  private int getToolOffsetY() {
 
     if (this.tile instanceof WorkstationTileEntity) {
       return -11;
@@ -261,7 +272,7 @@ public abstract class BaseContainer
     return 0;
   }
 
-  private int containerResultPositionGetY() {
+  private int getResultPositionY() {
 
     if (this.tile instanceof WorkshopTileEntity) {
       return 62;
@@ -270,7 +281,7 @@ public abstract class BaseContainer
     return 35;
   }
 
-  private int containerResultPositionGetX() {
+  private int getResultPositionX() {
 
     if (this.tile instanceof WorkshopTileEntity) {
       return 143;
@@ -278,6 +289,10 @@ public abstract class BaseContainer
 
     return 115;
   }
+
+  // ---------------------------------------------------------------------------
+  // Accessor Implementations
+  // ---------------------------------------------------------------------------
 
   @Override
   protected int containerInventoryPositionGetY() {
@@ -317,11 +332,9 @@ public abstract class BaseContainer
     return super.containerHotbarPositionGetX();
   }
 
-  // TODO
-//  private TileEntityToolbox getToolbox(TileEntityBase tile) {
-//
-//    return tile.getAdjacentToolbox();
-//  }
+  // ---------------------------------------------------------------------------
+  // Actions
+  // ---------------------------------------------------------------------------
 
   public void onJoinedBlockBreak(World world, BlockPos pos) {
 
@@ -433,6 +446,10 @@ public abstract class BaseContainer
     return false;
   }
 
+  // ---------------------------------------------------------------------------
+  // Slots
+  // ---------------------------------------------------------------------------
+
   @Override
   public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
 
@@ -470,16 +487,19 @@ public abstract class BaseContainer
     return slotIndex >= this.slotIndexToolsStart && slotIndex <= this.slotIndexToolsEnd;
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean mergeInventory(ItemStack itemStack, boolean reverse) {
 
     return this.mergeItemStack(itemStack, this.slotIndexInventoryStart, this.slotIndexInventoryEnd + 1, reverse);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean mergeHotbar(ItemStack itemStack, boolean reverse) {
 
     return this.mergeItemStack(itemStack, this.slotIndexHotbarStart, this.slotIndexHotbarEnd + 1, reverse);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean mergeCraftingMatrix(ItemStack itemStack, boolean reverse) {
 
     return this.mergeItemStack(
@@ -496,6 +516,7 @@ public abstract class BaseContainer
 //    return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
 //  }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean mergeSecondaryInput(ItemStack itemStack, boolean reverse) {
 
     if (this.slotIndexSecondaryInputStart == -1) {
@@ -529,6 +550,19 @@ public abstract class BaseContainer
     }
 
     return false;
+  }
+
+  @Nonnull
+  @Override
+  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickType, @Nonnull PlayerEntity player) {
+
+    if (slotId == this.slotIndexResult
+        || (slotId >= this.slotIndexSecondaryOutputStart && slotId <= this.slotIndexSecondaryOutputEnd)) {
+      // prevent deleting half of the stack
+      return super.slotClick(slotId, 0, clickType, player);
+    }
+
+    return super.slotClick(slotId, dragType, clickType, player);
   }
 
   @Nonnull
@@ -650,10 +684,9 @@ public abstract class BaseContainer
     return itemStackCopy;
   }
 
-  public BaseTileEntity getTile() {
-
-    return this.tile;
-  }
+  // ---------------------------------------------------------------------------
+  // Sync
+  // ---------------------------------------------------------------------------
 
   @Override
   public void detectAndSendChanges() {
@@ -699,37 +732,5 @@ public abstract class BaseContainer
 
     super.onContainerClosed(player);
     this.tile.removeContainer(this);
-  }
-
-  @Nonnull
-  @Override
-  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickType, @Nonnull PlayerEntity player) {
-
-    if (slotId == this.slotIndexResult
-        || (slotId >= this.slotIndexSecondaryOutputStart && slotId <= this.slotIndexSecondaryOutputEnd)) {
-      // prevent deleting half of the stack
-      return super.slotClick(slotId, 0, clickType, player);
-    }
-
-    return super.slotClick(slotId, dragType, clickType, player);
-  }
-
-  public static boolean anyPlayerHasContainerOpen(ServerWorld world, BlockPos pos) {
-
-    MinecraftServer minecraftServer = world.getServer();
-    PlayerList playerList = minecraftServer.getPlayerList();
-    List<ServerPlayerEntity> players = playerList.getPlayers();
-
-    for (ServerPlayerEntity player : players) {
-
-      if (player.openContainer instanceof BaseContainer) {
-        BaseTileEntity tile = ((BaseContainer) player.openContainer).getTile();
-
-        if (tile.getPos().equals(pos)) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 }

@@ -22,7 +22,7 @@ import java.util.List;
  * <p>
  * Caches results for performance.
  * <p>
- * Uses a synchronized method because it is called from both threads on the
+ * Uses a synchronized block because it is called from both threads on the
  * same machine in a single player game.
  */
 public final class ToolValidationHelper {
@@ -33,33 +33,42 @@ public final class ToolValidationHelper {
     CACHE = new EnumMap<>(EnumType.class);
   }
 
-  public static synchronized boolean isValidTool(EnumType type, ItemStack tool, RecipeManager recipeManager) {
+  public static void clear() {
 
-    ResourceLocation resourceLocation = tool.getItem().getRegistryName();
-
-    Object2BooleanMap<ResourceLocation> cache = CACHE.computeIfAbsent(type, (t) -> new Object2BooleanOpenHashMap<>());
-
-    if (cache.containsKey(resourceLocation)) {
-      return cache.getBoolean(resourceLocation);
+    synchronized (CACHE) {
+      CACHE.clear();
     }
+  }
 
-    IToolHandler toolHandler = ArtisanToolHandlers.get(tool);
+  public static boolean isValidTool(EnumType type, ItemStack tool, RecipeManager recipeManager) {
 
-    boolean result = false;
+    synchronized (CACHE) {
+      ResourceLocation resourceLocation = tool.getItem().getRegistryName();
 
-    if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
-      result = true;
-    }
+      Object2BooleanMap<ResourceLocation> cache = CACHE.computeIfAbsent(type, (t) -> new Object2BooleanOpenHashMap<>());
 
-    if (!result) {
+      if (cache.containsKey(resourceLocation)) {
+        return cache.getBoolean(resourceLocation);
+      }
 
-      if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
+      IToolHandler toolHandler = ArtisanToolHandlers.get(tool);
+
+      boolean result = false;
+
+      if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPED_RECIPE_TYPES.get(type))) {
         result = true;
       }
-    }
 
-    cache.put(resourceLocation, result);
-    return result;
+      if (!result) {
+
+        if (ToolValidationHelper.checkRecipeType(toolHandler, tool, recipeManager, RecipeTypes.SHAPELESS_RECIPE_TYPES.get(type))) {
+          result = true;
+        }
+      }
+
+      cache.put(resourceLocation, result);
+      return result;
+    }
   }
 
   private static boolean checkRecipeType(IToolHandler toolHandler, ItemStack tool, RecipeManager recipeManager, IRecipeType<? extends ArtisanRecipe> recipeType) {

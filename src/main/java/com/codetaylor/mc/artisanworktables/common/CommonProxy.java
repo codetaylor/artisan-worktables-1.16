@@ -94,7 +94,8 @@ public class CommonProxy
 
   @Override
   public void registerForgeEventHandlers(IEventBus eventBus) {
-    //
+
+    eventBus.register(new TagsUpdatedEventHandler());
   }
 
   // ---------------------------------------------------------------------------

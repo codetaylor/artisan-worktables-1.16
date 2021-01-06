@@ -7,6 +7,7 @@ import com.blamejared.crafttweaker.api.fluid.IFluidStack;
 import com.blamejared.crafttweaker.api.item.IIngredient;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.logger.ILogger;
+import com.blamejared.crafttweaker.api.zencode.impl.loaders.LoaderActions;
 import com.blamejared.crafttweaker.impl.item.MCItemStackMutable;
 import com.blamejared.crafttweaker.impl.managers.CTCraftingTableManager;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
@@ -15,6 +16,7 @@ import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
@@ -28,6 +30,13 @@ import java.util.Map;
 @ZenRegister
 @ZenCodeType.Name("mods.artisanworktables.Recipe")
 public class ZenRecipe {
+
+  private static int runCount;
+  private static IntSet usedHashSet;
+
+  static {
+    ZenRecipe.runCount = -1;
+  }
 
   private final ZenEnumType type;
   private final ArtisanRecipeBuilder builder;
@@ -185,7 +194,14 @@ public class ZenRecipe {
   @ZenCodeType.Method
   public void register() {
 
-    String generatedName = this.builder.getGeneratedName(new IntOpenHashSet(), s -> CraftTweakerAPI.logError(s));
+    LoaderActions loaderActions = LoaderActions.getActionForLoader("crafttweaker");
+
+    if (ZenRecipe.runCount != loaderActions.getRunCount()) {
+      ZenRecipe.runCount = loaderActions.getRunCount();
+      ZenRecipe.usedHashSet = new IntOpenHashSet();
+    }
+
+    String generatedName = this.builder.getGeneratedName(ZenRecipe.usedHashSet, s -> CraftTweakerAPI.logError(s));
     this.register(generatedName);
   }
 
@@ -225,16 +241,7 @@ public class ZenRecipe {
     public void apply() {
 
       EnumType tableType = this.recipe.getTableType();
-      IRecipeType<ArtisanRecipe> type;
-
-      if (this.recipe instanceof ArtisanRecipeShaped) {
-        type = RecipeTypes.SHAPED_RECIPE_TYPES.get(tableType);
-
-      } else {
-        type = RecipeTypes.SHAPELESS_RECIPE_TYPES.get(tableType);
-      }
-
-      Map<ResourceLocation, IRecipe<?>> recipeMap = CTCraftingTableManager.recipeManager.recipes.computeIfAbsent(type, t -> new HashMap<>());
+      Map<ResourceLocation, IRecipe<?>> recipeMap = this.getRecipes(tableType);
       recipeMap.put(this.recipe.getId(), this.recipe);
     }
 
@@ -247,7 +254,30 @@ public class ZenRecipe {
     @Override
     public boolean validate(ILogger logger) {
 
+      if (this.getRecipes(this.recipe.getTableType()).containsKey(this.recipe.getId())) {
+        logger.error("Duplicate recipe id: " + this.recipe.getId());
+        return false;
+      }
+
       return true;
+    }
+
+    private Map<ResourceLocation, IRecipe<?>> getRecipes(EnumType tableType) {
+
+      IRecipeType<ArtisanRecipe> type = this.getType(tableType);
+      return CTCraftingTableManager.recipeManager.recipes.computeIfAbsent(type, t -> new HashMap<>());
+    }
+
+    private IRecipeType<ArtisanRecipe> getType(EnumType tableType) {
+
+      IRecipeType<ArtisanRecipe> type;
+      if (this.recipe instanceof ArtisanRecipeShaped) {
+        type = RecipeTypes.SHAPED_RECIPE_TYPES.get(tableType);
+
+      } else {
+        type = RecipeTypes.SHAPELESS_RECIPE_TYPES.get(tableType);
+      }
+      return type;
     }
   }
 

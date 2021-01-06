@@ -25,7 +25,7 @@ public class ArtisanWorktablesModCommonConfig {
     }
   }
 
-  public static boolean enableDuplicateRecipeNameWarnings;
+  public static boolean enableDuplicateRecipeHashWarnings;
   public static boolean restrictCraftMinimumDurability;
   public static int fluidCapacityWorktable;
   public static int fluidCapacityWorkstation;
@@ -33,7 +33,7 @@ public class ArtisanWorktablesModCommonConfig {
 
   public static void bake() {
 
-    enableDuplicateRecipeNameWarnings = CONFIG.enableDuplicateRecipeNameWarnings.get();
+    enableDuplicateRecipeHashWarnings = CONFIG.enableDuplicateRecipeHashWarnings.get();
     restrictCraftMinimumDurability = CONFIG.restrictCraftMinimumDurability.get();
     fluidCapacityWorktable = CONFIG.fluidCapacityWorktable.get();
     fluidCapacityWorkstation = CONFIG.fluidCapacityWorkstation.get();
@@ -42,7 +42,7 @@ public class ArtisanWorktablesModCommonConfig {
 
   public static class ConfigCommon {
 
-    public final ForgeConfigSpec.BooleanValue enableDuplicateRecipeNameWarnings;
+    public final ForgeConfigSpec.BooleanValue enableDuplicateRecipeHashWarnings;
     public final ForgeConfigSpec.BooleanValue restrictCraftMinimumDurability;
     public final ForgeConfigSpec.IntValue fluidCapacityWorktable;
     public final ForgeConfigSpec.IntValue fluidCapacityWorkstation;
@@ -50,15 +50,12 @@ public class ArtisanWorktablesModCommonConfig {
 
     public ConfigCommon(ForgeConfigSpec.Builder builder) {
 
-      this.enableDuplicateRecipeNameWarnings = builder
+      this.enableDuplicateRecipeHashWarnings = builder
           .comment(
-              "Set to true to enable log warnings for duplicate recipe names.",
-              "If you're using a lot of your own recipe names, you can enable this",
-              "from time to time to check that you haven't accidentally used the",
-              "same name twice.",
+              "Set to true to enable log warnings for duplicate auto-generated recipe names.",
               "Default: " + false
           )
-          .define("enableDuplicateRecipeNameWarnings", false);
+          .define("enableDuplicateRecipeHashWarnings", false);
 
       this.restrictCraftMinimumDurability = builder
           .comment(

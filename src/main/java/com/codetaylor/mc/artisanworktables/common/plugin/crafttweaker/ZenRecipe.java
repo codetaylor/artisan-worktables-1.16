@@ -14,6 +14,7 @@ import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeBuilder;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
@@ -179,6 +180,13 @@ public class ZenRecipe {
 
     this.builder.addExtraOutput(extra.getInternal(), chance);
     return this;
+  }
+
+  @ZenCodeType.Method
+  public void register() {
+
+    String generatedName = this.builder.getGeneratedName(new IntOpenHashSet(), s -> CraftTweakerAPI.logError(s));
+    this.register(generatedName);
   }
 
   @ZenCodeType.Method

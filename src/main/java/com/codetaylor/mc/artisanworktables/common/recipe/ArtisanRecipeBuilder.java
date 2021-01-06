@@ -1,14 +1,20 @@
 package com.codetaylor.mc.artisanworktables.common.recipe;
 
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
+import com.codetaylor.mc.artisanworktables.common.util.HashCodeHelper;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.function.Consumer;
 
 public class ArtisanRecipeBuilder {
 
@@ -232,6 +238,61 @@ public class ArtisanRecipeBuilder {
     if (this.height == 0 || this.height > Reference.MAX_RECIPE_HEIGHT) {
       throw new Exception(String.format("Recipe height must be between 1 and %d", Reference.MAX_RECIPE_HEIGHT));
     }
+  }
+
+  public String getGeneratedName(IntSet usedHashSet, Consumer<String> logger) {
+
+    HashCodeBuilder builder = new HashCodeBuilder(17, 37);
+
+    // Output
+    builder.append(HashCodeHelper.get(this.result));
+
+    // Tools
+    for (ToolEntry tool : this.tools) {
+      builder.append(HashCodeHelper.get(tool));
+    }
+
+    // Ingredients
+    for (Ingredient ingredient : this.ingredients) {
+      builder.append(HashCodeHelper.get(ingredient));
+    }
+
+    // Secondary Ingredients
+    for (Ingredient ingredient : this.secondaryIngredients) {
+      builder.append(HashCodeHelper.get(ingredient));
+    }
+
+    builder.append(this.consumeSecondaryIngredients)
+        .append(HashCodeHelper.get(this.fluidIngredient))
+        .append(this.experienceRequired)
+        .append(this.levelRequired)
+        .append(this.consumeExperience);
+
+    // Extra Chance Outputs
+    for (ArtisanRecipe.ExtraOutputChancePair pair : this.extraOutputs) {
+      builder.append(HashCodeHelper.get(pair));
+    }
+
+    builder.append(this.mirrored)
+        .append(this.width)
+        .append(this.height)
+        .append(this.minimumTier)
+        .append(this.maximumTier);
+
+    int hash = builder.build();
+    int index = 0;
+
+    while (usedHashSet.contains(hash)) {
+
+      if (ArtisanWorktablesModCommonConfig.enableDuplicateRecipeHashWarnings) {
+        logger.accept("Duplicate recipe hash found: " + hash);
+      }
+
+      builder.append(++index);
+      hash = builder.build();
+    }
+
+    return String.valueOf(hash);
   }
 
   // ---------------------------------------------------------------------------

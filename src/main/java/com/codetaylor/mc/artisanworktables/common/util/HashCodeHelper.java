@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.util;
 
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.common.recipe.ToolEntry;
 import com.codetaylor.mc.artisanworktables.common.recipe.ToolIngredientEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -53,7 +54,7 @@ public final class HashCodeHelper {
     return builder.build();
   }
 
-  public static int get(ToolIngredientEntry entry) {
+  public static int get(ToolEntry entry) {
 
     return new HashCodeBuilder()
         .append(HashCodeHelper.get(entry.getTool()))

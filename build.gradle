@@ -66,7 +66,7 @@ processResources {
 
 minecraft {
     mappings = project.ext.mappings.channel + "_" + project.ext.mappings.version
-    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {

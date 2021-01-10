@@ -1,5 +1,7 @@
 {
   "itemGroup.artisanworktables": "Artisan Worktables",
+  "block.artisanworktables.toolbox": "Toolbox",
+  "block.artisanworktables.mechanical_toolbox": "Mechanical Toolbox",
   "block.artisanworktables.worktable_basic": "Basic Worktable",
   "block.artisanworktables.worktable_blacksmith": "Blacksmith's Worktable",
   "block.artisanworktables.worktable_carpenter": "Carpenter's Worktable",

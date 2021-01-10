@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.datagen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxBlock;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
 import com.google.gson.Gson;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -38,17 +40,24 @@ public class LootTables
 
     for (Block block : ArtisanWorktablesMod.getProxy().getRegisteredWorktables()) {
       ResourceLocation resourceLocation = block.getRegistryName();
-      String resourceLocationNamespace = Objects.requireNonNull(resourceLocation).getNamespace();
-      String resourceLocationPath = resourceLocation.getPath();
-      Path path = this.outputFolder.resolve("data/" + resourceLocationNamespace + "/loot_tables/blocks/" + resourceLocationPath + ".json");
-      LootTable.Builder lootTable = this.createTable(resourceLocationPath, block);
+      String resourceLocationPath = Objects.requireNonNull(resourceLocation).getPath();
+      this.createAndSaveTable(cache, block, resourceLocationPath);
+    }
 
-      try {
-        IDataProvider.save(this.gson, cache, LootTableManager.toJson(lootTable.build()), path);
+    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.TOOLBOX, ToolboxBlock.NAME);
+    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.MECHANICAL_TOOLBOX, ToolboxMechanicalBlock.NAME);
+  }
 
-      } catch (IOException e) {
-        this.logger.error("Couldn't write loot table {}", path, e);
-      }
+  private void createAndSaveTable(@Nonnull DirectoryCache cache, Block block, String resourceLocationPath) {
+
+    LootTable.Builder lootTable = this.createTable(resourceLocationPath, block);
+    Path path = this.outputFolder.resolve("data/" + ArtisanWorktablesMod.MOD_ID + "/loot_tables/blocks/" + resourceLocationPath + ".json");
+
+    try {
+      IDataProvider.save(this.gson, cache, LootTableManager.toJson(lootTable.build()), path);
+
+    } catch (IOException e) {
+      this.logger.error("Couldn't write loot table {}", path, e);
     }
   }
 

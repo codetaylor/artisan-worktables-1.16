@@ -46,6 +46,11 @@ public class BlockRegistrationEventHandler {
     this.register(registry, Material.ROCK, ToolType.PICKAXE, SoundType.STONE, EnumType.DESIGNER);
     this.register(registry, Material.ROCK, ToolType.PICKAXE, SoundType.STONE, EnumType.TANNER);
     this.register(registry, Material.ROCK, ToolType.PICKAXE, SoundType.STONE, EnumType.POTTER);
+
+    registry.registerAll(
+        new ToolboxBlock().setRegistryName(ToolboxBlock.NAME),
+        new ToolboxMechanicalBlock().setRegistryName(ToolboxMechanicalBlock.NAME)
+    );
   }
 
   private void register(IForgeRegistry<Block> registry, Material material, ToolType toolType, SoundType soundType, EnumType type) {

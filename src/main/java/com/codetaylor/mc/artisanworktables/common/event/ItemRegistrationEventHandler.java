@@ -46,9 +46,17 @@ public class ItemRegistrationEventHandler {
     IForgeRegistry<Item> registry = event.getRegistry();
 
     for (Block block : this.registeredWorktables) {
-      BlockItem item = new BlockItem(block, new Item.Properties().group(itemGroup));
-      item.setRegistryName(Objects.requireNonNull(block.getRegistryName()));
-      registry.register(item);
+      this.registerBlockItem(itemGroup, registry, block);
     }
+
+    this.registerBlockItem(itemGroup, registry, ArtisanWorktablesMod.Blocks.TOOLBOX);
+    this.registerBlockItem(itemGroup, registry, ArtisanWorktablesMod.Blocks.MECHANICAL_TOOLBOX);
+  }
+
+  private void registerBlockItem(ItemGroup itemGroup, IForgeRegistry<Item> registry, Block block) {
+
+    BlockItem item = new BlockItem(block, new Item.Properties().group(itemGroup));
+    item.setRegistryName(Objects.requireNonNull(block.getRegistryName()));
+    registry.register(item);
   }
 }

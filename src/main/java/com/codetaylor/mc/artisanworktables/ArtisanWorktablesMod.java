@@ -2,6 +2,8 @@ package com.codetaylor.mc.artisanworktables;
 
 import com.codetaylor.mc.artisanworktables.client.ClientProxy;
 import com.codetaylor.mc.artisanworktables.common.CommonProxy;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxBlock;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
 import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
@@ -53,6 +55,21 @@ public class ArtisanWorktablesMod {
   public static IProxy getProxy() {
 
     return ArtisanWorktablesMod.getInstance().proxy;
+  }
+
+  @ObjectHolder(MOD_ID)
+  public static class Blocks {
+
+    @ObjectHolder(ToolboxBlock.NAME)
+    public static final ToolboxBlock TOOLBOX;
+
+    @ObjectHolder(ToolboxMechanicalBlock.NAME)
+    public static final ToolboxMechanicalBlock MECHANICAL_TOOLBOX;
+
+    static {
+      TOOLBOX = null;
+      MECHANICAL_TOOLBOX = null;
+    }
   }
 
   @ObjectHolder(MOD_ID)

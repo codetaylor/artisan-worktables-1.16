@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.common.container;
 
-import com.codetaylor.mc.artisanworktables.common.block.ToolboxBlock;
 import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,14 +20,12 @@ public abstract class ToolboxBaseContainer
   private static final int NUM_ROWS = 3;
 
   private ToolboxTileEntity tile;
-  private ToolboxBlock block;
 
   public ToolboxBaseContainer(ContainerType<? extends ToolboxBaseContainer> containerType, int id, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity player) {
 
     super(containerType, id, playerInventory);
 
     this.tile = Objects.requireNonNull((ToolboxTileEntity) world.getTileEntity(blockPos));
-    this.block = Objects.requireNonNull((ToolboxBlock) world.getBlockState(blockPos).getBlock());
 
     for (int j = 0; j < NUM_ROWS; ++j) {
       for (int k = 0; k < 9; ++k) {
@@ -38,11 +35,6 @@ public abstract class ToolboxBaseContainer
 
     this.containerPlayerInventoryAdd();
     this.containerPlayerHotbarAdd();
-  }
-
-  public ToolboxBlock getBlock() {
-
-    return this.block;
   }
 
   @Override

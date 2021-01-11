@@ -79,4 +79,12 @@ public abstract class ToolboxBaseBlock
 
     return ActionResultType.SUCCESS;
   }
+
+  @SuppressWarnings("deprecation")
+  @Nonnull
+  @Override
+  public PushReaction getPushReaction(@Nonnull BlockState state) {
+
+    return PushReaction.DESTROY;
+  }
 }

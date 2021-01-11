@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -133,4 +134,13 @@ public abstract class BaseBlock
       }
     }
   }
+
+  @SuppressWarnings("deprecation")
+  @Nonnull
+  @Override
+  public PushReaction getPushReaction(@Nonnull BlockState state) {
+
+    return PushReaction.DESTROY;
+  }
+
 }

@@ -37,4 +37,10 @@ public class ToolboxItemStackHandler
 
     return stack;
   }
+
+  @Override
+  public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+    return this.predicate.test(stack) && super.isItemValid(slot, stack);
+  }
 }

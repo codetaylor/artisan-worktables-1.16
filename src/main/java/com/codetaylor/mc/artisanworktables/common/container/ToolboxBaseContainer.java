@@ -45,25 +45,28 @@ public abstract class ToolboxBaseContainer
 
   @Nonnull
   @Override
-  public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+  public ItemStack transferStackInSlot(@Nonnull PlayerEntity player, int index) {
 
     ItemStack itemstack = ItemStack.EMPTY;
     Slot slot = this.inventorySlots.get(index);
 
     if (slot != null && slot.getHasStack()) {
-      ItemStack itemstack1 = slot.getStack();
-      itemstack = itemstack1.copy();
+      ItemStack stackToTransfer = slot.getStack();
+      itemstack = stackToTransfer.copy();
 
       if (index < NUM_ROWS * 9) {
-        if (!this.mergeItemStack(itemstack1, NUM_ROWS * 9, this.inventorySlots.size(), true)) {
+
+        if (!this.mergeItemStack(stackToTransfer, NUM_ROWS * 9, this.inventorySlots.size(), true)) {
           return ItemStack.EMPTY;
         }
-      } else if (!this.mergeItemStack(itemstack1, 0, NUM_ROWS * 9, false)) {
+
+      } else if (!this.mergeItemStack(stackToTransfer, 0, NUM_ROWS * 9, false)) {
         return ItemStack.EMPTY;
       }
 
-      if (itemstack1.isEmpty()) {
+      if (stackToTransfer.isEmpty()) {
         slot.putStack(ItemStack.EMPTY);
+
       } else {
         slot.onSlotChanged();
       }

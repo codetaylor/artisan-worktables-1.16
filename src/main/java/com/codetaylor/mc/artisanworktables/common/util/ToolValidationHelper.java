@@ -27,25 +27,51 @@ import java.util.List;
  */
 public final class ToolValidationHelper {
 
-  private static final EnumMap<EnumType, Object2BooleanMap<ResourceLocation>> CACHE;
+  private static final EnumMap<EnumType, Object2BooleanMap<ResourceLocation>> TYPE_CACHE;
+  private static final Object2BooleanMap<ResourceLocation> ALL_CACHE;
 
   static {
-    CACHE = new EnumMap<>(EnumType.class);
+    TYPE_CACHE = new EnumMap<>(EnumType.class);
+    ALL_CACHE = new Object2BooleanOpenHashMap<>();
   }
 
   public static void clear() {
 
-    synchronized (CACHE) {
-      CACHE.clear();
+    synchronized (TYPE_CACHE) {
+      TYPE_CACHE.clear();
+      ALL_CACHE.clear();
+    }
+  }
+
+  public static boolean isValidTool(ItemStack tool, RecipeManager recipeManager) {
+
+    synchronized (ALL_CACHE) {
+
+      ResourceLocation resourceLocation = tool.getItem().getRegistryName();
+
+      if (ALL_CACHE.containsKey(resourceLocation)) {
+        return ALL_CACHE.getBoolean(resourceLocation);
+      }
+
+      for (EnumType type : EnumType.values()) {
+
+        if (ToolValidationHelper.isValidTool(type, tool, recipeManager)) {
+          ALL_CACHE.put(resourceLocation, true);
+          return true;
+        }
+      }
+
+      ALL_CACHE.put(resourceLocation, false);
+      return false;
     }
   }
 
   public static boolean isValidTool(EnumType type, ItemStack tool, RecipeManager recipeManager) {
 
-    synchronized (CACHE) {
+    synchronized (TYPE_CACHE) {
       ResourceLocation resourceLocation = tool.getItem().getRegistryName();
 
-      Object2BooleanMap<ResourceLocation> cache = CACHE.computeIfAbsent(type, (t) -> new Object2BooleanOpenHashMap<>());
+      Object2BooleanMap<ResourceLocation> cache = TYPE_CACHE.computeIfAbsent(type, (t) -> new Object2BooleanOpenHashMap<>());
 
       if (cache.containsKey(resourceLocation)) {
         return cache.getBoolean(resourceLocation);

@@ -36,4 +36,10 @@ public abstract class ToolboxBaseBlock
 
     return VOXEL_SHAPE;
   }
+
+  @Override
+  public boolean hasTileEntity(BlockState state) {
+
+    return true;
+  }
 }

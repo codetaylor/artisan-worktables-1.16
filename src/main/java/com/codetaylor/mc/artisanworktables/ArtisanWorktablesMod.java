@@ -8,6 +8,7 @@ import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
 import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
+import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
@@ -84,10 +85,14 @@ public class ArtisanWorktablesMod {
     @ObjectHolder(WorkshopTileEntity.NAME)
     public static final TileEntityType<WorkshopTileEntity> WORKSHOP;
 
+    @ObjectHolder(ToolboxTileEntity.NAME)
+    public static final TileEntityType<ToolboxTileEntity> TOOLBOX;
+
     static {
       WORKTABLE = null;
       WORKSTATION = null;
       WORKSHOP = null;
+      TOOLBOX = null;
     }
   }
 

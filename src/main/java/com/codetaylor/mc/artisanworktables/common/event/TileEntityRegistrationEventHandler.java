@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.common.event;
 
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
@@ -32,6 +34,8 @@ public class TileEntityRegistrationEventHandler {
     this.register(registry, EnumTier.WORKTABLE, WorktableTileEntity::new);
     this.register(registry, EnumTier.WORKSTATION, WorkstationTileEntity::new);
     this.register(registry, EnumTier.WORKSHOP, WorkshopTileEntity::new);
+
+    registry.register(TileEntityType.Builder.create(ToolboxTileEntity::new, new Block[]{ArtisanWorktablesMod.Blocks.TOOLBOX, ArtisanWorktablesMod.Blocks.MECHANICAL_TOOLBOX}).build(null).setRegistryName("toolbox"));
   }
 
   private void register(IForgeRegistry<TileEntityType<?>> registry, EnumTier tier, Supplier<TileEntity> tileEntitySupplier) {

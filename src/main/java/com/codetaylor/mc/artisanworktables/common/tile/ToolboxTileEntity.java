@@ -7,6 +7,7 @@ import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
 import com.codetaylor.mc.athenaeum.network.spi.tile.TileEntityDataBase;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.TileDataItemStackHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -48,6 +49,22 @@ public class ToolboxTileEntity
     });
   }
 
+  // ---------------------------------------------------------------------------
+  // Accessors
+  // ---------------------------------------------------------------------------
+
+  public ToolboxItemStackHandler getItemStackHandler() {
+
+    return this.itemStackHandler;
+  }
+
+  public boolean canPlayerUse(PlayerEntity player) {
+
+    return this.world != null
+        && this.world.getTileEntity(this.getPos()) == this
+        && player.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
+  }
+
   private boolean restrictToToolsOnly() {
 
     // TODO: config?
@@ -65,7 +82,7 @@ public class ToolboxTileEntity
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return this.itemCapability.cast();
     }
-    
+
     return super.getCapability(capability, side);
   }
 

@@ -1,8 +1,6 @@
 package com.codetaylor.mc.artisanworktables.common.event;
 
-import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
-import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
-import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
+import com.codetaylor.mc.artisanworktables.common.container.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
@@ -39,5 +37,19 @@ public class ContainerTypeRegistrationEventHandler {
       World world = player.world;
       return new WorkshopContainer(id, world, blockPos, playerInventory, player);
     }).setRegistryName(WorkshopContainer.NAME));
+
+    registry.register(IForgeContainerType.create((id, playerInventory, data) -> {
+      BlockPos blockPos = data.readBlockPos();
+      PlayerEntity player = playerInventory.player;
+      World world = player.world;
+      return new ToolboxContainer(id, world, blockPos, playerInventory, player);
+    }).setRegistryName(ToolboxContainer.NAME));
+
+    registry.register(IForgeContainerType.create((id, playerInventory, data) -> {
+      BlockPos blockPos = data.readBlockPos();
+      PlayerEntity player = playerInventory.player;
+      World world = player.world;
+      return new ToolboxMechanicalContainer(id, world, blockPos, playerInventory, player);
+    }).setRegistryName(ToolboxMechanicalContainer.NAME));
   }
 }

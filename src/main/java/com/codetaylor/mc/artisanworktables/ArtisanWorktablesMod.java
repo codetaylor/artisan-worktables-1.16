@@ -4,9 +4,7 @@ import com.codetaylor.mc.artisanworktables.client.ClientProxy;
 import com.codetaylor.mc.artisanworktables.common.CommonProxy;
 import com.codetaylor.mc.artisanworktables.common.block.ToolboxBlock;
 import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
-import com.codetaylor.mc.artisanworktables.common.container.WorkshopContainer;
-import com.codetaylor.mc.artisanworktables.common.container.WorkstationContainer;
-import com.codetaylor.mc.artisanworktables.common.container.WorktableContainer;
+import com.codetaylor.mc.artisanworktables.common.container.*;
 import com.codetaylor.mc.artisanworktables.common.reference.Reference;
 import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
@@ -108,10 +106,18 @@ public class ArtisanWorktablesMod {
     @ObjectHolder(WorkshopContainer.NAME)
     public static final ContainerType<WorkshopContainer> WORKSHOP;
 
+    @ObjectHolder(ToolboxContainer.NAME)
+    public static final ContainerType<ToolboxContainer> TOOLBOX;
+
+    @ObjectHolder(ToolboxMechanicalContainer.NAME)
+    public static final ContainerType<ToolboxMechanicalContainer> MECHANICAL_TOOLBOX;
+
     static {
       WORKTABLE = null;
       WORKSTATION = null;
       WORKSHOP = null;
+      TOOLBOX = null;
+      MECHANICAL_TOOLBOX = null;
     }
   }
 

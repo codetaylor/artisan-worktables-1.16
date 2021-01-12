@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.ToolboxItemStackHandler;
 import com.codetaylor.mc.artisanworktables.common.util.ToolValidationHelper;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
@@ -56,6 +57,12 @@ public class ToolboxTileEntity
   // ---------------------------------------------------------------------------
   // Accessors
   // ---------------------------------------------------------------------------
+
+  public boolean isMechanical() {
+
+    return this.world != null
+        && this.world.getBlockState(this.pos).getBlock() instanceof ToolboxMechanicalBlock;
+  }
 
   public ToolboxItemStackHandler getItemStackHandler() {
 

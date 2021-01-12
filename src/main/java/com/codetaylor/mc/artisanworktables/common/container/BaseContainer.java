@@ -5,10 +5,7 @@ import com.codetaylor.mc.artisanworktables.common.container.slot.*;
 import com.codetaylor.mc.artisanworktables.common.network.SCPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.SecondaryInputBaseTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
-import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.*;
 import com.codetaylor.mc.artisanworktables.common.util.ToolValidationHelper;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +25,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class BaseContainer
     extends ContainerBase {
@@ -35,11 +35,11 @@ public abstract class BaseContainer
   private final CraftingResultSlot craftingResultSlot;
   private World world;
   private BaseTileEntity tile;
-  //TODO: private TileEntityToolbox toolbox;
+  private ToolboxTileEntity toolbox;
   private final ItemStackHandler resultHandler;
   private FluidStack lastFluidStack;
   private final PlayerEntity player;
-  //TODO: private final List<ToolboxSideSlot> toolboxSideSlotList;
+  private final List<ToolboxSideSlot> toolboxSideSlotList;
 
   public final int slotIndexResult;
   public final int slotIndexCraftingMatrixStart;
@@ -52,8 +52,8 @@ public abstract class BaseContainer
   public final int slotIndexToolsEnd;
   public final int slotIndexSecondaryOutputStart;
   public final int slotIndexSecondaryOutputEnd;
-  //  public final int slotIndexToolboxStart; // TODO
-//  public final int slotIndexToolboxEnd;
+  public final int slotIndexToolboxStart;
+  public final int slotIndexToolboxEnd;
   public final int slotIndexSecondaryInputStart;
   public final int slotIndexSecondaryInputEnd;
 
@@ -64,7 +64,7 @@ public abstract class BaseContainer
     this.lastFluidStack = FluidStack.EMPTY;
     this.world = world;
     this.tile = (BaseTileEntity) world.getTileEntity(pos);
-    //TODO: this.toolbox = this.getToolbox(this.tile);
+    this.toolbox = this.getToolbox(this.tile);
 
     assert this.tile != null;
     this.tile.addContainer(this);
@@ -74,6 +74,8 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Result
+    // ------------------------------------------------------------------------
+
     this.slotIndexResult = this.nextSlotIndex;
     this.resultHandler = this.tile.getResultHandler();
     this.craftingResultSlot = new CraftingResultSlot(
@@ -88,6 +90,8 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Crafting Matrix
+    // ------------------------------------------------------------------------
+
     ICraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
     this.slotIndexCraftingMatrixStart = this.nextSlotIndex;
 
@@ -106,18 +110,24 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Player Inventory
+    // ------------------------------------------------------------------------
+
     this.slotIndexInventoryStart = this.nextSlotIndex;
     this.containerPlayerInventoryAdd();
     this.slotIndexInventoryEnd = this.nextSlotIndex - 1;
 
     // ------------------------------------------------------------------------
     // Player HotBar
+    // ------------------------------------------------------------------------
+
     this.slotIndexHotbarStart = this.nextSlotIndex;
     this.containerPlayerHotbarAdd();
     this.slotIndexHotbarEnd = this.nextSlotIndex - 1;
 
     // ------------------------------------------------------------------------
     // Tool Slots
+    // ------------------------------------------------------------------------
+
     {
       this.slotIndexToolsStart = this.nextSlotIndex;
       ItemStackHandler toolHandler = this.tile.getToolHandler();
@@ -165,9 +175,11 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Secondary input
+    // ------------------------------------------------------------------------
+
     if (this.tile instanceof SecondaryInputBaseTileEntity) {
       this.slotIndexSecondaryInputStart = this.nextSlotIndex;
-      IItemHandler handler = ((SecondaryInputBaseTileEntity) this.tile).getSecondaryIngredientHandler();
+      IItemHandler handler = this.tile.getSecondaryIngredientHandler();
       int slotCount = handler.getSlots();
 
       for (int i = 0; i < slotCount; i++) {
@@ -188,13 +200,12 @@ public abstract class BaseContainer
 
     // ------------------------------------------------------------------------
     // Side Toolbox
-    // TODO
-    /*
+    // ------------------------------------------------------------------------
+
     this.slotIndexToolboxStart = this.nextSlotIndex;
     if (this.canPlayerUseToolbox()) {
       this.toolboxSideSlotList = new ArrayList<>(27);
-      ItemStackHandler itemHandler = this.toolbox.getItemHandler();
-      int offsetY = (this.designersTable != null) ? 33 : 0;
+      ItemStackHandler itemHandler = this.toolbox.getItemStackHandler();
 
       for (int x = 0; x < 3; x++) {
 
@@ -208,7 +219,6 @@ public abstract class BaseContainer
           );
           this.toolboxSideSlotList.add(toolboxSideSlot);
           this.containerSlotAdd(toolboxSideSlot);
-          toolboxSideSlot.move(toolboxSideSlot.xPos, toolboxSideSlot.yPos + offsetY);
         }
       }
 
@@ -216,7 +226,6 @@ public abstract class BaseContainer
       this.toolboxSideSlotList = Collections.emptyList();
     }
     this.slotIndexToolboxEnd = this.nextSlotIndex - 1;
-    */
 
     this.updateRecipeOutput();
   }
@@ -230,11 +239,10 @@ public abstract class BaseContainer
     return this.tile;
   }
 
-  // TODO
-//  private TileEntityToolbox getToolbox(TileEntityBase tile) {
-//
-//    return tile.getAdjacentToolbox();
-//  }
+  private ToolboxTileEntity getToolbox(BaseTileEntity tile) {
+
+    return tile.getAdjacentToolbox();
+  }
 
   private int containerToolboxOffsetGetX() {
 
@@ -344,44 +352,32 @@ public abstract class BaseContainer
           new SCPacketWorktableContainerJoinedBlockBreak(pos)
       );
     }
-
-    // TODO
-//    TileEntity tileEntity = world.getTileEntity(pos);
-//
-//    if (tileEntity != null && tileEntity == this.designersTable) {
-//
-//      for (ToolboxSideSlot slot : this.toolboxSideSlotList) {
-//        slot.moveToOrigin();
-//      }
-//    }
   }
 
   /**
    * @return the adjacent toolbox, or null
    */
-  // TODO
-//  @Nullable
-//  public TileEntityToolbox getToolbox() {
-//
-//    if (this.hasValidToolbox()) {
-//
-//      return this.toolbox;
-//    }
-//
-//    return null;
-//  }
+  @Nullable
+  public ToolboxTileEntity getToolbox() {
 
-  // TODO
-//  public boolean hasValidToolbox() {
-//
-//    return this.toolbox != null && !this.toolbox.isInvalid();
-//  }
+    if (this.hasValidToolbox()) {
 
-  // TODO
-//  public boolean canPlayerUseToolbox() {
-//
-//    return this.hasValidToolbox() && this.toolbox.canPlayerUse(this.player);
-//  }
+      return this.toolbox;
+    }
+
+    return null;
+  }
+
+  public boolean hasValidToolbox() {
+
+    return this.toolbox != null && !this.toolbox.isRemoved();
+  }
+
+  public boolean canPlayerUseToolbox() {
+
+    return this.hasValidToolbox() && this.toolbox.canPlayerUse(this.player);
+  }
+
   public void updateRecipeOutput() {
 
     if (this.tile == null) {
@@ -400,7 +396,7 @@ public abstract class BaseContainer
 
   @Override
   public void onCraftMatrixChanged(@Nonnull IInventory inventory) {
-    // TODO: should we detect and send changes?
+    //
   }
 
   @Override
@@ -451,9 +447,9 @@ public abstract class BaseContainer
   // ---------------------------------------------------------------------------
 
   @Override
-  public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
+  public boolean canMergeSlot(@Nonnull ItemStack stack, @Nonnull Slot slot) {
 
-    return slotIn != this.craftingResultSlot && super.canMergeSlot(stack, slotIn);
+    return slot != this.craftingResultSlot && super.canMergeSlot(stack, slot);
   }
 
   private boolean isSlotSecondaryInput(int slotIndex) {
@@ -476,11 +472,10 @@ public abstract class BaseContainer
     return slotIndex >= this.slotIndexHotbarStart && slotIndex <= this.slotIndexHotbarEnd;
   }
 
-  // TODO
-//  private boolean isSlotIndexToolbox(int slotIndex) {
-//
-//    return slotIndex >= this.slotIndexToolboxStart && slotIndex <= this.slotIndexToolboxEnd;
-//  }
+  private boolean isSlotIndexToolbox(int slotIndex) {
+
+    return slotIndex >= this.slotIndexToolboxStart && slotIndex <= this.slotIndexToolboxEnd;
+  }
 
   private boolean isSlotIndexTool(int slotIndex) {
 
@@ -510,11 +505,10 @@ public abstract class BaseContainer
     );
   }
 
-  // TODO
-//  private boolean mergeToolbox(ItemStack itemStack, boolean reverse) {
-//
-//    return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
-//  }
+  private boolean mergeToolbox(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
+  }
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean mergeSecondaryInput(ItemStack itemStack, boolean reverse) {
@@ -625,7 +619,7 @@ public abstract class BaseContainer
           return ItemStack.EMPTY;
         }
 
-      } /*else if (this.isSlotIndexToolbox(slotIndex)) { // TODO
+      } else if (this.isSlotIndexToolbox(slotIndex)) {
         // Toolbox clicked, try to move to tool slot first, then crafting matrix, then secondary, then inventory, then hotbar
 
         if (this.swapTools(slotIndex)) {
@@ -639,11 +633,10 @@ public abstract class BaseContainer
           return ItemStack.EMPTY;
         }
 
-      } */ else if (this.isSlotIndexTool(slotIndex)) {
+      } else if (this.isSlotIndexTool(slotIndex)) {
         // Tool slot clicked, try to move to toolbox first, then inventory, then hotbar
 
-        // TODO
-        /* if (this.canPlayerUseToolbox()) {
+        if (this.canPlayerUseToolbox()) {
 
           if (!this.mergeToolbox(itemStack, false)
               && !this.mergeInventory(itemStack, false)
@@ -651,8 +644,7 @@ public abstract class BaseContainer
             return ItemStack.EMPTY;
           }
 
-        } else */
-        if (!this.mergeInventory(itemStack, false)
+        } else if (!this.mergeInventory(itemStack, false)
             && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }

@@ -1,12 +1,15 @@
 package com.codetaylor.mc.artisanworktables.client.screen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.client.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementMageEffect;
 import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementTabs;
+import com.codetaylor.mc.artisanworktables.client.screen.element.GuiElementToolboxSide;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.common.tile.BaseTileEntity;
+import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -66,6 +69,20 @@ public abstract class BaseScreen
 
     this.addFluidTankElement(this.tile, this.textColor);
 
+    // toolbox side
+    ToolboxTileEntity toolbox = container.getToolbox();
+
+    if (toolbox != null && container.canPlayerUseToolbox()) {
+      this.guiContainerElementAdd(new GuiElementToolboxSide(
+          this,
+          toolbox,
+          toolbox.isMechanical() ? ReferenceTexture.TEXTURE_TOOLBOX_MECHANICAL_SIDE : ReferenceTexture.TEXTURE_TOOLBOX_SIDE,
+          -70,
+          () -> 0
+      ));
+    }
+
+    // tabs
     this.guiContainerElementAdd(new GuiElementTabs(
         this,
         this.tile,

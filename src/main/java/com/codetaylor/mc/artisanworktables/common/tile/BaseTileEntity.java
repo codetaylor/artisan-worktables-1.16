@@ -388,6 +388,43 @@ public abstract class BaseTileEntity
     this.mageToolObserver.checkToolState(this.toolHandler);
   }
 
+  /**
+   * Searches cardinal directions around all joined tables and returns an adjacent toolbox.
+   * <p>
+   * If more than one toolbox is found, the first toolbox found is returned.
+   * <p>
+   * If no toolbox is found, null is returned.
+   *
+   * @return adjacent toolbox or null
+   */
+  @Nullable
+  public ToolboxTileEntity getAdjacentToolbox() {
+
+    if (this.world == null) {
+      return null;
+    }
+
+    List<BaseTileEntity> joinedTables = this.getJoinedTables(new ArrayList<>());
+
+    for (BaseTileEntity joinedTable : joinedTables) {
+      BlockPos pos = joinedTable.getPos();
+      TileEntity tileEntity;
+
+      for (Direction facing : Direction.Plane.HORIZONTAL) {
+
+        if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
+
+          if (tileEntity instanceof ToolboxTileEntity) {
+
+            return (ToolboxTileEntity) tileEntity;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
   // ---------------------------------------------------------------------------
   // Recipe
   // ---------------------------------------------------------------------------

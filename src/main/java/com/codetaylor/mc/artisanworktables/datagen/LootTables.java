@@ -1,8 +1,6 @@
 package com.codetaylor.mc.artisanworktables.datagen;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
-import com.codetaylor.mc.artisanworktables.common.block.ToolboxBlock;
-import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
 import com.google.gson.Gson;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -44,8 +42,8 @@ public class LootTables
       this.createAndSaveTable(cache, block, resourceLocationPath);
     }
 
-    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.TOOLBOX, ToolboxBlock.NAME);
-    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.MECHANICAL_TOOLBOX, ToolboxMechanicalBlock.NAME);
+//    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.TOOLBOX, ToolboxBlock.NAME);
+//    this.createAndSaveTable(cache, ArtisanWorktablesMod.Blocks.MECHANICAL_TOOLBOX, ToolboxMechanicalBlock.NAME);
   }
 
   private void createAndSaveTable(@Nonnull DirectoryCache cache, Block block, String resourceLocationPath) {

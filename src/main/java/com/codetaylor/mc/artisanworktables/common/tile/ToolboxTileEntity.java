@@ -8,10 +8,13 @@ import com.codetaylor.mc.athenaeum.network.spi.tile.TileEntityDataBase;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.TileDataItemStackHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -95,6 +98,15 @@ public class ToolboxTileEntity
 
     super.read(state, nbt);
     this.itemStackHandler.deserializeNBT(nbt.getCompound("itemStackHandler"));
+
+    if (nbt.contains("Items", Constants.NBT.TAG_LIST)) {
+      NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
+      ItemStackHelper.loadAllItems(nbt, itemStacks);
+
+      for (int i = 0; i < 27; i++) {
+        this.itemStackHandler.forceStackInSlot(i, itemStacks.get(i));
+      }
+    }
   }
 
   @Nonnull

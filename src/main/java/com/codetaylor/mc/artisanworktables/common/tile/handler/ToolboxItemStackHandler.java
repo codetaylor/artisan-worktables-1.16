@@ -27,6 +27,11 @@ public class ToolboxItemStackHandler
     }
   }
 
+  public void forceStackInSlot(int slot, @Nonnull ItemStack stack) {
+
+    super.setStackInSlot(slot, stack);
+  }
+
   @Nonnull
   @Override
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {

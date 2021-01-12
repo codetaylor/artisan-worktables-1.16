@@ -30,6 +30,7 @@ public class ArtisanWorktablesModCommonConfig {
   public static int fluidCapacityWorktable;
   public static int fluidCapacityWorkstation;
   public static int fluidCapacityWorkshop;
+  public static boolean allowNonToolItemsInToolboxes;
 
   public static void bake() {
 
@@ -38,6 +39,7 @@ public class ArtisanWorktablesModCommonConfig {
     fluidCapacityWorktable = CONFIG.fluidCapacityWorktable.get();
     fluidCapacityWorkstation = CONFIG.fluidCapacityWorkstation.get();
     fluidCapacityWorkshop = CONFIG.fluidCapacityWorkshop.get();
+    allowNonToolItemsInToolboxes = CONFIG.allowNonToolItemsInToolboxes.get();
   }
 
   public static class ConfigCommon {
@@ -47,6 +49,7 @@ public class ArtisanWorktablesModCommonConfig {
     public final ForgeConfigSpec.IntValue fluidCapacityWorktable;
     public final ForgeConfigSpec.IntValue fluidCapacityWorkstation;
     public final ForgeConfigSpec.IntValue fluidCapacityWorkshop;
+    public final ForgeConfigSpec.BooleanValue allowNonToolItemsInToolboxes;
 
     public ConfigCommon(ForgeConfigSpec.Builder builder) {
 
@@ -85,6 +88,13 @@ public class ArtisanWorktablesModCommonConfig {
               "Default: " + 16000
           )
           .defineInRange("fluidCapacityWorkshop", 16000, 0, Integer.MAX_VALUE);
+
+      this.allowNonToolItemsInToolboxes = builder
+          .comment(
+              "Set to true to allow non-tool items in toolboxes.",
+              "Default: " + false
+          )
+          .define("allowNonToolItemsInToolboxes", false);
     }
   }
 }

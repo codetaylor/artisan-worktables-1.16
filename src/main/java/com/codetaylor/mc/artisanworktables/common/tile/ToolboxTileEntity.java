@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.common.tile.handler.ToolboxItemStackHandler;
 import com.codetaylor.mc.artisanworktables.common.util.ToolValidationHelper;
 import com.codetaylor.mc.athenaeum.network.spi.tile.ITileData;
@@ -39,7 +40,7 @@ public class ToolboxTileEntity
     );
 
     Predicate<ItemStack> predicate = itemStack -> itemStack.isEmpty()
-        || !this.restrictToToolsOnly()
+        || this.allowNonToolItems()
         || ToolValidationHelper.isValidTool(itemStack, ArtisanWorktablesMod.getProxy().getRecipeManager());
 
     this.itemStackHandler = new ToolboxItemStackHandler(predicate, 27);
@@ -68,10 +69,9 @@ public class ToolboxTileEntity
         && player.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
   }
 
-  private boolean restrictToToolsOnly() {
+  private boolean allowNonToolItems() {
 
-    // TODO: config?
-    return true;
+    return ArtisanWorktablesModCommonConfig.allowNonToolItemsInToolboxes;
   }
 
   // ---------------------------------------------------------------------------

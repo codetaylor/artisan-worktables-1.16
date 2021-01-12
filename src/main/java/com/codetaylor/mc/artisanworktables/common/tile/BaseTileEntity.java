@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
 import com.codetaylor.mc.artisanworktables.api.IToolHandler;
+import com.codetaylor.mc.artisanworktables.common.block.ToolboxMechanicalBlock;
 import com.codetaylor.mc.artisanworktables.common.container.BaseContainer;
 import com.codetaylor.mc.artisanworktables.common.recipe.*;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
@@ -477,6 +478,7 @@ public abstract class BaseTileEntity
         tools,
         this.getToolHandlers(tools),
         this.getToolHandler(),
+        this.getToolReplacementHandler(),
         this.getSecondaryIngredientMatcher(),
         this.getSecondaryIngredientHandler(),
         this.getSecondaryOutputHandler(),
@@ -503,6 +505,26 @@ public abstract class BaseTileEntity
     }
 
     return handlers;
+  }
+
+  @Nullable
+  private IItemHandlerModifiable getToolReplacementHandler() {
+
+    if (this.world == null) {
+      return null;
+    }
+
+    ToolboxTileEntity adjacentToolbox = this.getAdjacentToolbox();
+
+    if (adjacentToolbox == null) {
+      return null;
+    }
+
+    if (adjacentToolbox.isMechanical()) {
+      return adjacentToolbox.getItemStackHandler();
+    }
+
+    return null;
   }
 
   // ---------------------------------------------------------------------------

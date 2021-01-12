@@ -33,9 +33,9 @@ public abstract class BaseContainer
     extends ContainerBase {
 
   private final CraftingResultSlot craftingResultSlot;
-  private World world;
-  private BaseTileEntity tile;
-  private ToolboxTileEntity toolbox;
+  private final World world;
+  private final BaseTileEntity tile;
+  private final ToolboxTileEntity toolbox;
   private final ItemStackHandler resultHandler;
   private FluidStack lastFluidStack;
   private final PlayerEntity player;
@@ -63,14 +63,15 @@ public abstract class BaseContainer
 
     this.lastFluidStack = FluidStack.EMPTY;
     this.world = world;
-    this.tile = (BaseTileEntity) world.getTileEntity(pos);
-    this.toolbox = this.getToolbox(this.tile);
 
+    this.tile = (BaseTileEntity) world.getTileEntity(pos);
     assert this.tile != null;
+
+    this.toolbox = this.getToolbox(this.tile);
     this.tile.addContainer(this);
 
     this.player = playerInventory.player;
-    Runnable slotChangeListener = () -> this.tile.setRequiresRecipeUpdate();
+    Runnable slotChangeListener = this.tile::setRequiresRecipeUpdate;
 
     // ------------------------------------------------------------------------
     // Result

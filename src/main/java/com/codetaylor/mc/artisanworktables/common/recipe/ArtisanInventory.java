@@ -23,6 +23,7 @@ public class ArtisanInventory
   private final ItemStack[] tools;
   private final IToolHandler[] toolHandlers;
   private final IItemHandlerModifiable toolHandler;
+  private final IItemHandlerModifiable toolReplacementHandler;
   private final ISecondaryIngredientMatcher secondaryIngredientMatcher;
   private final IItemHandlerModifiable secondaryIngredientHandler;
   private final IItemHandlerModifiable secondaryOutputHandler;
@@ -37,6 +38,7 @@ public class ArtisanInventory
       ItemStack[] tools,
       IToolHandler[] toolHandlers,
       IItemHandlerModifiable toolHandler,
+      IItemHandlerModifiable toolReplacementHandler,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       IItemHandlerModifiable secondaryIngredientHandler,
       IItemHandlerModifiable secondaryOutputHandler,
@@ -51,6 +53,7 @@ public class ArtisanInventory
     this.tools = tools;
     this.toolHandlers = toolHandlers;
     this.toolHandler = toolHandler;
+    this.toolReplacementHandler = toolReplacementHandler;
     this.secondaryIngredientMatcher = secondaryIngredientMatcher;
     this.secondaryIngredientHandler = secondaryIngredientHandler;
     this.secondaryOutputHandler = secondaryOutputHandler;
@@ -105,8 +108,7 @@ public class ArtisanInventory
   @Nullable
   public IItemHandlerModifiable getToolReplacementHandler() {
 
-    // TODO
-    return null;
+    return this.toolReplacementHandler;
   }
 
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {

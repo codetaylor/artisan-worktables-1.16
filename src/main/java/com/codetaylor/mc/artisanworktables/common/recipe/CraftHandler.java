@@ -337,6 +337,8 @@ public class CraftHandler {
 
             mask |= bit;
 
+            ItemStack toolCopy = stackInSlot.copy();
+
             if (this.onCraftDamageTool(recipe, stackInSlot, world, player)) {
 
               if (!world.isRemote) {
@@ -354,9 +356,11 @@ public class CraftHandler {
             }
 
             if (toolReplacementHandler != null) {
-              // TODO: review this method, looks like it will fail if the tool is broken and emptied
-              // by the damage logic above
-              this.onCraftCheckAndReplaceTool(recipe, j, toolStackHandler, toolReplacementHandler);
+              // A copy of the tool is passed so the check and replace method knows
+              // which type of tool it is looking for. If the tool is destroyed by
+              // the damage logic above, the check and replace method will try to
+              // match air and fail.
+              this.onCraftCheckAndReplaceTool(recipe, j, toolCopy, toolStackHandler, toolReplacementHandler);
             }
             continue recipeTools;
           }
@@ -388,7 +392,7 @@ public class CraftHandler {
     return false;
   }
 
-  private void onCraftCheckAndReplaceTool(ArtisanRecipe recipe, int toolIndex, IItemHandlerModifiable toolStackHandler, IItemHandler capability) {
+  private void onCraftCheckAndReplaceTool(ArtisanRecipe recipe, int toolIndex, ItemStack toolCopy, IItemHandlerModifiable toolStackHandler, IItemHandler capability) {
 
     ItemStack itemStack = toolStackHandler.getStackInSlot(toolIndex);
     IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
@@ -413,7 +417,7 @@ public class CraftHandler {
         ToolEntry toolEntry = recipe.findToolEntry(potentialToolHandler, potentialTool);
 
         if (toolEntry != null
-            && toolEntry.matches(toolHandler, itemStack)
+            && toolEntry.matches(toolHandler, toolCopy)
             && recipe.hasSufficientToolDurability(potentialToolHandler, potentialTool)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);

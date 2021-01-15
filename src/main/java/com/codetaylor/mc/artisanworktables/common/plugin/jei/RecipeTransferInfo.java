@@ -107,13 +107,12 @@ public class RecipeTransferInfo<C extends BaseContainer>
       result.add(container.inventorySlots.get(i));
     }
 
-    // TODO
-//    if (container.canPlayerUseToolbox()) {
-//
-//      for (int i = container.slotIndexToolboxStart; i <= container.slotIndexToolboxEnd; i++) {
-//        result.add(container.inventorySlots.get(i));
-//      }
-//    }
+    if (container.canPlayerUseToolbox()) {
+
+      for (int i = container.slotIndexToolboxStart; i <= container.slotIndexToolboxEnd; i++) {
+        result.add(container.inventorySlots.get(i));
+      }
+    }
 
     for (int i = container.slotIndexSecondaryInputStart; i < container.slotIndexSecondaryInputEnd; i++) {
       result.add(container.inventorySlots.get(i));

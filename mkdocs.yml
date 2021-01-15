@@ -1,0 +1,26 @@
+site_name: Artisan Worktables 1.16
+
+pages:
+  - Introduction: index.md
+  - ChangeLog: changelog.md
+  - Toolbox: toolbox.md
+  - Creating Recipes:
+    - Quick Reference: recipes/quickreference.md
+    - Getting Started: recipes/gettingstarted.md
+    - Basic Recipes: recipes/basic.md
+    - Recipe Names: recipes/names.md
+    - Table Tiers: recipes/tiers.md
+    - Recipes with Tools: recipes/tools.md
+    - Recipes with Fluids: recipes/fluids.md
+    - Extra Chance Output: recipes/extraoutput.md
+    - Secondary Ingredients: recipes/secondaryingredients.md
+    - Experience Requirements: recipes/experiencerequirements.md
+  - Development:
+    - Contributor's License Agreement: cla.md
+
+theme: readthedocs
+
+markdown_extensions:
+  - admonition
+
+extra_css: [custom.css]

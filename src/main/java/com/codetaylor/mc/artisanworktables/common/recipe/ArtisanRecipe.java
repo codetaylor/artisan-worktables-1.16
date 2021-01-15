@@ -154,15 +154,7 @@ public abstract class ArtisanRecipe
   @Override
   public ItemStack getCraftingResult(@Nonnull ArtisanInventory inventory) {
 
-    // TODO
-    return null;
-  }
-
-  @Override
-  public boolean canFit(int width, int height) {
-
-    // TODO
-    return false;
+    return this.getRecipeOutput();
   }
 
   @Nonnull

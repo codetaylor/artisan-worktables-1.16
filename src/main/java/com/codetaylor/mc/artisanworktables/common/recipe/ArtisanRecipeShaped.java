@@ -63,6 +63,12 @@ public class ArtisanRecipeShaped
     return this.height;
   }
 
+  @Override
+  public boolean canFit(int width, int height) {
+
+    return this.width <= width && this.height <= height;
+  }
+
   @Nonnull
   @Override
   public IRecipeSerializer<?> getSerializer() {

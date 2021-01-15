@@ -55,6 +55,12 @@ public class ArtisanRecipeShapeless
   }
 
   @Override
+  public boolean canFit(int width, int height) {
+
+    return this.ingredients.size() <= (width * height);
+  }
+
+  @Override
   public boolean matches(@Nonnull ArtisanInventory inventory, @Nonnull World world) {
 
     if (!super.matches(inventory, world)) {

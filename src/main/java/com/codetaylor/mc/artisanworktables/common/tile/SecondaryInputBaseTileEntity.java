@@ -1,7 +1,5 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
-import com.codetaylor.mc.artisanworktables.common.recipe.CraftingContextFactory;
-import com.codetaylor.mc.artisanworktables.common.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.common.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.common.recipe.SecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
@@ -9,7 +7,6 @@ import com.codetaylor.mc.artisanworktables.common.tile.handler.MutuallyExclusive
 import com.codetaylor.mc.athenaeum.inventory.spi.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
@@ -55,12 +52,6 @@ public abstract class SecondaryInputBaseTileEntity
   // ---------------------------------------------------------------------------
   // Accessors
   // ---------------------------------------------------------------------------
-
-  @Override
-  public ICraftingContext getCraftingContext(PlayerEntity player) {
-
-    return CraftingContextFactory.createContext(this, player, this.secondaryIngredientHandler);
-  }
 
   @Override
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {

@@ -192,11 +192,6 @@ public abstract class BaseTileEntity
     this.containerList.remove(container);
   }
 
-  public ICraftingContext getCraftingContext(PlayerEntity player) {
-
-    return CraftingContextFactory.createContext(this, player, null);
-  }
-
   public void setRequiresRecipeUpdate() {
 
     this.requiresRecipeUpdate = true;

@@ -15,6 +15,7 @@ pages:
     - Extra Chance Output: recipes/extraoutput.md
     - Secondary Ingredients: recipes/secondaryingredients.md
     - Experience Requirements: recipes/experiencerequirements.md
+    - JSON Recipes: recipes/json.md
   - Development:
     - Contributor's License Agreement: cla.md
 

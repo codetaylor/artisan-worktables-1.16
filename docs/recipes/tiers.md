@@ -1,6 +1,6 @@
 # Table Tiers
 
-The Artisan Worktables crafting tables come in three different flavors: `Worktables`, `Workstations`, and `Workshops`.
+The Artisan Worktables crafting tables come in three different flavors: `Tier.WORKTABLE`, `Tier.WORKSTATION`, and `Tier.WORKSHOP`.
 
 | Tier        | Grid | Tools | Fluid Capacity | Secondary |
 |-------------|:----:|:-----:|:--------------:|:---------:|
@@ -27,7 +27,7 @@ Recipe restrict(Tier minimumTier, Tier maximumTier);
 Accepted values for `minimumTier` and `maximumTier` are:
 
 | Tier        | Tier Id |
-|-------------|:-------:|
+|-------------|:-------|
 | Worktable   | Tier.WORKTABLE       |
 | Workstation | Tier.WORKSTATION     |
 | Workshop    | Tier.WORKSHOP        |

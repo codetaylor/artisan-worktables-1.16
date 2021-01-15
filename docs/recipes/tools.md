@@ -1,6 +1,6 @@
 # Recipes with Tools
 
-Artisan Worktables supports recipes that require up to three different tools to craft.
+Artisan Worktables supports recipes that require up to three different tools to craft. Any item that has durability will work as a tool.
 
 Adding tool requirements to a recipe is optional. Recipes will work just fine if you don't add a tool.
 

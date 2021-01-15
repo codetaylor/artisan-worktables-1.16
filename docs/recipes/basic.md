@@ -10,7 +10,7 @@ Shaped recipes are created by calling the following method on the builder:
 Recipe shaped(IIngredient[][] ingredients);
 ```
 
-For example, the following recipe will craft a furnace using the vanilla furnace pattern in any of the `basic` tables.
+For example, the following recipe will craft a furnace using the vanilla furnace pattern in any of the `Type.BASIC` tables.
 
 ```js
 import mods.artisanworktables.Recipe;
@@ -25,7 +25,7 @@ Recipe.type(Type.BASIC)
   .register();
 ```
 
-Shaped recipes are mirrored by default. To prevent a shaped recipe from being mirrored in the crafting grid, call the following method on the builder:
+Shaped recipes are mirrored by default. To prevent a shaped recipe from being mirrored in the crafting grid, call the following method on the builder and pass `false`:
 
 ```java
 Recipe mirrored(boolean mirrored);
@@ -39,7 +39,7 @@ Shapeless recipes are created by calling the following method on the builder:
 Recipe shapeless(IIngredient[] ingredients);
 ```
 
-For example, the following recipe will take any item matching the tag for iron ingots and craft an oak plank in any of the `basic` tables.
+For example, the following recipe will take any item matching the tag for iron ingots and craft an oak plank in any of the `Type.BASIC` tables.
 
 ```js
 import mods.artisanworktables.Recipe;

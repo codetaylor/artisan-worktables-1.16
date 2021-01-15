@@ -7,9 +7,9 @@ Artisan Worktables is designed to be used with [CraftTweaker](https://minecraft.
 
 ## Building Recipes
 
-Recipes are created by calling methods on a `Recipe` object and can be combined in various ways to achieve many unique results.
+Recipes are created by calling methods on a `Recipe` builder object.
 
-`Recipe` objects are retrieved by importing `Recipe` and `Type` and calling `type(Type type)` for the desired table.
+`Recipe` builder objects are retrieved by importing `Recipe` and `Type` and calling `type(Type type)` for the desired table.
 
 ```js
 import mods.artisanworktables.Recipe;
@@ -24,7 +24,7 @@ For a list of valid table types, see [Quick Reference](quickreference.md#type).
 
 ## Using the Builder
 
-The builder object method calls can be chained back-to-back.
+The builder object method calls are chained back-to-back:
 
 ```js
 import mods.artisanworktables.Recipe;

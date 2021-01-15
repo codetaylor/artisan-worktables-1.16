@@ -1,8 +1,6 @@
 # Quick Reference
 
-## ZenScript Methods
-
-### Type
+## Type
 
 ```java
 import mods.artisanworktables.Type;
@@ -26,7 +24,7 @@ Type.TAILOR
 Type.TANNER
 ```
 
-### Tier
+## Tier
 
 ```java
 import mods.artisanworktables.Tier;
@@ -38,7 +36,7 @@ Tier.WORKSTATION
 Tier.WORKSHOP
 ```
 
-### Recipe
+## Recipe
 
 ```java
 import mods.artisanworktables.Recipe;

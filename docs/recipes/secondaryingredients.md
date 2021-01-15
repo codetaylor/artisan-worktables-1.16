@@ -2,7 +2,7 @@
 
 Secondary ingredients are items that are required by a recipe and consumed when crafting, but aren't placed in the crafting grid. Instead, these items are placed in the secondary ingredient storage located directly above the player's inventory in the crafting GUI.
 
-`Workstation` and `Workshop` tier recipes can support up to nine unique secondary ingredients.
+`Tier.WORKSTATION` and `Tier.WORKSHOP` recipes can support up to nine unique secondary ingredients.
 
 ## Add Secondary Ingredients to Recipes
 

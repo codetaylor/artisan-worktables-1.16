@@ -163,8 +163,6 @@ public class GuiElementTabs
 
     for (BaseTileEntity joinedTable : joinedTables) {
       BlockState blockState = joinedTable.getWorld().getBlockState(joinedTable.getPos());
-      // TODO
-      //blockState = blockState.getBlock().getActualState(blockState, this.worktable.getWorld(), joinedTable.getPos());
       ItemStack itemStack = joinedTable.getItemStackForTabDisplay(blockState);
 
       if (joinedTable == this.worktable) {

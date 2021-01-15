@@ -277,7 +277,7 @@ public class CraftHandler {
         }
 
         if (requiredAmount > 0) {
-          // TODO: failed to find all required ingredients... shouldn't happen if the matching code is correct
+          // failed to find all required ingredients... shouldn't happen if the matching code is correct
         }
 
       }

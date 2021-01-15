@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.common.tile;
 
 import com.codetaylor.mc.artisanworktables.ArtisanWorktablesMod;
+import com.codetaylor.mc.artisanworktables.ArtisanWorktablesModCommonConfig;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
 
@@ -45,8 +46,7 @@ public class WorkstationTileEntity
   @Override
   protected int getFluidTankCapacity() {
 
-    // TODO
-    return 4000;
+    return ArtisanWorktablesModCommonConfig.fluidCapacityWorkstation;
   }
 
   @Override

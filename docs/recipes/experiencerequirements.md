@@ -1,6 +1,6 @@
 # Experience Requirements
 
-Experience requirements can be set on recipes. The requirement can be defined in experience or levels and set to not actually consume the required amount if so desired.
+Experience requirements can be set on recipes. The requirement can be defined in experience or levels and set to not actually consume the required amount if desired.
 
 ## Add Experience Requirements to Recipes
 

@@ -7,7 +7,6 @@ Here is an example to get you started:
 ```json
 {
   "type": "artisanworktables:basic_shaped",
-  "group": "",
   "pattern": [
     " s ",
     "sps",

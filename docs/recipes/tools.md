@@ -27,7 +27,7 @@ Recipe.type(Type.BASIC)
   .register();
 ```
 
-Multiple tools, up to three in fact, can be used in a recipe.
+Up to three tools can be used in a recipe.
 
 ```js
 import mods.artisanworktables.Recipe;
@@ -44,4 +44,4 @@ Recipe.type(Type.BASIC)
 
 You might notice that tag entries for the tools were used in these examples. Artisan Tools provides two different types of tag groups for its tools: groups by tool type and groups by tool material.
 
-For the complete list of tool type and material groups, see the documentation for Artisan Tools [Artisan Tools](https://www.curseforge.com/minecraft/mc-mods/artisan-tools-1-16).
+For the complete list of tool type and material groups, see the documentation for [Artisan Tools](https://www.curseforge.com/minecraft/mc-mods/artisan-tools-1-16).

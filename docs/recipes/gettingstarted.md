@@ -1,6 +1,6 @@
 # Getting Started
 
-Artisan Worktables is designed to be used with [CraftTweaker](https://minecraft.curseforge.com/projects/crafttweaker) and its scripting language, ZenScript.
+Artisan Worktables is designed to be used with [CraftTweaker](https://www.curseforge.com/minecraft/mc-mods/crafttweaker) and its scripting language, ZenScript.
 
 !!! note
     For more information about how to use ZenScript, please visit the [official CraftTweaker documentation](https://docs.blamejared.com/).

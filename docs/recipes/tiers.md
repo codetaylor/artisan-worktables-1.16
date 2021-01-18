@@ -2,12 +2,6 @@
 
 The Artisan Worktables crafting tables come in three different flavors: `Tier.WORKTABLE`, `Tier.WORKSTATION`, and `Tier.WORKSHOP`.
 
-| Tier        | Grid | Tools | Fluid Capacity | Secondary |
-|-------------|:----:|:-----:|:--------------:|:---------:|
-| Worktable   | 3x3  | 1     | 4,000mb        | 0         |
-| Workstation | 3x3  | 2     | 8,000mb        | 9         |
-| Workshop    | 5x5  | 3     | 16,000mb       | 9         |
-
 ## Recipe Tiers
 
 Recipes that don't exceed any of a tier's limitations can be crafted in that tier. For example, a recipe that uses a 3x3 grid pattern and one tool can be crafted in any of the three tiers, while a recipe that uses a 4x4 grid and two tools will only be craftable in a tier three table.
@@ -26,11 +20,11 @@ Recipe restrict(Tier minimumTier, Tier maximumTier);
 
 Accepted values for `minimumTier` and `maximumTier` are:
 
-| Tier        | Tier Id |
-|-------------|:-------|
-| Worktable   | Tier.WORKTABLE       |
-| Workstation | Tier.WORKSTATION     |
-| Workshop    | Tier.WORKSHOP        |
+```java
+Tier.WORKTABLE
+Tier.WORKSTATION
+Tier.WORKSHOP
+```
 
 ## Examples
 

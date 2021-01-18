@@ -4,7 +4,7 @@ Artisan Worktables provides themed worktables designed for modpack makers. It is
 
 ## Features
 
-Artisan Worktables contains a variety of unique features that include:
+Artisan Worktables' features include:
 
   * multiple tool slots
   * larger crafting grids

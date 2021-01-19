@@ -21,8 +21,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .tool(<tag:items:artisantools:type/hammer>, 10)
   .register();
 ```
@@ -34,8 +34,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .tool(<tag:items:artisantools:type/hammer>, 10)
   .tool(<tag:items:artisantools:type/athame>, 5)
   .tool(<tag:items:artisantools:type/quill>, 13)

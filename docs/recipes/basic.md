@@ -18,10 +18,10 @@ import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
   .shaped([
-    [<minecraft:cobblestone>, <minecraft:cobblestone>, <minecraft:cobblestone>],
-    [<minecraft:cobblestone>, null, <minecraft:cobblestone>],
-    [<minecraft:cobblestone>, <minecraft:cobblestone>, <minecraft:cobblestone>]])
-  .output(<minecraft:furnace>)
+    [<item:minecraft:cobblestone>, <item:minecraft:cobblestone>, <item:minecraft:cobblestone>],
+    [<item:minecraft:cobblestone>, <item:minecraft:air>, <item:minecraft:cobblestone>],
+    [<item:minecraft:cobblestone>, <item:minecraft:cobblestone>, <item:minecraft:cobblestone>]])
+  .output(<item:minecraft:furnace>)
   .register();
 ```
 
@@ -47,6 +47,6 @@ import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
   .shapeless([<tag:items:forge:ingots/iron>])
-  .output(<minecraft:planks>)
+  .output(<item:minecraft:planks>)
   .register();
 ```

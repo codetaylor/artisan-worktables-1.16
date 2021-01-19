@@ -17,9 +17,9 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
-  .extra(<minecraft:string>, 0.75)
-  .extra(<minecraft:diamond>, 0.25)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
+  .extra(<item:minecraft:string>, 0.75)
+  .extra(<item:minecraft:diamond>, 0.25)
   .register();
 ```

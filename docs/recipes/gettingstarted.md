@@ -31,8 +31,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .register();
 ```
 

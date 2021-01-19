@@ -27,9 +27,9 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .secondary([<minecraft:gravel>, <minecraft:string>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .secondary([<item:minecraft:gravel>, <item:minecraft:string>])
+  .output(<item:minecraft:cobblestone>)
   .register();
 ```
 
@@ -40,8 +40,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .secondary([<minecraft:gravel>, <minecraft:string>], false)
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .secondary([<item:minecraft:gravel>, <item:minecraft:string>], false)
+  .output(<item:minecraft:cobblestone>)
   .register();
 ```

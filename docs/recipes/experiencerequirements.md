@@ -22,8 +22,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .experience(20)
   .register();
 ```
@@ -35,8 +35,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
+  .shapeless([<item:minecraft:dirt>])
   .level(30, false)
-  .output(<minecraft:cobblestone>)
+  .output(<item:minecraft:cobblestone>)
   .register();
 ```

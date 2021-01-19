@@ -17,8 +17,8 @@ import mods.artisanworktables.Recipe;
 import mods.artisanworktables.Type;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
+  .shapeless([<item:minecraft:dirt>])
   .fluid(<fluid:minecraft:water> * 250)
-  .output(<minecraft:cobblestone>)
+  .output(<item:minecraft:cobblestone>)
   .register();
 ```

@@ -36,8 +36,8 @@ import mods.artisanworktables.Type;
 import mods.artisanworktables.Tier;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .restrict(Tier.WORKSHOP)
   .register();
 ```
@@ -50,8 +50,8 @@ import mods.artisanworktables.Type;
 import mods.artisanworktables.Tier;
 
 Recipe.type(Type.BASIC)
-  .shapeless([<minecraft:dirt>])
-  .output(<minecraft:cobblestone>)
+  .shapeless([<item:minecraft:dirt>])
+  .output(<item:minecraft:cobblestone>)
   .restrict(Tier.WORKTABLE, Tier.WORKTABLE)
   .register();
 ```

@@ -38,7 +38,7 @@ public class PlayerLoggedInEventHandler {
     }
 
     if (!result.isEmpty()) {
-      ArtisanWorktablesMod.getProxy().getPacketService().sendToPlayer((ServerPlayerEntity) event.getPlayer(), new SCPacketIncompatible(this.incompatibleModList));
+      ArtisanWorktablesMod.getProxy().getPacketService().sendToPlayer((ServerPlayerEntity) event.getPlayer(), new SCPacketIncompatible(result));
     }
   }
 }

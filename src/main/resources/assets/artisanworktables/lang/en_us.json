@@ -49,6 +49,8 @@
   "block.artisanworktables.workshop_tanner": "Tanner's Workshop",
   "gui.artisanworktables.tooltip.fluid.empty": "Empty",
   "gui.artisanworktables.tooltip.fluid.destroy": "Destroy fluid: SHIFT + LEFT-CLICK",
+  "gui.artisanworktables.warning": "WARNING!",
+  "gui.artisanworktables.incompatibility": "Artisan Worktables has known incompatibilities with the following mods: %s\n\nSee the known issues section in the documentation for more details.\n\nDisable this message in the config.",
   "jei.artisanworktables.tooltip.shapeless.recipe": "Shapeless Recipe",
   "jei.artisanworktables.xp.cost": "XP Cost: %d",
   "jei.artisanworktables.level.cost": "Level Cost: %d",

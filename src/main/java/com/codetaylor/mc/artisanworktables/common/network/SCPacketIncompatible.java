@@ -5,7 +5,11 @@ import com.codetaylor.mc.athenaeum.network.spi.packet.IMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.DialogTexts;
 import net.minecraft.client.gui.screen.AlertScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.SelectorTextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -65,15 +69,13 @@ public class SCPacketIncompatible
 
     String modList = String.join(", ", message.modIdList.toArray(new String[0]));
 
+    String warningString = I18n.format("gui.artisanworktables.warning");
+
     minecraft.displayGuiScreen(
         new AlertScreen(
             () -> minecraft.displayGuiScreen(null),
-            new TranslationTextComponent("WARNING!"),
-            new TranslationTextComponent(
-                "Artisan Worktables has known incompatibilities with the following mods: " + modList
-                    + "\n\nSee the known issues section in the documentation for more details."
-                    + "\n\nDisable this message in the config."
-            ),
+            new StringTextComponent(TextFormatting.RED + warningString),
+            new TranslationTextComponent("gui.artisanworktables.incompatibility", modList),
             DialogTexts.GUI_PROCEED
         )
     );

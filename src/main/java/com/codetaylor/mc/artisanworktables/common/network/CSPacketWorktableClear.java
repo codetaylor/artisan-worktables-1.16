@@ -47,7 +47,7 @@ public class CSPacketWorktableClear
   public void encode(CSPacketWorktableClear message, PacketBuffer packetBuffer) {
 
     super.encode(message, packetBuffer);
-    packetBuffer.writeInt(this.clearFlags);
+    packetBuffer.writeInt(message.clearFlags);
   }
 
   @Override

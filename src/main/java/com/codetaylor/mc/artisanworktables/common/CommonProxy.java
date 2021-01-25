@@ -13,6 +13,7 @@ import com.codetaylor.mc.athenaeum.network.spi.packet.IPacketService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.ITileDataService;
 import com.codetaylor.mc.athenaeum.network.spi.tile.data.service.SCPacketTileData;
 import com.codetaylor.mc.athenaeum.util.ConfigHelper;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.RecipeManager;
@@ -79,6 +80,7 @@ public class CommonProxy
     this.packetService.registerMessage(CSPacketWorktableTankDestroyFluid.class, CSPacketWorktableTankDestroyFluid.class);
     this.packetService.registerMessage(SCPacketWorktableContainerJoinedBlockBreak.class, SCPacketWorktableContainerJoinedBlockBreak.class);
     this.packetService.registerMessage(SCPacketWorktableFluidUpdate.class, SCPacketWorktableFluidUpdate.class);
+    this.packetService.registerMessage(SCPacketIncompatible.class, SCPacketIncompatible.class);
   }
 
   @Override
@@ -96,6 +98,7 @@ public class CommonProxy
   public void registerForgeEventHandlers(IEventBus eventBus) {
 
     eventBus.register(new TagsUpdatedEventHandler());
+    eventBus.register(new PlayerLoggedInEventHandler(ArtisanWorktablesMod.KNOWN_INCOMPATIBLE));
   }
 
   // ---------------------------------------------------------------------------

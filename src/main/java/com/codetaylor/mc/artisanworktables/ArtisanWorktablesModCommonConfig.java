@@ -31,6 +31,7 @@ public class ArtisanWorktablesModCommonConfig {
   public static int fluidCapacityWorkstation;
   public static int fluidCapacityWorkshop;
   public static boolean allowNonToolItemsInToolboxes;
+  public static boolean hideIncompatibilityMessage;
 
   public static void bake() {
 
@@ -40,6 +41,7 @@ public class ArtisanWorktablesModCommonConfig {
     fluidCapacityWorkstation = CONFIG.fluidCapacityWorkstation.get();
     fluidCapacityWorkshop = CONFIG.fluidCapacityWorkshop.get();
     allowNonToolItemsInToolboxes = CONFIG.allowNonToolItemsInToolboxes.get();
+    hideIncompatibilityMessage = CONFIG.hideIncompatibilityMessage.get();
   }
 
   public static class ConfigCommon {
@@ -50,6 +52,7 @@ public class ArtisanWorktablesModCommonConfig {
     public final ForgeConfigSpec.IntValue fluidCapacityWorkstation;
     public final ForgeConfigSpec.IntValue fluidCapacityWorkshop;
     public final ForgeConfigSpec.BooleanValue allowNonToolItemsInToolboxes;
+    public final ForgeConfigSpec.BooleanValue hideIncompatibilityMessage;
 
     public ConfigCommon(ForgeConfigSpec.Builder builder) {
 
@@ -95,6 +98,13 @@ public class ArtisanWorktablesModCommonConfig {
               "Default: " + false
           )
           .define("allowNonToolItemsInToolboxes", false);
+
+      this.hideIncompatibilityMessage = builder
+          .comment(
+              "Set to true to hide the mod incompatibility message.",
+              "Default: " + false
+          )
+          .define("hideIncompatibilityMessage", false);
     }
   }
 }

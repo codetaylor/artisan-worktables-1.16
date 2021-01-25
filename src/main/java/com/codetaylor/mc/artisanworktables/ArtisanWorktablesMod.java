@@ -10,6 +10,7 @@ import com.codetaylor.mc.artisanworktables.common.tile.ToolboxTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkshopTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorkstationTileEntity;
 import com.codetaylor.mc.artisanworktables.common.tile.WorktableTileEntity;
+import com.google.common.collect.Lists;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.tileentity.TileEntityType;
@@ -21,12 +22,18 @@ import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 @Mod(ArtisanWorktablesMod.MOD_ID)
 public class ArtisanWorktablesMod {
 
   public static final String MOD_ID = Reference.MOD_ID;
   public static final Logger LOGGER = LogManager.getLogger();
   public static final String PACKET_SERVICE_PROTOCOL_VERSION = "1";
+
+  public static final List<String> KNOWN_INCOMPATIBLE = Lists.newArrayList(
+      "performant"
+  );
 
   private static ArtisanWorktablesMod instance;
 

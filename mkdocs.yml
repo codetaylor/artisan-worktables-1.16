@@ -4,6 +4,8 @@ pages:
   - Introduction: index.md
   - ChangeLog: changelog.md
   - Toolbox: toolbox.md
+  - Compatibility:
+      Known Issues: knownissues.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
     - Getting Started: recipes/gettingstarted.md

@@ -52,7 +52,7 @@ task replaceResources(type: Copy) {
     outputs.upToDateWhen { false }
     from(sourceSets.main.resources.srcDirs) {
         include "META-INF/mods.toml"
-        expand 'version': version, 'minecraft_version': project.ext.minecraft.version_range, 'forge_version': project.ext.forge.version_range
+        expand 'version': version, 'minecraft_version': project.ext.minecraft.version_range, 'forge_version': project.ext.forge.version_range, 'athenaeum_version': project.ext.athenaeum.version_range
     }
     into "$buildDir/resources/main/"
 }

@@ -13,6 +13,10 @@ ext {
             version_range: '[1.16.4,1.17)'
     ]
 
+    athenaeum = [
+            version_range: '[2.0.0,)'
+    ]
+
     mappings = [
             channel: 'snapshot',
             version: '20201028-1.16.3'

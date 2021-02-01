@@ -65,3 +65,12 @@ Artisan Worktables
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
+
+[[dependencies.artisanworktables]]
+    modId="athenaeum"
+    mandatory=true
+    versionRange="${athenaeum_version}"
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"

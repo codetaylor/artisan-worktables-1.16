@@ -15,6 +15,7 @@ import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeBuilder;
 import com.codetaylor.mc.artisanworktables.common.recipe.ArtisanRecipeShaped;
 import com.codetaylor.mc.artisanworktables.common.recipe.RecipeTypes;
 import com.codetaylor.mc.artisanworktables.common.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.common.util.RecipeInjector;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.item.crafting.IRecipe;
@@ -225,6 +226,12 @@ public class ZenRecipe {
     } catch (Exception e) {
       CraftTweakerAPI.logThrowing("Error registering recipe: " + resourceLocation, e);
     }
+  }
+
+  @ZenCodeType.Method
+  public static void injectTestRecipes() {
+
+    RecipeInjector.inject(recipe -> CraftTweakerAPI.apply(new AddRecipeAction(recipe)));
   }
 
   public static class AddRecipeAction

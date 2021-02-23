@@ -1,6 +1,6 @@
 # Welcome to Artisan Worktables
 
-Artisan Worktables provides themed worktables designed for modpack makers. It is intended to be used with CraftTweaker and supports JEI and GameStages integration.
+Artisan Worktables provides themed worktables designed for modpack makers. It is intended to be used with CraftTweaker.
 
 ## Features
 

@@ -53,7 +53,7 @@ public class GuiElementFluidTankSmall
         matrixStack,
         this.elementX,
         this.elementY,
-        1000,
+        0,
         ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionX(),
         ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionY(),
         ELEMENT_OVERLAY_WIDTH,

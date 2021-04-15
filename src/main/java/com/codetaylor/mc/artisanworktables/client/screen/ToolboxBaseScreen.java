@@ -43,6 +43,14 @@ public abstract class ToolboxBaseScreen<C extends ToolboxBaseContainer>
   protected abstract Texture getTexture();
 
   @Override
+  public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+
+    this.renderBackground(matrixStack);
+    super.render(matrixStack, mouseX, mouseY, partialTicks);
+    this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+  }
+  
+  @Override
   protected void drawGuiContainerForegroundLayer(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY) {
 
     this.tooltipProviderList.clear();

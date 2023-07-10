@@ -33,9 +33,9 @@ public final class EnchantmentHelper {
     return 7 + level * 2;
   }
 
-  private static int sum(int n, int a0, int d) {
+  private static int sum(long n, long a0, long d) {
 
-    return n * (2 * a0 + (n - 1) * d) / 2;
+    return (int) (n * (2 * a0 + (n - 1) * d) / 2);
   }
 
   public static int getExperienceFromLevel(int level) {

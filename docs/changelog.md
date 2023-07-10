@@ -1,3 +1,8 @@
+**2.0.2**
+
+ * **Fixed:**
+   * Signed int overflow in experience sum
+
 **2.0.1**
 
   * **Fixed:**
